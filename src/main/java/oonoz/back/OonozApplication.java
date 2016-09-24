@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import oonoz.back.domain.Player;
-import oonoz.back.repositories.PlayerRepository;
+import oonoz.back.domain.Supplier;
+import oonoz.back.repositories.SupplierRepository;
 
 @Configuration
 @EnableAutoConfiguration
@@ -24,11 +24,11 @@ public class OonozApplication {
 	}
 	
 	 @Bean
-	 public CommandLineRunner demo(PlayerRepository repository) {
+	 public CommandLineRunner demo(SupplierRepository repository) {
 	 	return (args) -> {
-	 		log.info("Player found with findAll():");
+	 		log.info("Supplier found with findAll():");
 	 		log.info("-------------------------------");
-	 		for (Player player : repository.findAll()) {
+	 		for (Supplier player : repository.findAll()) {
 	 			log.info(player.getFirstName());
 	 		}
 	 	};
