@@ -38,6 +38,9 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+### Spring Boot ###
+
+src/main/resources/application.properties
 
 ### Java ###
 *.class
