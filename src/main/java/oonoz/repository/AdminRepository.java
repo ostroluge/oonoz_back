@@ -1,10 +1,10 @@
-package oonoz.back.repositories;
+package oonoz.repository;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import oonoz.back.domain.Admin;
+import oonoz.domain.Admin;
 
 public interface AdminRepository extends CrudRepository<Admin, Long>{
 

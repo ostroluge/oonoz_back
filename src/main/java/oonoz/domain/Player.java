@@ -1,4 +1,4 @@
-package oonoz.back.domain;
+package oonoz.domain;
 
 import java.sql.Date;
 

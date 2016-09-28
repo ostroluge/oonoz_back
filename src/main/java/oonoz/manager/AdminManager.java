@@ -1,10 +1,10 @@
-package oonoz.back.services;
+package oonoz.manager;
 
 import java.util.Collection;
 
-import oonoz.back.domain.Admin;
+import oonoz.domain.Admin;
 
-public interface AdminService {
+public interface AdminManager {
 
 	Collection<Admin> getAllAdmin();
 	

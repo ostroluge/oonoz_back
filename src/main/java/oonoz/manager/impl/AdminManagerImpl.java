@@ -1,4 +1,4 @@
-package oonoz.back.services.impl;
+package oonoz.manager.impl;
 
 import java.util.Collection;
 
@@ -6,12 +6,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import oonoz.back.domain.Admin;
-import oonoz.back.repositories.AdminRepository;
-import oonoz.back.services.AdminService;
+import oonoz.domain.Admin;
+import oonoz.manager.AdminManager;
+import oonoz.repository.AdminRepository;
 
-@Service(value = "adminService")
-public class AdminServiceImpl implements AdminService {
+@Service(value = "adminManager")
+public class AdminManagerImpl implements AdminManager {
 
 
 		@Resource
