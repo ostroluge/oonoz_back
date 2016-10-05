@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import oonoz.domain.Supplier;
 import oonoz.repository.SupplierRepository;
@@ -23,14 +24,15 @@ public class OonozApplication {
 		SpringApplication.run(OonozApplication.class, args);
 	}
 	
-	 @Bean
-	 public CommandLineRunner demo(SupplierRepository repository) {
-	 	return (args) -> {
-	 		log.info("Supplier found with findAll():");
-	 		log.info("-------------------------------");
-	 		for (Supplier player : repository.findAll()) {
-	 			log.info(player.getFirstName());
-	 		}
-	 	};
-	 }
+	
+	 @Bean(name = "dataSource")
+	    public DriverManagerDataSource dataSource() {
+	        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+	        driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
+	        driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/oonoz");
+	        driverManagerDataSource.setUsername("postgres");
+	        driverManagerDataSource.setPassword("admin");
+	        return driverManagerDataSource;
+	    }
+	 
 }
