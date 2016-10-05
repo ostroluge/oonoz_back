@@ -1,10 +1,10 @@
-package oonoz.back.services;
+package oonoz.manager;
 
 import java.util.Collection;
 
-import oonoz.back.domain.Player;
+import oonoz.domain.Player;
 
-public interface PlayerService {
+public interface PlayerManager {
 
 	Collection<Player> getAllPlayer();
 

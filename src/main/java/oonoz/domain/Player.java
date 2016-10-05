@@ -1,4 +1,4 @@
-package oonoz.back.domain;
+package oonoz.domain;
 
 import java.sql.Date;
 
@@ -29,6 +29,12 @@ public class Player {
 	
 	@Column(unique = true, nullable = false,name="MAIL")
 	private String mail;
+	
+	@Column(unique=true, nullable = false, name="USERNAME")
+	private String username;
+	
+	@Column(unique=false, nullable = false, name="PASSWORD")
+	private String password;
 	
 	@Column(unique = false, nullable = false,name="BIRTHDATE")
 	private Date birthDate;
@@ -66,6 +72,22 @@ public class Player {
 	
 	public String getMail(){
 		return this.mail;
+	}
+	
+	public void setUsername(String username){
+		this.username = username;
+	}
+	
+	public String getUsername(){
+		return this.username;
+	}
+	
+	public void setPassword(String password){
+		this.password = password;
+	}
+	
+	public String getPassword(){
+		return this.password;
 	}
 	
 	public void setBirthDate(Date birthDate){

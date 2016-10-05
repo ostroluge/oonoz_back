@@ -1,4 +1,4 @@
-package oonoz.back.services.impl;
+package oonoz.manager.impl;
 
 import java.util.Collection;
 
@@ -6,12 +6,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import oonoz.back.domain.Player;
-import oonoz.back.repositories.PlayerRepository;
-import oonoz.back.services.PlayerService;
+import oonoz.domain.Player;
+import oonoz.manager.PlayerManager;
+import oonoz.repository.PlayerRepository;
 
-@Service(value = "playerService")
-public class PlayerServiceImpl implements PlayerService{
+@Service(value = "playerManager")
+public class PlayerManagerImpl implements PlayerManager{
 
 	@Resource
 	private PlayerRepository playerRepository;

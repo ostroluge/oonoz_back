@@ -1,10 +1,10 @@
-package oonoz.back.services;
+package oonoz.manager;
 
 import java.util.Collection;
 
-import oonoz.back.domain.Supplier;
+import oonoz.domain.Supplier;
 
-public interface SupplierService {
+public interface SupplierManager {
 
 	Collection<Supplier> getAllSupplier();
 
