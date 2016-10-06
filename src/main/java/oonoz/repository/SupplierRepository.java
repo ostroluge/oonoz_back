@@ -1,10 +1,10 @@
-package oonoz.back.repositories;
+package oonoz.repository;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import oonoz.back.domain.Supplier;
+import oonoz.domain.Supplier;
 
 public interface SupplierRepository extends CrudRepository<Supplier, Long>{
 
