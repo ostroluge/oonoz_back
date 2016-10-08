@@ -1,12 +1,14 @@
 package oonoz.repository;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
 import oonoz.domain.Supplier;
 
-public interface SupplierRepository extends CrudRepository<Supplier, Long>{
+/**
+ * The Interface SupplierRepository.
+ * 
+ * Description : Manage database access about Supplier entity
+ */
+public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
-	List<Supplier> findAll();
 }

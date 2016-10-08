@@ -10,13 +10,21 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+
 /**
- * Created by vincent on 13/04/16.
+ * The Class SecurityConfig.
+ * 
+ * Description :
+ * 		Configuration class for Spring Security framework.
+ * 		Handle access to the different REST service.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /* (non-Javadoc)
+     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
+     */
     protected void configure(HttpSecurity http) throws Exception {
         http
                 /*.authorizeRequests()
@@ -31,8 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();*/
         
 		        .authorizeRequests()
-		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()		    
-		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("ADMIN").and()		    
+		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()	
+		        .antMatchers(HttpMethod.POST, "/user/signupPlayer").permitAll()
+		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("ADMIN").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
 		        .httpBasic();
@@ -49,9 +58,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        http.csrf().disable();
     }
 
+    /** The data source. */
     @Autowired
     DataSource dataSource;
 
+    /* (non-Javadoc)
+     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -66,10 +79,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "select username, role from authorities where username=?");
     }
 
+    /**
+     * Gets the data source.
+     *
+     * @return the data source
+     */
     public DataSource getDataSource() {
         return dataSource;
     }
 
+    /**
+     * Sets the data source.
+     *
+     * @param dataSource the new data source
+     */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }

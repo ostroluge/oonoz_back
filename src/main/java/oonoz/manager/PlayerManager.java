@@ -1,11 +1,13 @@
 package oonoz.manager;
 
-import java.util.Collection;
-
-import oonoz.domain.Player;
-
+/**
+ * The Interface PlayerManager.
+ * 
+ * Description :
+ * 		Manage the different technical operations about Player entity.
+ */
 public interface PlayerManager {
 
-	Collection<Player> getAllPlayer();
+	
 
 }

@@ -1,11 +1,12 @@
 package oonoz.manager;
 
-import java.util.Collection;
-
-import oonoz.domain.Admin;
-
+/**
+ * The Interface AdminManager.
+ * 
+ * Description :
+ * 		Manage the different technical operations about Admin entity.
+ */
 public interface AdminManager {
 
-	Collection<Admin> getAllAdmin();
 	
 }

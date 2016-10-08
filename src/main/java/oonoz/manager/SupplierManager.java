@@ -1,11 +1,12 @@
 package oonoz.manager;
 
-import java.util.Collection;
-
-import oonoz.domain.Supplier;
-
+/**
+ * The Interface SupplierManager.
+ * 
+ * Description :
+ * 		Manage the different technical operations about Supplier entity.
+ */
 public interface SupplierManager {
 
-	Collection<Supplier> getAllSupplier();
 
 }
