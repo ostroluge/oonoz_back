@@ -29,7 +29,6 @@ public class OonozApplication {
 	@Value("${spring.datasource.password}")
 	private String dataSourcePassword;
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(OonozApplication.class, args);
 	}

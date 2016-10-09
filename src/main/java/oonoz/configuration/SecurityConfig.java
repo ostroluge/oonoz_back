@@ -22,6 +22,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /** The data source. */
+    @Autowired
+    DataSource dataSource;
+
     /* (non-Javadoc)
      * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
      */
@@ -57,10 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
        http.csrf().disable();
     }
-
-    /** The data source. */
-    @Autowired
-    DataSource dataSource;
 
     /* (non-Javadoc)
      * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)

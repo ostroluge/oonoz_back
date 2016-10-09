@@ -72,7 +72,7 @@ public class UserController {
 	@RequestMapping(value = "/signupPlayer", method = RequestMethod.POST)
     public ResponseEntity<String> signupPlayer(@RequestBody PlayerDto playerDto) {
 		
-		Player player=playerDtoConverter.convertToEntity(playerDto);
+		Player player = playerDtoConverter.convertToEntity(playerDto);
 		try {
 			playerService.signUp(player);
 		} catch (WrongInformationException e) {
