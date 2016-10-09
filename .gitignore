@@ -49,3 +49,6 @@ src/main/resources/application.properties
 *.jar
 *.war
 *.ear
+
+### Application files ###
+src/main/resources/application.properties
