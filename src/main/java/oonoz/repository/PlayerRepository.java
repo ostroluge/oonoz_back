@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import oonoz.domain.Player;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface PlayerRepository.
  * 
@@ -24,4 +25,13 @@ public interface PlayerRepository extends CrudRepository<Player, Long>{
 	 * @return the list
 	 */
 	List<Player> findByUsernameOrMail(String username,String mail);
+	
+	
+	/**
+	 * Find by mail.
+	 *
+	 * @param mail the mail
+	 * @return the player
+	 */
+	Player findByMail(String mail);
 }

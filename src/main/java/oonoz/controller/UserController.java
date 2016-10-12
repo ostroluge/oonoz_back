@@ -1,5 +1,6 @@
 package oonoz.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,12 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import oonoz.domain.Player;
 import oonoz.dto.converter.PlayerDtoConverter;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 
@@ -74,15 +77,42 @@ public class UserController {
 		
 		Player player = playerDtoConverter.convertToEntity(playerDto);
 		try {
-			playerService.signUp(player);
+			this.playerService.signUp(player);
 		} catch (WrongInformationException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
+		} catch (MessagingException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		 return new ResponseEntity<>("", HttpStatus.OK);
 	}
+	
+	/**
+     * Rest service receiving a email and a token.
+     * If the token is right I will activate the account of the user matching the mail.
+     * @param mail The email of the user to activate.
+     * @param hash The token to verify the link.
+     * @return A response containing a string with the answer.
+     */
+    @RequestMapping(value = "/validationMail", method = RequestMethod.GET)
+    public ResponseEntity<String> validationMail(@RequestParam(value = "mail", defaultValue = "") String mail, @RequestParam(value = "cle", defaultValue = "0") String hash) {
+
+        try {
+        	playerService.validationMail(mail,hash);
+        } catch (PlayerNotExistException e) {
+        	logger.error(e.getMessage());
+            return new ResponseEntity<>("The player with this mail does not exist !", HttpStatus.BAD_REQUEST);
+        } catch (WrongInformationException e) {
+        	logger.error(e.getMessage());
+        	return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+        
+        return new ResponseEntity<>("", HttpStatus.OK);
+
+    }
 
 }

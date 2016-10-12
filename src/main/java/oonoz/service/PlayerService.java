@@ -4,13 +4,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import oonoz.domain.Player;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.PlayerManagerImpl;
+import oonoz.util.MailService;
 
 
 /**
@@ -23,8 +27,12 @@ import oonoz.manager.impl.PlayerManagerImpl;
 public class PlayerService {
 
 	
+	/** The player manager. */
 	@Autowired
 	private PlayerManagerImpl playerManager;
+	
+	@Autowired
+	private MailService mailService;
 
 	/** The Constant REGEXPASSWORD. */
 	protected final static String REGEXPASSWORD = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
@@ -41,8 +49,9 @@ public class PlayerService {
 	 *             If one of the information about the player is wrong.
 	 * @throws PlayerAlreadyExistException
 	 *             If the player which is signing-up already exist.
+	 * @throws MessagingException 
 	 */
-	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException {
+	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
 		checkUsername(player.getUsername());
 		checkPassword(player.getPassword());
@@ -53,6 +62,43 @@ public class PlayerService {
 		player.setIsActive(false);
 
 		playerManager.create(player);
+		mailService.sendValidationMail(player);
+		
+	}
+	
+	
+	/**
+	 * Validate mail of the new signed-up player.
+	 *
+	 * @param mail the mail
+	 * @param hash the hash
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws WrongInformationException 
+	 */
+	public void validationMail(String mail,String hash) throws PlayerNotExistException, WrongInformationException{
+		
+		 if (mail.hashCode() == Integer.valueOf(hash)) {
+            Player player=playerManager.findByMail(mail);
+            player.setIsActive(true);
+            playerManager.update(player);
+         }
+		 else{
+			 throw new WrongInformationException("The key and the mail does not correspond !");
+		 }
+			 
+	}
+	
+	//TODO use spring security authentication principal
+	public void updatePlayer(Player player) throws WrongInformationException{
+		
+		checkUsername(player.getUsername());
+		checkPassword(player.getPassword());
+		checkMail(player.getMail());
+		checkLastName(player.getLastName());
+		checkFirstName(player.getFirstName());
+		checkBirthDate(player.getBirthDate());
+		
+		playerManager.update(player);
 	}
 
 	/**
