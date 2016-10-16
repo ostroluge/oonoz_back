@@ -40,7 +40,7 @@ buildNumber.properties
 
 ### Spring Boot ###
 
-src/main/resources/application.properties
+src/main/resources/dev/config.properties
 
 ### Java ###
 *.class
