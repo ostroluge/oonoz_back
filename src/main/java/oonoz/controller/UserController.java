@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import oonoz.domain.Player;
+import oonoz.domain.Supplier;
 import oonoz.dto.converter.PlayerDtoConverter;
+import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
+import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
+import oonoz.service.SupplierService;
 
 
 /**
@@ -41,9 +45,16 @@ public class UserController {
 	@Autowired
 	private PlayerService playerService;
 	
+	@Autowired
+	private SupplierService supplierService;
+	
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
+	
+	@Autowired
+	private SupplierDtoConverter supplierDtoConverter;
+	
 	
 	/**
 	 * Authenticate users.
@@ -70,6 +81,7 @@ public class UserController {
 	 * Signup player.
 	 *
 	 * @param playerDto the player dto
+	 * 		The light representation of the player entity
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/signupPlayer", method = RequestMethod.POST)
@@ -78,6 +90,32 @@ public class UserController {
 		Player player = playerDtoConverter.convertToEntity(playerDto);
 		try {
 			this.playerService.signUp(player);
+		} catch (WrongInformationException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
+		} catch (PlayerAlreadyExistException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
+		} catch (MessagingException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		 return new ResponseEntity<>("", HttpStatus.OK);
+	}
+	
+	/**
+	 * Signup supplier.
+	 *
+	 * @param supplierDto the supplier dto
+	 * 		The light representation of the supplier entity
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/signupSupplier", method = RequestMethod.POST)
+    public ResponseEntity<String> signupSupplier(@RequestBody SupplierDto supplierDto) {
+		
+		Supplier supplier = supplierDtoConverter.convertToEntity(supplierDto);
+		try {
+			this.supplierService.signUp(supplier);
 		} catch (WrongInformationException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
