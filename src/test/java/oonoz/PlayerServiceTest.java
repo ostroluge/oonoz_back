@@ -23,7 +23,7 @@ import oonoz.service.PlayerService;
  * 		Test the methods of the PlayerService.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes=OonozApplication.class)
 public class PlayerServiceTest {
 
 	
