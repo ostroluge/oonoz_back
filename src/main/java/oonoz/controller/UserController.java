@@ -84,7 +84,7 @@ public class UserController {
 	 * 		The light representation of the player entity
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/signupPlayer", method = RequestMethod.POST)
+	@RequestMapping(value = "/signUpPlayer", method = RequestMethod.POST)
     public ResponseEntity<String> signupPlayer(@RequestBody PlayerDto playerDto) {
 		
 		Player player = playerDtoConverter.convertToEntity(playerDto);
@@ -110,7 +110,7 @@ public class UserController {
 	 * 		The light representation of the supplier entity
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/signupSupplier", method = RequestMethod.POST)
+	@RequestMapping(value = "/signUpSupplier", method = RequestMethod.POST)
     public ResponseEntity<String> signupSupplier(@RequestBody SupplierDto supplierDto) {
 		
 		Supplier supplier = supplierDtoConverter.convertToEntity(supplierDto);
@@ -141,6 +141,30 @@ public class UserController {
 
         try {
         	playerService.validationMail(mail,hash);
+        } catch (PlayerNotExistException e) {
+        	logger.error(e.getMessage());
+            return new ResponseEntity<>("The player with this mail does not exist !", HttpStatus.BAD_REQUEST);
+        } catch (WrongInformationException e) {
+        	logger.error(e.getMessage());
+        	return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+        
+        return new ResponseEntity<>("", HttpStatus.OK);
+
+    }
+    
+    /**
+     * Rest service receiving a email and a token.
+     * If the token is right I will activate the account of the user matching the mail.
+     * @param mail The email of the user to activate.
+     * @param hash The token to verify the link.
+     * @return A response containing a string with the answer.
+     */
+    @RequestMapping(value = "/generatePassword", method = RequestMethod.POST)
+    public ResponseEntity<String> generatePassword(@RequestBody String mail) {
+
+        try {
+        	playerService.generatePassword(mail);
         } catch (PlayerNotExistException e) {
         	logger.error(e.getMessage());
             return new ResponseEntity<>("The player with this mail does not exist !", HttpStatus.BAD_REQUEST);

@@ -98,6 +98,13 @@ public class PlayerService {
 		
 		playerManager.update(player);
 	}
+	
+	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException{
+		
+		checkUserInformation.checkMail(mail);
+		Player player=playerManager.findByMail(mail);
+		
+	}
 
 	
 
