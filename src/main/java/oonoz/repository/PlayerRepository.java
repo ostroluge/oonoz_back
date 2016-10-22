@@ -47,6 +47,6 @@ public interface PlayerRepository extends CrudRepository<Player, Long>{
 	 */
     @Transactional
     @Modifying
-    @Query(value="insert into AUTHORITIES (id_player,username,role) values(?1,?2,'ROLE_SUPPLIER')",nativeQuery = true)
+    @Query(value="insert into AUTHORITIES (id_player,username,role) values(?1,?2,'ROLE_PLAYER')",nativeQuery = true)
     void addSupplierRole(long idUser,String username);
 }
