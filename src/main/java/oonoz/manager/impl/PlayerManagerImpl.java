@@ -36,7 +36,8 @@ public class PlayerManagerImpl implements PlayerManager {
 
 		List<Player> players = playerRepository.findByUsernameOrMail(player.getUsername(), player.getMail());
 		if (players.isEmpty()) {
-			playerRepository.save(player);			
+			player=playerRepository.save(player);	
+			playerRepository.addSupplierRole(player.getId(),player.getUsername());
 		} else
 			throw new PlayerAlreadyExistException("The username or mail of " +player.getUsername()+ " already exist !");
 	}

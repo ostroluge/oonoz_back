@@ -2,6 +2,10 @@ package oonoz.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import oonoz.domain.Player;
@@ -34,4 +38,15 @@ public interface PlayerRepository extends CrudRepository<Player, Long>{
 	 * @return the player
 	 */
 	Player findByMail(String mail);
+	
+	/**
+	 * Add a ROLE_SUPPLIER to the player entity.
+	 *
+	 * @param idUser the id user
+	 * @param username the username
+	 */
+    @Transactional
+    @Modifying
+    @Query(value="insert into AUTHORITIES (id_player,username,role) values(?1,?2,'ROLE_SUPPLIER')",nativeQuery = true)
+    void addSupplierRole(long idUser,String username);
 }
