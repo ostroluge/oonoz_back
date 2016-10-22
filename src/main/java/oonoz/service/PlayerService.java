@@ -1,11 +1,10 @@
 package oonoz.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.security.SecureRandom;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,13 +98,31 @@ public class PlayerService {
 		playerManager.update(player);
 	}
 	
-	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException{
+	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException, MessagingException{
 		
 		checkUserInformation.checkMail(mail);
 		Player player=playerManager.findByMail(mail);
+		if(player.isActive()){
+			String password=generateNewPassword();
+			player.setPassword(password);
+			playerManager.update(player);
+			mailService.sendNewGeneratePasswordMail(player);
+		}
 		
 	}
 
-	
+	private String generateNewPassword(){
+		
+		String password = RandomStringUtils.random(9, 0, 0, true, true, null, new SecureRandom());
+		
+		try{
+		checkUserInformation.checkPassword(password);
+		return password;
+		}
+		catch(WrongInformationException e){
+			return generateNewPassword();
+		}
+		
+	}
 
 }

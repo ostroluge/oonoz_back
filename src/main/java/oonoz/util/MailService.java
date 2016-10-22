@@ -17,29 +17,49 @@ import org.springframework.stereotype.Component;
 
 import oonoz.domain.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MailService.
+ * 
+ * Description :
+ */
 @Component
 public class MailService {
 
+	/** The username. */
 	@Value("${oonoz.mail.username}")
 	private String username;
 
+	/** The password. */
 	@Value("${oonoz.mail.password}")
 	private String password;
 
 	/*@Value("${oonoz.mail.ssl.enable}")
 	private boolean sslEnable;*/
 
+	/** The sender. */
 	@Value("${oonoz.mail.sender}")
 	private String sender;
 
+	/** The host. */
 	@Value("${oonoz.host}")
 	private String host;
 
+	/** The port. */
 	@Value("${oonoz.port}")
 	private int port;
 
+	/** The props. */
 	private Properties props;
 
+	/**
+	 * Instantiates a new mail service.
+	 *
+	 * @param hostMail the host mail
+	 * @param portMail the port mail
+	 * @param tlsEnable the tls enable
+	 * @param authEnable the auth enable
+	 */
 	public MailService(@Value("${oonoz.mail.host}") String hostMail, @Value("${oonoz.mail.port}") int portMail,@Value("${oonoz.mail.tls.enable}") boolean tlsEnable, @Value("${oonoz.mail.auth}") String authEnable) {
 
 		this.props = new Properties();
@@ -52,46 +72,44 @@ public class MailService {
 	/**
 	 * I send an email to a user.
 	 *
-	 * @param aUser
-	 *            The user that need to receive the mail.
-	 * @param title
-	 *            the title of the mail.
-	 * @param content
-	 *            The content of the mail.
-	 * @throws MessagingException
-	 *             raised if there is a problem.
+	 * @param player the player
+	 * @throws MessagingException             raised if there is a problem.
 	 */
 	public void sendValidationMail(Player player) throws MessagingException {
 
-		String title = "Validation du compte Oonoz";
+		String title = "Oonoz - Validation du compte";
 
-		Session session = Session.getInstance(this.props, new Authenticator() {
-			protected PasswordAuthentication pa = new PasswordAuthentication(username, password);
-
-			@Override
-			public PasswordAuthentication getPasswordAuthentication() {
-				return pa;
-			}
-		});
+		Session session = this.getSession();
 
 		String content = subscriptionMailContentFor(player);
 		Transport.send(generateMessageFrom(player.getMail(), session, title, content));
+	}
+	
+	
+	/**
+	 * Send new generate password mail.
+	 *
+	 * @param player the player
+	 * @throws MessagingException the messaging exception
+	 */
+	public void sendNewGeneratePasswordMail(Player player) throws MessagingException{
+		String title = "Oonoz - Mot de passe oublié";
+		Session session =  this.getSession();
+
+		String content = generateNewPasswordMailContentFor(player);
+		Transport.send(generateMessageFrom(player.getMail(), session, title, content));
+
 	}
 
 	/**
 	 * I generate a MimeMessage to be send in a mail.
 	 *
-	 * @param aUser
-	 *            The user that need the mail.
-	 * @param session
-	 *            The session.
-	 * @param title
-	 *            The title of the mail.
-	 * @param content
-	 *            The content of the mail.
+	 * @param mailDestination the mail destination
+	 * @param session            The session.
+	 * @param title            The title of the mail.
+	 * @param content            The content of the mail.
 	 * @return The mime message created.
-	 * @throws MessagingException
-	 *             raised if there is a problem.
+	 * @throws MessagingException             raised if there is a problem.
 	 */
 	private MimeMessage generateMessageFrom(String mailDestination, Session session, String title, String content)
 			throws MessagingException {
@@ -104,13 +122,32 @@ public class MailService {
 		message.setText(content);
 		return message;
 	}
+	
+	
+	/**
+	 * Create a session with the SMTP server.
+	 *
+	 * @return the session
+	 */
+	private Session getSession(){
+		
+		Session session = Session.getInstance(this.props, new Authenticator() {
+			protected PasswordAuthentication pa = new PasswordAuthentication(username, password);
+
+			@Override
+			public PasswordAuthentication getPasswordAuthentication() {
+				return pa;
+			}
+		});
+		
+		return session;
+	}
 
 	/**
 	 * I generate a mail for a subscription. This mail will contain a link to
 	 * activate his account.
 	 *
-	 * @param Player
-	 *            The player that subscribe.
+	 * @param player the player
 	 * @return The content of the mail.
 	 */
 	private String subscriptionMailContentFor(Player player) {
@@ -119,6 +156,19 @@ public class MailService {
 				+ "\n" + "http://" + this.host + ":" + this.port + "/user/validationMail?mail="
 				+ player.getMail().toString() + "&cle=" + player.getMail().hashCode() + "\n" + "\n"
 				+ "Si vous n'avez pas demandé cette inscription, veuillez ignorer cet email..\n" + "Merci,\n"
+				+ "L'équipe Oonoz.";
+	}
+	
+	/**
+	 * I generate a mail for a new password. 
+	 *
+	 * @param player the player
+	 * @return The content of the mail.
+	 */
+	private String generateNewPasswordMailContentFor(Player player) {
+		return "Bonjour,\n" + "\n" + "Vous avez fais une demande de mot de passe oublié.\n"
+				+ "Nouveau mot de passe: "+ player.getPassword()+"\n"
+				+ "Si vous n'avez pas demandé un nouveau mot de passe, veuillez le signaler rapidement.\n" + "Merci,\n"
 				+ "L'équipe Oonoz.";
 	}
 

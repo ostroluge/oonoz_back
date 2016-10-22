@@ -161,16 +161,19 @@ public class UserController {
      * @return A response containing a string with the answer.
      */
     @RequestMapping(value = "/generatePassword", method = RequestMethod.POST)
-    public ResponseEntity<String> generatePassword(@RequestBody String mail) {
+    public ResponseEntity<String> generatePassword(@RequestBody PlayerDto playerDto) {
 
         try {
-        	playerService.generatePassword(mail);
+        	playerService.generatePassword(playerDto.getMail());
         } catch (PlayerNotExistException e) {
         	logger.error(e.getMessage());
-            return new ResponseEntity<>("The player with this mail does not exist !", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("", HttpStatus.OK);
         } catch (WrongInformationException e) {
         	logger.error(e.getMessage());
-        	return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        	return new ResponseEntity<>("", HttpStatus.OK);
+		} catch (MessagingException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("A internal error occurs !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
         
         return new ResponseEntity<>("", HttpStatus.OK);
