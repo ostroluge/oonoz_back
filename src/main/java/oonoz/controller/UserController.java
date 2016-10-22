@@ -26,6 +26,7 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.SupplierService;
+import oonoz.util.StringResponse;
 
 
 /**
@@ -85,22 +86,35 @@ public class UserController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/signUpPlayer", method = RequestMethod.POST)
-    public ResponseEntity<String> signupPlayer(@RequestBody PlayerDto playerDto) {
+    public ResponseEntity<StringResponse> signupPlayer(@RequestBody PlayerDto playerDto) {
 		
 		Player player = playerDtoConverter.convertToEntity(playerDto);
+		StringResponse response = new StringResponse();
 		try {
 			this.playerService.signUp(player);
 		} catch (WrongInformationException e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
+			response.setResponse("The information of sign-up are not valid !");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(response);
+//			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
+			response.setResponse("The player already exists !");
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(response);
+//			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
 		} catch (MessagingException e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
+			response.setResponse("A error occurs when sending validation mail !");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(response);
+//			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		 return new ResponseEntity<>("", HttpStatus.OK);
+		response.setResponse("Player created !");
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(response);
+//		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 	
 	/**
@@ -121,7 +135,7 @@ public class UserController {
 			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("The player already exist !", HttpStatus.CONFLICT);
 		} catch (MessagingException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
