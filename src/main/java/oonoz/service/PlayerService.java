@@ -154,8 +154,10 @@ public class PlayerService {
 		Player player=playerManager.findByMail(mail);
 		checkUserInformation.checkIsActive(player.isActive());
 		String password=generateNewPassword();
-		player.setPassword(password);
+		String hashPassword=hashPassword(password);
+		player.setPassword(hashPassword);
 		playerManager.update(player);
+		player.setPassword(password);
 		mailService.sendNewGeneratePasswordMail(player);	
 	}
 
