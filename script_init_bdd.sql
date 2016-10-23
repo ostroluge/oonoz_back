@@ -11,7 +11,7 @@ id BIGSERIAL PRIMARY KEY,
 firstname varchar(20) NOT NULL,
 lastname varchar(20) NOT NULL,
 mail varchar(50) NOT NULL unique,
-password varchar(24) NOT NULL,
+password varchar(100) NOT NULL,
 username varchar(20) NOT NULL unique,
 birthdate date NOT NULL,
 is_active boolean NOT NULL

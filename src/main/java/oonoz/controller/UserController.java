@@ -151,7 +151,7 @@ public class UserController {
      * @return A response containing a string with the answer.
      */
     @RequestMapping(value = "/validationMail", method = RequestMethod.GET)
-    public ResponseEntity<String> validationMail(@RequestParam(value = "mail", defaultValue = "") String mail, @RequestParam(value = "cle", defaultValue = "0") String hash) {
+    public ResponseEntity<String> validationMail(@RequestParam(value = "mail", defaultValue = "") String mail, @RequestParam(value = "key", defaultValue = "0") String hash) {
 
         try {
         	playerService.validationMail(mail,hash);

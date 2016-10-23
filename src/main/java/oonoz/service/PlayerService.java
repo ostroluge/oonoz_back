@@ -1,8 +1,13 @@
 package oonoz.service;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.mail.MessagingException;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,7 @@ public class PlayerService {
 	@Autowired
 	private PlayerManagerImpl playerManager;
 	
+		
 	@Autowired
 	private MailService mailService;
 
@@ -47,6 +53,7 @@ public class PlayerService {
 	 * @throws PlayerAlreadyExistException
 	 *             If the player which is signing-up already exist.
 	 * @throws MessagingException 
+	 * @throws UnsupportedEncodingException 
 	 */
 	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
@@ -58,9 +65,39 @@ public class PlayerService {
 		checkUserInformation.checkBirthDate(player.getBirthDate());
 		player.setIsActive(false);
 
-		playerManager.create(player);
-		mailService.sendValidationMail(player);
+		String hashPassword=hashPassword(player.getPassword());
+		if(hashPassword!=null){
+			player.setPassword(hashPassword);
+			playerManager.create(player);
+			mailService.sendValidationMail(player);
+		}
+		else{
+			throw new WrongInformationException("Password invalid");
+		}
+	}
+	
+	/**
+	 * Hash the user password with sha-256 algorithm.
+	 * @param password
+	 * 		the user password 
+	 * @return
+	 * 		the hash user password
+	 */
+	private String hashPassword(String password){
 		
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-256");
+			byte[] hash=messageDigest.digest(password.getBytes("UTF-8"));			
+			String hashPassword=DatatypeConverter.printHexBinary(hash).toLowerCase();
+			return hashPassword;
+			
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	
