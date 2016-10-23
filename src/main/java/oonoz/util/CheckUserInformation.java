@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
+import oonoz.exception.PlayerNotActiveException;
 import oonoz.exception.WrongInformationException;
 
 
@@ -107,12 +108,26 @@ public class CheckUserInformation {
 	 * @param isActive the is active
 	 * @throws WrongInformationException             raised if the information is not valid.
 	 */
-	public void checkIsActive(boolean isActive) throws WrongInformationException {
+	public void checkIsNotActive(boolean isActive) throws WrongInformationException {
 
 		if (isActive) {
 			throw new WrongInformationException("A new player can not be active on sign-up !");
 		}
 	}
+	
+	/**
+	 * I check that the user birth date is valid.
+	 *
+	 * @param isActive the is active
+	 * @throws WrongInformationException             raised if the information is not valid.
+	 */
+	public void checkIsActive(boolean isActive) throws PlayerNotActiveException {
+
+		if (!isActive) {
+			throw new PlayerNotActiveException("The player is not active !");
+		}
+	}
+	
 	
 	public void checkSupplierIsValid(boolean isActive) throws WrongInformationException {
 

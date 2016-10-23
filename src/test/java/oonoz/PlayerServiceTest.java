@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import oonoz.domain.Player;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotActiveException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.util.MailService;
@@ -107,12 +109,10 @@ public class PlayerServiceTest {
 	}
 	
 	/**
-	 * Test if the service throw a WrongInformationException when the mail is
-	 * not valid.
+	 * Test the send validation mail service.
 	 * @throws MessagingException 
 	 *
-	 * @throws WrongInformationException the wrong information exception
-	 * @throws PlayerAlreadyExistException the player already exist exception
+	 * @throws MessagingException if a error occurs with smtp server.
 	 */
 	@Test
 	public void sendValidationMail() throws MessagingException  {
@@ -121,8 +121,16 @@ public class PlayerServiceTest {
 
 	}
 	
-	/*@Test(expected = WrongInformationException.class)
-	public void updatePlayerNotExist(){
-		
-	}*/
+	/**
+	 * Test if the generationPassword function throw an exception with no active user.
+	 * 
+	 * @throws WrongInformationException the wrong information exception
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws MessagingException the messaging exception
+	 * @throws PlayerNotActiveException the player not active exception
+	 */
+	@Test(expected = PlayerNotActiveException.class)
+	public void generateNewPasswordWithNoActiveUser() throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException{
+		playerService.generatePassword("brad.pitt@mail.com");
+	}
 }

@@ -22,6 +22,7 @@ import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotActiveException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
@@ -188,6 +189,9 @@ public class UserController {
 		} catch (MessagingException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("A internal error occurs !", HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (PlayerNotActiveException e) {
+			logger.error(e.getMessage());
+        	return new ResponseEntity<>("", HttpStatus.OK);
 		}
         
         return new ResponseEntity<>("", HttpStatus.OK);
