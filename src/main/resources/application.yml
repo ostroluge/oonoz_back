@@ -4,3 +4,5 @@ spring:
     url: "@datasource.url@"
     username: "@datasource.username@"
     password: "@datasource.password@"
+server:
+  port: "@server.port@"

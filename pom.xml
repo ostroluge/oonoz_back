@@ -6,8 +6,7 @@
 	<groupId>oonoz.back</groupId>
 	<artifactId>Oonoz</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
-
+	<packaging>war</packaging>
 	<name>Oonoz</name>
 	<description>Project Oonoz</description>
 
@@ -43,7 +42,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+	        <dependency>
+        	        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-tomcat</artifactId>
+                        <scope>provided</scope>
+      	        </dependency>	
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -69,7 +72,19 @@
     </profiles>
 
     <build>
-        <finalName>maven-properties-filtering</finalName>
+    	<plugins>
+			<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
         <filters>
             <filter>src/main/resources/${build.profile.id}/config.properties</filter>
         </filters>
