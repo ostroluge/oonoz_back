@@ -175,7 +175,7 @@ public class PlayerDto {
 	 *
 	 * @param isActive the new active
 	 */
-	public void setActive(boolean isActive) {
+	public void setIsActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 	

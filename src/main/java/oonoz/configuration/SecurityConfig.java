@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    /** The data source. */
+    @Autowired
+    DataSource dataSource;
 
     /* (non-Javadoc)
      * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
@@ -40,8 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         
 		        .authorizeRequests()
 		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()	
-		        .antMatchers(HttpMethod.POST, "/user/signupPlayer").permitAll()
-		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("ADMIN").and()		        
+		        .antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
+		        .antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
+		        .antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
+		        .antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
+		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
 		        .httpBasic();
@@ -58,10 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        http.csrf().disable();
     }
 
-    /** The data source. */
-    @Autowired
-    DataSource dataSource;
-
     /* (non-Javadoc)
      * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
      */
@@ -70,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throws Exception {
         auth
                 .jdbcAuthentication()
+                .passwordEncoder(new ShaPasswordEncoder(256))
                 .dataSource(dataSource)
                 .usersByUsernameQuery(
                         "select username , password, is_active as enabled " +

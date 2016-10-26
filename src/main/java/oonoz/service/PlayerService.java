@@ -1,17 +1,25 @@
 package oonoz.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
+import javax.mail.MessagingException;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import oonoz.domain.Player;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotActiveException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.PlayerManagerImpl;
-
+import oonoz.util.CheckUserInformation;
+import oonoz.util.MailService;
 
 /**
  * The Class PlayerService.
@@ -23,149 +31,153 @@ import oonoz.manager.impl.PlayerManagerImpl;
 public class PlayerService {
 
 	
+	/** The player manager. */
 	@Autowired
 	private PlayerManagerImpl playerManager;
-
-	/** The Constant REGEXPASSWORD. */
-	protected final static String REGEXPASSWORD = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
 	
-	/** The Constant REGEXMAIL. */
-	protected final static String REGEXMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		
+	/** The mail service. */
+	@Autowired
+	private MailService mailService;
+
+	/** The check user information. */
+	@Autowired
+	private CheckUserInformation checkUserInformation;
 
 	/**
 	 * Sign-up a new player.
-	 * 
-	 * @param player
-	 *            Contains player's information
-	 * @throws WrongInformationException
-	 *             If one of the information about the player is wrong.
-	 * @throws PlayerAlreadyExistException
-	 *             If the player which is signing-up already exist.
+	 *
+	 * @param player            Contains player's information
+	 * @throws WrongInformationException             If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException             If the player which is signing-up already exist.
+	 * @throws MessagingException the messaging exception
 	 */
-	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException {
+	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
-		checkUsername(player.getUsername());
-		checkPassword(player.getPassword());
-		checkMail(player.getMail());
-		checkLastName(player.getLastName());
-		checkFirstName(player.getFirstName());
-		checkBirthDate(player.getBirthDate());
+		checkUserInformation.checkUsername(player.getUsername());
+		checkUserInformation.checkPassword(player.getPassword());
+		checkUserInformation.checkMail(player.getMail());
+		checkUserInformation.checkLastName(player.getLastName());
+		checkUserInformation.checkFirstName(player.getFirstName());
+		checkUserInformation.checkBirthDate(player.getBirthDate());
 		player.setIsActive(false);
 
-		playerManager.create(player);
-	}
-
-	/**
-	 * I check that the user pseudo is valid.
-	 *
-	 * @param pseudo
-	 *            The pseudo of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkUsername(String pseudo) throws WrongInformationException {
-		if (pseudo == null || pseudo.length() < 4 || pseudo.length() > 20) {
-			throw new WrongInformationException("The pseudo is invalid !");
+		String hashPassword=hashPassword(player.getPassword());
+		if(hashPassword!=null){
+			player.setPassword(hashPassword);
+			playerManager.create(player);
+			mailService.sendValidationMail(player);
 		}
-	}
-
-	/**
-	 * I check that the user password is valid.
-	 *
-	 * @param password
-	 *            The password of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkPassword(String password) throws WrongInformationException {
-		if (password == null || !password.matches(PlayerService.REGEXPASSWORD)) {
-			throw new WrongInformationException("The password is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user mail is valid.
-	 *
-	 * @param mail
-	 *            The mail of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkMail(String mail) throws WrongInformationException {
-		if (mail == null || !mail.matches(PlayerService.REGEXMAIL)) {
-			throw new WrongInformationException("The mail is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user name is valid.
-	 *
-	 * @param name
-	 *            The name of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkLastName(String name) throws WrongInformationException {
-		if (name == null || name.length() < 3 || name.length() > 40) {
-			throw new WrongInformationException("The lastname is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user first name is valid.
-	 *
-	 * @param firstName
-	 *            The first name of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkFirstName(String firstName) throws WrongInformationException {
-		if (firstName == null || firstName.length() < 3 || firstName.length() > 40) {
-			throw new WrongInformationException("The firstname is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user birth date is valid.
-	 *
-	 * @param birthDate the birth date
-	 * @throws WrongInformationException             raised if the information is not valid.
-	 */
-	private void checkBirthDate(Date birthDate) throws WrongInformationException {
-
-		if (birthDate == null) {
-			throw new WrongInformationException("The birthDate  is invalid !");
+		else{
+			throw new WrongInformationException("Password invalid");
 		}
 	}
 	
 	/**
-	 * I check that the user birth date is valid.
-	 *
-	 * @param isActive the is active
-	 * @throws WrongInformationException             raised if the information is not valid.
+	 * Hash the user password with sha-256 algorithm.
+	 * @param password
+	 * 		the user password 
+	 * @return
+	 * 		the hash user password
 	 */
-	private void checkIsActive(boolean isActive) throws WrongInformationException {
-
-		if (isActive) {
-			throw new WrongInformationException("A new player can not be active on sign-up !");
+	private String hashPassword(String password){
+		
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-256");
+			byte[] hash=messageDigest.digest(password.getBytes("UTF-8"));			
+			String hashPassword=DatatypeConverter.printHexBinary(hash).toLowerCase();
+			return hashPassword;
+			
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			
+			e.printStackTrace();
 		}
+		
+		return null;
+	}
+	
+	
+	/**
+	 * Validate mail of the new signed-up player.
+	 *
+	 * @param mail the mail
+	 * @param hash the hash
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws WrongInformationException the wrong information exception
+	 */
+	public void validationMail(String mail,String hash) throws PlayerNotExistException, WrongInformationException{
+		
+		 if (mail.hashCode() == Integer.valueOf(hash)) {
+            Player player=playerManager.findByMail(mail);
+            player.setIsActive(true);
+            playerManager.update(player);
+         }
+		 else{
+			 throw new WrongInformationException("The key and the mail does not correspond !");
+		 }
+			 
+	}
+	
+	/**
+	 * Update player.
+	 *
+	 * @param player the player
+	 * @throws WrongInformationException the wrong information exception
+	 */
+	//TODO use spring security authentication principal
+	public void updatePlayer(Player player) throws WrongInformationException{
+		
+		checkUserInformation.checkUsername(player.getUsername());
+		checkUserInformation.checkPassword(player.getPassword());
+		checkUserInformation.checkMail(player.getMail());
+		checkUserInformation.checkLastName(player.getLastName());
+		checkUserInformation.checkFirstName(player.getFirstName());
+		checkUserInformation.checkBirthDate(player.getBirthDate());
+		
+		playerManager.update(player);
+	}
+	
+	
+	/**
+	 * Generate password.
+	 *
+	 * @param mail the mail
+	 * @throws WrongInformationException the wrong information exception
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws MessagingException the messaging exception
+	 * @throws PlayerNotActiveException the player not active exception
+	 */
+	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException{
+		
+		checkUserInformation.checkMail(mail);
+		Player player=playerManager.findByMail(mail);
+		checkUserInformation.checkIsActive(player.isActive());
+		String password=generateNewPassword();
+		String hashPassword=hashPassword(password);
+		player.setPassword(hashPassword);
+		playerManager.update(player);
+		player.setPassword(password);
+		mailService.sendNewGeneratePasswordMail(player);	
 	}
 
 	/**
-	 * I check if the date format is correct.
-	 *
-	 * @param date the date
-	 * @return 		true if the format is correct, false if not.
+	 * Generation a new password with CheckUserInformation.REGEXPASSWORD constraints
+	 * @return
+	 * 		the new generated password.
 	 */
-	private boolean isValidDate(String date) {
-
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			format.parse(date);
-			return true;
-		} catch (ParseException e) {
-			return false;
+	private String generateNewPassword(){
+		
+		String password = RandomStringUtils.random(9, 0, 0, true, true, null, new SecureRandom());
+		
+		try{
+		checkUserInformation.checkPassword(password);
+		return password;
 		}
+		catch(WrongInformationException e){
+			return generateNewPassword();
+		}
+		
 	}
 
 }

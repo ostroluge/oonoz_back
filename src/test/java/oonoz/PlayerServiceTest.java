@@ -3,6 +3,8 @@ package oonoz;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.mail.MessagingException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +14,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import oonoz.domain.Player;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotActiveException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
+import oonoz.util.MailService;
 
 
 /**
@@ -29,6 +34,9 @@ public class PlayerServiceTest {
 	
 	@Autowired
 	private PlayerService playerService;
+	
+	@Autowired
+	private MailService mailService;
 
 	
 	private Player player;
@@ -41,7 +49,7 @@ public class PlayerServiceTest {
 	@Before
 	public void init() throws ParseException {
 		player = new Player();
-		player.setMail("margerin.vincent@papamail.com");
+		player.setMail("vincentmargerin59@gmail.com");
 		player.setUsername("ElPadre");
 		player.setFirstName("Vincent");
 		player.setLastName("Margerin");
@@ -56,10 +64,11 @@ public class PlayerServiceTest {
 	 *
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws PlayerAlreadyExistException the player already exist exception
+	 * @throws MessagingException 
 	 * @throws ParseException the parse exception
 	 */
 	@Test(expected = PlayerAlreadyExistException.class)
-	public void signUpPlayerExist() throws WrongInformationException, PlayerAlreadyExistException, ParseException {
+	public void signUpPlayerExist() throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
 		playerService.signUp(player);
 
@@ -71,9 +80,10 @@ public class PlayerServiceTest {
 	 *
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws PlayerAlreadyExistException the player already exist exception
+	 * @throws MessagingException 
 	 */
 	@Test(expected = WrongInformationException.class)
-	public void signUpPlayerWithBadPassword() throws WrongInformationException, PlayerAlreadyExistException {
+	public void signUpPlayerWithBadPassword() throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
 		player.setPassword("badpwd");
 
@@ -87,13 +97,40 @@ public class PlayerServiceTest {
 	 *
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws PlayerAlreadyExistException the player already exist exception
+	 * @throws MessagingException 
 	 */
 	@Test(expected = WrongInformationException.class)
-	public void signUpPlayerWithBadMail() throws WrongInformationException, PlayerAlreadyExistException {
+	public void signUpPlayerWithBadMail() throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
 		
 		player.setMail("margerin.vincentpapamail.com");
 		playerService.signUp(player);
 
+	}
+	
+	/**
+	 * Test the send validation mail service.
+	 * @throws MessagingException 
+	 *
+	 * @throws MessagingException if a error occurs with smtp server.
+	 */
+	@Test
+	public void sendValidationMail() throws MessagingException  {
+
+		mailService.sendValidationMail(player);
+
+	}
+	
+	/**
+	 * Test if the generationPassword function throw an exception with no active user.
+	 * 
+	 * @throws WrongInformationException the wrong information exception
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws MessagingException the messaging exception
+	 * @throws PlayerNotActiveException the player not active exception
+	 */
+	@Test(expected = PlayerNotActiveException.class)
+	public void generateNewPasswordWithNoActiveUser() throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException{
+		playerService.generatePassword("brad.pitt@mail.com");
 	}
 }
