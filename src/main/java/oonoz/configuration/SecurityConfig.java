@@ -32,17 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     protected void configure(HttpSecurity http) throws Exception {
         http
-                /*.authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/authenticate").permitAll().and()
-                .antMatchers(HttpMethod.GET, "/user/validation").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/forgotPassword").permitAll()
-                .antMatchers(HttpMethod.POST,"/user/create").permitAll().and()
-                .antMatchers(HttpMethod.GET, "/user/authenticate").permitAll().and()
-                .authorizeRequests()
-                .anyRequest().authenticated().and()
-                .httpBasic();*/
-        
+              
 		        .authorizeRequests()
 		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()	
 		        .antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
@@ -53,15 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
 		        .httpBasic();
-
-        //TODO For now I let everything pass, let's retrain this later
-        /*http .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS,"/event/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/event/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/event/**").permitAll().and()
-                .authorizeRequests()
-                .anyRequest().authenticated().and()
-                .httpBasic();*/
 
        http.csrf().disable();
     }
@@ -82,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 "where username=?")
                 .authoritiesByUsernameQuery(
                 "select username, role from authorities where username=?");
+        
     }
 
     /**

@@ -47,9 +47,9 @@ public class PlayerService {
 	/**
 	 * Sign-up a new player.
 	 *
-	 * @param player            Contains player's information
-	 * @throws WrongInformationException             If one of the information about the player is wrong.
-	 * @throws PlayerAlreadyExistException             If the player which is signing-up already exist.
+	 * @param player Contains player's information
+	 * @throws WrongInformationException  If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException  If the player which is signing-up already exist.
 	 * @throws MessagingException the messaging exception
 	 */
 	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
@@ -62,7 +62,7 @@ public class PlayerService {
 		checkUserInformation.checkBirthDate(player.getBirthDate());
 		player.setIsActive(false);
 
-		String hashPassword=hashPassword(player.getPassword());
+		String hashPassword=checkUserInformation.hashPassword(player.getPassword());
 		if(hashPassword!=null){
 			player.setPassword(hashPassword);
 			playerManager.create(player);
@@ -72,31 +72,6 @@ public class PlayerService {
 			throw new WrongInformationException("Password invalid");
 		}
 	}
-	
-	/**
-	 * Hash the user password with sha-256 algorithm.
-	 * @param password
-	 * 		the user password 
-	 * @return
-	 * 		the hash user password
-	 */
-	private String hashPassword(String password){
-		
-		MessageDigest messageDigest;
-		try {
-			messageDigest = MessageDigest.getInstance("SHA-256");
-			byte[] hash=messageDigest.digest(password.getBytes("UTF-8"));			
-			String hashPassword=DatatypeConverter.printHexBinary(hash).toLowerCase();
-			return hashPassword;
-			
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
 	
 	/**
 	 * Validate mail of the new signed-up player.
@@ -154,7 +129,7 @@ public class PlayerService {
 		Player player=playerManager.findByMail(mail);
 		checkUserInformation.checkIsActive(player.isActive());
 		String password=generateNewPassword();
-		String hashPassword=hashPassword(password);
+		String hashPassword=checkUserInformation.hashPassword(password);
 		player.setPassword(hashPassword);
 		playerManager.update(player);
 		player.setPassword(password);

@@ -1,8 +1,13 @@
 package oonoz.util;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.stereotype.Component;
 
@@ -169,5 +174,29 @@ public class CheckUserInformation {
 		} catch (ParseException e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * Hash the user password with sha-256 algorithm.
+	 * @param password
+	 * 		the user password 
+	 * @return
+	 * 		the hash user password
+	 */
+	public String hashPassword(String password){
+		
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-256");
+			byte[] hash=messageDigest.digest(password.getBytes("UTF-8"));			
+			String hashPassword=DatatypeConverter.printHexBinary(hash).toLowerCase();
+			return hashPassword;
+			
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

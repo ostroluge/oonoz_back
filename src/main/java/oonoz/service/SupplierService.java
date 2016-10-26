@@ -58,8 +58,15 @@ public class SupplierService {
 		supplier.setIsValid(false);
 		supplier.setIsActive(false);
 
-		supplierManager.create(supplier);
-		mailService.sendValidationMail(supplier);
+		String hashPassword=checkUserInformation.hashPassword(supplier.getPassword());
+		if(hashPassword!=null){	
+			supplier.setPassword(hashPassword);
+			supplierManager.create(supplier);
+			mailService.sendValidationMail(supplier);
+		}
+		else{
+			throw new WrongInformationException("Password invalid");
+		}
 		
 	}
 
