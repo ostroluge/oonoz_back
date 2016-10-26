@@ -51,6 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
 		        .antMatchers(HttpMethod.GET, "/terms/player").permitAll()
 		        .antMatchers(HttpMethod.GET, "/terms/supplier").permitAll()
+		        
+		        //TODO 26/10/2016 : unpermit all
+		        .antMatchers(HttpMethod.POST, "/terms/player").permitAll()
+		        .antMatchers(HttpMethod.POST, "/terms/supplier").permitAll()
+		        
 		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
