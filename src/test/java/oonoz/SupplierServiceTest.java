@@ -8,14 +8,17 @@ import javax.mail.MessagingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import oonoz.domain.Supplier;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.WrongInformationException;
+import oonoz.repository.SupplierRepository;
 import oonoz.service.SupplierService;
+import oonoz.util.MailService;
 
 /**
  * The Class PlayerServiceTest.
@@ -24,7 +27,7 @@ import oonoz.service.SupplierService;
  * 		Test the methods of the PlayerService.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = OonozApplication.class)
+@SpringBootTest(classes=OonozApplication.class)
 public class SupplierServiceTest {
 	
 	
@@ -34,7 +37,13 @@ public class SupplierServiceTest {
 	
 	@Autowired
 	private SupplierService supplierService;
+
+	@Mock
+	private SupplierRepository supplierRepository;
 	
+	@Mock
+	private MailService mailService;
+
 	/**
 	 * Inits the a supplier object used by most of the test.
 	 *
@@ -98,7 +107,7 @@ public class SupplierServiceTest {
 		supplier.setUsername("jalzuritro");
 		supplier.setIsPrivateIndividual(false);
 		supplier.setSiretNumber("45569885255236");	
-		supplier.setCompanyAddress("un");
+		supplier.setCompanyAddress("adress");
 		supplier.setCompanyName("I");
 		supplierService.signUp(supplier);		
 	}
