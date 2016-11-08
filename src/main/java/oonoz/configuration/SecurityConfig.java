@@ -49,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
 		        .antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
 		        .antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
+		        .antMatchers(HttpMethod.GET, "/themes").permitAll()
+		        .antMatchers(HttpMethod.POST, "/themes").permitAll()
 		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
