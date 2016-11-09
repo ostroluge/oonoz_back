@@ -49,8 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
 		        .antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
 		        .antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
+		        
+		        //TODO 09/11/16 : permission management
 		        .antMatchers(HttpMethod.GET, "/themes").permitAll()
 		        .antMatchers(HttpMethod.POST, "/themes").permitAll()
+		        .antMatchers(HttpMethod.DELETE, "/themes/{id}").permitAll()
+		        
 		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
+import oonoz.exception.ThemeDoesntExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.ThemeManagerImpl;
 import oonoz.util.CheckThemeInformation;
@@ -48,5 +49,15 @@ public class ThemeService {
 		checkThemeInformation.checkDescription(theme.getDescription());
 	
 		return themeManager.create(theme);
+	}
+
+	/**
+	 * Removes the theme.
+	 *
+	 * @param id the id
+	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 */
+	public void removeTheme(Long id) throws ThemeDoesntExistException {
+		themeManager.remove(id);
 	}
 }

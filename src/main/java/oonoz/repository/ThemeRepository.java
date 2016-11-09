@@ -23,4 +23,12 @@ public interface ThemeRepository extends CrudRepository<Theme, Long> {
 	 * @return the theme
 	 */
 	Theme findByLabel(String label);
+	
+	/**
+	 * Find by id.
+	 *
+	 * @param id the id
+	 * @return the theme
+	 */
+	Theme findByIdTheme(long id);
 }

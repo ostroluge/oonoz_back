@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
+import oonoz.exception.ThemeDoesntExistException;
 import oonoz.manager.ThemeManager;
 import oonoz.repository.ThemeRepository;
 
@@ -31,7 +32,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	}
 
 	/**
-	 * Creates the.
+	 * Creates the theme.
 	 *
 	 * @param theme the theme
 	 */
@@ -43,7 +44,22 @@ public class ThemeManagerImpl implements ThemeManager {
 		} else {
 			throw new ThemeAlreadyExistException("The theme with label " +
 					theme.getLabel() + "already exists");
-		}
+		}	
+	}
+
+	/**
+	 * Removes the theme.
+	 *
+	 * @param id the id
+	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 */
+	public void remove(Long id) throws ThemeDoesntExistException {
 		
+		Theme existingTheme = themeRepository.findByIdTheme(id);
+		if (existingTheme != null) {
+			themeRepository.delete(id);
+		} else {
+			throw new ThemeDoesntExistException("The theme with id " + id + "does not exist");
+		}
 	}
 }
