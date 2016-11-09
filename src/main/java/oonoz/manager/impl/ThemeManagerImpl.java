@@ -27,7 +27,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	 *
 	 * @return the list
 	 */
-	public List<Theme> findAll() {
+	public Iterable<Theme> findAll() {
 		return themeRepository.findAll();
 	}
 
@@ -38,7 +38,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	 */
 	public Theme create(Theme theme) throws ThemeAlreadyExistException {
 		
-		Theme existingTheme = themeRepository.findByLabel(theme.getLabel());
+		Theme existingTheme = themeRepository.findOne(theme.getIdTheme());
 		if (existingTheme == null) {
 			return themeRepository.save(theme);
 		} else {
@@ -55,11 +55,28 @@ public class ThemeManagerImpl implements ThemeManager {
 	 */
 	public void remove(Long id) throws ThemeDoesntExistException {
 		
-		Theme existingTheme = themeRepository.findByIdTheme(id);
+		Theme existingTheme = themeRepository.findOne(id);
 		if (existingTheme != null) {
 			themeRepository.delete(id);
 		} else {
 			throw new ThemeDoesntExistException("The theme with id " + id + "does not exist");
+		}
+	}
+
+	/**
+	 * Update theme.
+	 *
+	 * @param theme the theme
+	 * @return the theme
+	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 */
+	public Theme update(Theme theme) throws ThemeDoesntExistException {
+		
+		Theme existingTheme = themeRepository.findOne(theme.getIdTheme());
+		if (existingTheme != null) {
+			return themeRepository.save(theme);
+		} else {
+			throw new ThemeDoesntExistException("The theme does not exist");
 		}
 	}
 }

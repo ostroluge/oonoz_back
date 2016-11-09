@@ -1,7 +1,5 @@
 package oonoz.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +29,7 @@ public class ThemeService {
 	 *
 	 * @return the list
 	 */
-	public List<Theme> findAll() {
+	public Iterable<Theme> findAll() {
 		return themeManager.findAll();
 	}
 
@@ -59,5 +57,16 @@ public class ThemeService {
 	 */
 	public void removeTheme(Long id) throws ThemeDoesntExistException {
 		themeManager.remove(id);
+	}
+
+	/**
+	 * Update theme.
+	 *
+	 * @param theme the theme
+	 * @return the theme
+	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 */
+	public Theme updateTheme(Theme theme) throws ThemeDoesntExistException {
+		return themeManager.update(theme);
 	}
 }

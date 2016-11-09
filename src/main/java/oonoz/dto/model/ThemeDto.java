@@ -5,6 +5,9 @@ package oonoz.dto.model;
  */
 public class ThemeDto {
 
+	/** The id theme. */
+	private long idTheme;
+	
 	/** The label. */
 	private String label;
 	
@@ -66,5 +69,23 @@ public class ThemeDto {
 	 */
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
+	}
+
+	/**
+	 * Gets the id theme.
+	 *
+	 * @return the id theme
+	 */
+	public long getIdTheme() {
+		return idTheme;
+	}
+
+	/**
+	 * Sets the id theme.
+	 *
+	 * @param idTheme the new id theme
+	 */
+	public void setIdTheme(long idTheme) {
+		this.idTheme = idTheme;
 	}
 }

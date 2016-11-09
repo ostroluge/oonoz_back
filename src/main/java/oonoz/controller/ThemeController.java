@@ -45,8 +45,8 @@ public class ThemeController {
 	 * @return the all themes
 	 */
 	@RequestMapping(value="/themes", method = RequestMethod.GET)
-	public ResponseEntity<List<Theme>> getAllThemes() {
-		List<Theme> themes = themeService.findAll();
+	public ResponseEntity<Iterable<Theme>> getAllThemes() {
+		Iterable<Theme> themes = themeService.findAll();
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(themes);
 	}
@@ -95,5 +95,30 @@ public class ThemeController {
 		response.setResponse("Deletion successful");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(response);
+	}
+	
+	/**
+	 * Update theme.
+	 *
+	 * @param the theme
+	 * @return the updated theme
+	 */
+	@RequestMapping(value = "/themes", method = RequestMethod.PUT)
+	public ResponseEntity<Theme> updateTheme(@RequestBody ThemeDto theme) {
+		Theme themeToUpdate = themeDtoConverter.convertToEntity(theme);
+	
+		if (themeToUpdate != null) {
+			try {
+				Theme result = themeService.updateTheme(themeToUpdate);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(result);
+			} catch (ThemeDoesntExistException e) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
 	}
 }

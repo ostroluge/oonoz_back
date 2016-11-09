@@ -19,6 +19,7 @@ public class ThemeDtoConverter {
 	 */
 	public Theme convertToEntity(ThemeDto themeDto) {
 		Theme theme = new Theme();
+		theme.setIdTheme(themeDto.getIdTheme());
 		theme.setLabel(themeDto.getLabel());
 		theme.setDescription(themeDto.getDescription());
 		theme.setIconUrl(themeDto.getIconUrl());
@@ -33,6 +34,7 @@ public class ThemeDtoConverter {
 	 */
 	public ThemeDto convertToDto(Theme theme) {
 		ThemeDto themeDto = new ThemeDto();
+		themeDto.setIdTheme(theme.getIdTheme());
 		themeDto.setLabel(theme.getLabel());
 		themeDto.setDescription(theme.getDescription());
 		themeDto.setIconUrl(theme.getIconUrl());
