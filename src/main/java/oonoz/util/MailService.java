@@ -49,6 +49,9 @@ public class MailService {
 	/** The props. */
 	private Properties props;
 
+	public MailService(){
+		
+	}
 	/**
 	 * Instantiates a new mail service.
 	 *

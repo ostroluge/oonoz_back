@@ -17,16 +17,17 @@ public class SupplierManagerImpl implements SupplierManager {
 
 	@Resource
 	private SupplierRepository supplierRepository;
-	
+
 	public void create(Supplier supplier) throws PlayerAlreadyExistException{
-		
+
 		List<Player> suppliers = supplierRepository.findByUsernameOrMail(supplier.getUsername(), supplier.getMail());
 		if (suppliers.isEmpty()) {
 			supplierRepository.save(supplier);		
-		} else
+		} else {
 			throw new PlayerAlreadyExistException("The username or mail of " +supplier.getUsername()+ " already exist !");
-		
+		}
+
 	}
-	
-	
+
+
 }
