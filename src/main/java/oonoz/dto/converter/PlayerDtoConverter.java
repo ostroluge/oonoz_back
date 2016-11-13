@@ -44,11 +44,12 @@ public class PlayerDtoConverter {
 	 */
 	public PlayerDto convertToDto(Player player){
 		PlayerDto playerDto = new PlayerDto();
+		playerDto.setIdPlayer(player.getId());
 		playerDto.setLastName(player.getLastName());
 		playerDto.setFirstName(player.getFirstName());
 		playerDto.setMail(player.getMail());
 		playerDto.setUsername(player.getUsername());
-		playerDto.setPassword(player.getPassword());
+		//playerDto.setPassword(player.getPassword());
 		playerDto.setBirthDate(player.getBirthDate());
 		playerDto.setIsActive(player.isActive());
 		return playerDto;

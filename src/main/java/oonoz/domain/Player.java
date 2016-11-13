@@ -60,6 +60,9 @@ public class Player {
 	@Column(unique = false, nullable = false, name="IS_ACTIVE")
 	private Boolean isActive;
 	
+	@Column(unique = false, nullable = false, name="IS_SUPPLIER")
+	private Boolean isSupplier;
+	
 	/**
 	 * Sets the id.
 	 *
@@ -203,4 +206,14 @@ public class Player {
 	public Boolean isActive(){
 		return this.isActive;
 	}
+
+	public Boolean getIsSupplier() {
+		return isSupplier;
+	}
+
+	public void setIsSupplier(Boolean isSupplier) {
+		this.isSupplier = isSupplier;
+	}
+	
+	
 }

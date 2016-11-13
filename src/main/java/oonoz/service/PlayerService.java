@@ -1,24 +1,23 @@
 package oonoz.service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.mail.MessagingException;
-import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import oonoz.domain.Player;
+import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotActiveException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.PlayerManagerImpl;
 import oonoz.util.CheckUserInformation;
+import oonoz.util.FilteredSearch;
 import oonoz.util.MailService;
 
 /**
@@ -154,5 +153,17 @@ public class PlayerService {
 		}
 		
 	}
+	
+	public Page<PlayerDto> filteredSearch(FilteredSearch filteredSearch) throws WrongInformationException{
+				
+		if(filteredSearch.getPageNumber()>=0 && filteredSearch.getPageSize()>=0){
+			return playerManager.findsPageable(filteredSearch);
+		}
+		
+		throw new WrongInformationException("The page number must be greater or equal than zero !");
+		
+	}
+	
+	
 
 }

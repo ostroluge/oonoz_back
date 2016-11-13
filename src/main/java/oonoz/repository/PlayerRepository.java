@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -18,7 +21,7 @@ import oonoz.domain.Player;
  * Description :
  * 		Manage database access about Player entity
  */
-public interface PlayerRepository extends CrudRepository<Player, Long>{
+public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecificationExecutor<Player>{
 
 
 	/**
@@ -49,4 +52,17 @@ public interface PlayerRepository extends CrudRepository<Player, Long>{
     @Modifying
     @Query(value="insert into AUTHORITIES (id_player,username,role) values(?1,?2,'ROLE_PLAYER')",nativeQuery = true)
     void addSupplierRole(long idUser,String username);
+    
+    
+    /**
+     * Find
+     * @param pageable
+     * @return
+     */
+    Page<Player> findByIsSupplierFalse(Pageable pageable);
+    
+    
+    //Page<Player> findAll(Pageable pageable);
+    
+    
 }
