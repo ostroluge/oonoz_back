@@ -1,47 +1,59 @@
 package oonoz.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * The Class Theme.
+ * The Class SubTheme.
  */
 @Entity
-@Table(name = "THEME")
-public class Theme {
+@Table(name = "SUB_THEME")
+public class SubTheme {
 
-	/** The id theme. */
+	/** The id. */
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long id;
+	
+	/** The id theme. */
+	@Column(name = "ID_THEME")
 	private long idTheme;
-
+	
 	/** The label. */
-	@Column(unique = true, nullable = false, name="LABEL")
+	@Column(unique = true, nullable = false, name = "LABEL")
 	private String label;
 	
 	/** The description. */
-	@Column(unique = false, nullable = false, name="DESCRIPTION")
+	@Column(unique = false, nullable = false, name = "DESCRIPTION")
 	private String description;
 	
 	/** The icon url. */
-	@Column(unique = false, nullable = true, name="ICON")
+	@Column(unique = false, nullable = true, name = "ICON")
 	private String iconUrl;
 
-	/** The sub themes. */
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ID_THEME")
-	private List<SubTheme> subThemes;
-	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	/**
 	 * Gets the id theme.
 	 *
@@ -110,34 +122,7 @@ public class Theme {
 	 *
 	 * @param iconUrl the new icon url
 	 */
-	/**
-	 * @param iconUrl
-	 */
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
-	}
-	
-	/**
-	 * Gets the sub themes.
-	 *
-	 * @return the sub themes
-	 */
-	public List<SubTheme> getSubThemes() {
-		return subThemes;
-	}
-
-	/**
-	 * Sets the sub themes.
-	 *
-	 * @param subThemes the new sub themes
-	 */
-	public void setSubThemes(List<SubTheme> subThemes) {
-		this.subThemes = subThemes;
-	}
-
-	@Override
-	public String toString() {
-		return "Theme [idTheme=" + idTheme + ", label=" + label + ", description=" + description + ", iconUrl="
-				+ iconUrl + "]";
 	}
 }

@@ -1,7 +1,5 @@
 package oonoz.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
+import oonoz.dto.converter.SubThemeDtoConverter;
 import oonoz.dto.converter.ThemeDtoConverter;
+import oonoz.dto.model.SubThemeDto;
 import oonoz.dto.model.ThemeDto;
 import oonoz.exception.ThemeAlreadyExistException;
 import oonoz.exception.ThemeDoesntExistException;
 import oonoz.exception.WrongInformationException;
+import oonoz.service.SubThemeService;
 import oonoz.service.ThemeService;
 import oonoz.util.StringResponse;
 
@@ -35,9 +37,17 @@ public class ThemeController {
 	@Autowired
 	ThemeService themeService;
 	
+	/** The sub theme service. */
+	@Autowired
+	SubThemeService subThemeService;
+	
 	/** The theme dto converter. */
 	@Autowired
 	private ThemeDtoConverter themeDtoConverter;
+	
+	/** The sub theme dto converter. */
+	@Autowired
+	private SubThemeDtoConverter subThemeDtoConverter;
 	
 	/**
 	 * Gets the all themes.
@@ -100,7 +110,7 @@ public class ThemeController {
 	/**
 	 * Update theme.
 	 *
-	 * @param the theme
+	 * @param theme the theme
 	 * @return the updated theme
 	 */
 	@RequestMapping(value = "/themes", method = RequestMethod.PUT)
@@ -110,6 +120,32 @@ public class ThemeController {
 		if (themeToUpdate != null) {
 			try {
 				Theme result = themeService.updateTheme(themeToUpdate);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(result);
+			} catch (ThemeDoesntExistException e) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
+	
+	/**
+	 * Post sub theme.
+	 *
+	 * @param idTheme the id theme
+	 * @param subTheme the sub theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/themes/{id}/subthemes", method = RequestMethod.POST)
+	public ResponseEntity<SubTheme> postSubTheme(@PathVariable("id") long idTheme, @RequestBody SubThemeDto subTheme) {
+		SubTheme subThemeToPost = subThemeDtoConverter.convertToEntity(subTheme);
+		
+		if (subThemeToPost != null) {
+			try {
+				SubTheme result = subThemeService.postSubTheme(idTheme, subThemeToPost);
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
 			} catch (ThemeDoesntExistException e) {

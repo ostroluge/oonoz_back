@@ -1,7 +1,5 @@
 package oonoz.manager.impl;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -31,6 +29,16 @@ public class ThemeManagerImpl implements ThemeManager {
 		return themeRepository.findAll();
 	}
 
+	/**
+	 * Find one theme.
+	 *
+	 * @param id the id
+	 * @return the theme
+	 */
+	public Theme findOne(long id) {
+		return themeRepository.findOne(id);
+	}
+	
 	/**
 	 * Creates the theme.
 	 *
