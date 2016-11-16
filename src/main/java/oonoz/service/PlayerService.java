@@ -98,18 +98,25 @@ public class PlayerService {
 	 *
 	 * @param player the player
 	 * @throws WrongInformationException the wrong information exception
+	 * @throws PlayerNotExistException 
 	 */
 	//TODO use spring security authentication principal
-	public void updatePlayer(Player player) throws WrongInformationException{
+	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
 		
 		checkUserInformation.checkUsername(player.getUsername());
-		checkUserInformation.checkPassword(player.getPassword());
+		//checkUserInformation.checkPassword(player.getPassword());
 		checkUserInformation.checkMail(player.getMail());
 		checkUserInformation.checkLastName(player.getLastName());
 		checkUserInformation.checkFirstName(player.getFirstName());
+		//TODO 
 		checkUserInformation.checkBirthDate(player.getBirthDate());
-		
-		playerManager.update(player);
+		Player player_=playerManager.findByMail(player.getMail());
+		player_.setUsername(player.getUsername());
+		player_.setLastName(player.getLastName());
+		player_.setFirstName(player.getFirstName());
+		player_.setMail(player.getMail());
+		player_.setBirthDate(player.getBirthDate());
+		playerManager.update(player_);
 	}
 	
 	

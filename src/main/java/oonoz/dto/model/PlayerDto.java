@@ -2,6 +2,8 @@ package oonoz.dto.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * The Class PlayerDto.
  * 
@@ -29,10 +31,13 @@ public class PlayerDto {
 	private String password;
 	
 	/** The birth date. */
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Date birthDate;
 	
 	/** The is active. */
 	private boolean isActive;
+	
+	private boolean isSupplier;
 
 	/**
 	 * Gets the id player.
@@ -176,6 +181,18 @@ public class PlayerDto {
 	 * @param isActive the new active
 	 */
 	public void setIsActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public boolean isSupplier() {
+		return isSupplier;
+	}
+
+	public void setSupplier(boolean isSupplier) {
+		this.isSupplier = isSupplier;
+	}
+
+	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 	

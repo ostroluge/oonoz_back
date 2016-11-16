@@ -23,6 +23,17 @@ public class PlayerSpecifications {
 
 		};
 	}
+	
+	public static Specification<Player> mailStartWith(String searchString) {
+		return new Specification<Player>() {
+
+			@Override
+			public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> arg1, CriteriaBuilder builder) {
+				return builder.like(root.get("mail"),searchString+"%");
+			}
+
+		};
+	}
 
 	public static Specification<Player> usernameStartWith(String searchString) {
 		return new Specification<Player>() {
