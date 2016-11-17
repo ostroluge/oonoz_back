@@ -1,10 +1,11 @@
 package oonoz;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +14,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-public class OonozApplication {
+@SpringBootApplication
+public class OonozApplication extends SpringBootServletInitializer {
 
-	private static final Logger log = LoggerFactory.getLogger(OonozApplication.class);
-	
 	@Value("${spring.datasource.driver-class-name}")
 	private String driverClassName;
 
@@ -29,19 +29,23 @@ public class OonozApplication {
 	@Value("${spring.datasource.password}")
 	private String dataSourcePassword;
 
-	public static void main(String[] args) {
-		SpringApplication.run(OonozApplication.class, args);
+	@Bean(name = "dataSource")
+	public DriverManagerDataSource dataSource() {
+		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+		driverManagerDataSource.setDriverClassName(driverClassName);
+		driverManagerDataSource.setUrl(dataSourceUrl);
+		driverManagerDataSource.setUsername(dataSourceUsername);
+		driverManagerDataSource.setPassword(dataSourcePassword);
+		return driverManagerDataSource;
 	}
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(OonozApplication.class);
+    }
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(OonozApplication.class, args);
+    }
 	
-	
-	 @Bean(name = "dataSource")
-	    public DriverManagerDataSource dataSource() {
-	        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-	        driverManagerDataSource.setDriverClassName(driverClassName);
-	        driverManagerDataSource.setUrl(dataSourceUrl);
-	        driverManagerDataSource.setUsername(dataSourceUsername);
-	        driverManagerDataSource.setPassword(dataSourcePassword);
-	        return driverManagerDataSource;
-	    }
-	 
 }
