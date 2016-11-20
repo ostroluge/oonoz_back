@@ -2,6 +2,7 @@ package oonoz.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +39,7 @@ public class Theme {
 	private String iconUrl;
 
 	/** The sub themes. */
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "ID_THEME")
 	private List<SubTheme> subThemes;
 	
@@ -138,6 +139,6 @@ public class Theme {
 	@Override
 	public String toString() {
 		return "Theme [idTheme=" + idTheme + ", label=" + label + ", description=" + description + ", iconUrl="
-				+ iconUrl + "]";
+				+ iconUrl + ", subThemes=" + subThemes + "]";
 	}
 }

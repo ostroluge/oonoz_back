@@ -17,8 +17,9 @@ import oonoz.dto.converter.SubThemeDtoConverter;
 import oonoz.dto.converter.ThemeDtoConverter;
 import oonoz.dto.model.SubThemeDto;
 import oonoz.dto.model.ThemeDto;
+import oonoz.exception.SubThemeDoesNotExistException;
 import oonoz.exception.ThemeAlreadyExistException;
-import oonoz.exception.ThemeDoesntExistException;
+import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.SubThemeService;
 import oonoz.service.ThemeService;
@@ -96,7 +97,7 @@ public class ThemeController {
 		
 		try {
 			themeService.removeTheme(id);
-		} catch (ThemeDoesntExistException e) {
+		} catch (ThemeDoesNotExistException e) {
 			response.setResponse("The theme does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(response);
@@ -113,16 +114,16 @@ public class ThemeController {
 	 * @param theme the theme
 	 * @return the updated theme
 	 */
-	@RequestMapping(value = "/themes", method = RequestMethod.PUT)
-	public ResponseEntity<Theme> updateTheme(@RequestBody ThemeDto theme) {
+	@RequestMapping(value = "/themes/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Theme> updateTheme(@PathVariable("id") long id, @RequestBody ThemeDto theme) {
 		Theme themeToUpdate = themeDtoConverter.convertToEntity(theme);
 	
 		if (themeToUpdate != null) {
 			try {
-				Theme result = themeService.updateTheme(themeToUpdate);
+				Theme result = themeService.updateTheme(id, themeToUpdate);
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
-			} catch (ThemeDoesntExistException e) {
+			} catch (ThemeDoesNotExistException e) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -148,7 +149,7 @@ public class ThemeController {
 				SubTheme result = subThemeService.postSubTheme(idTheme, subThemeToPost);
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
-			} catch (ThemeDoesntExistException e) {
+			} catch (ThemeDoesNotExistException e) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -156,5 +157,58 @@ public class ThemeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(null);
 		}
+	}
+	
+	/**
+	 * Update sub theme.
+	 *
+	 * @param idTheme the id theme
+	 * @param idSubTheme the id sub theme
+	 * @param subTheme the sub theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/themes/{idTheme}/subthemes/{idSubTheme}", method = RequestMethod.PUT)
+	public ResponseEntity<SubTheme> updateSubTheme(@PathVariable("idTheme") long idTheme,
+			@PathVariable("idSubTheme") long idSubTheme, @RequestBody SubThemeDto subTheme) {
+		SubTheme subThemeToUpdate = subThemeDtoConverter.convertToEntity(subTheme);
+		
+		if (subThemeToUpdate != null) {
+			try {
+				SubTheme result = subThemeService.updateSubTheme(idSubTheme, subThemeToUpdate);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(result);
+			} catch (SubThemeDoesNotExistException e) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
+	
+	/**
+	 * Delete sub theme.
+	 *
+	 * @param idTheme the id theme
+	 * @param idSubTheme the id sub theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/themes/{idTheme}/subthemes/{idSubTheme}", method = RequestMethod.DELETE)
+	public ResponseEntity<StringResponse> deleteSubTheme(@PathVariable("idTheme") long idTheme,
+			@PathVariable("idSubTheme") long idSubTheme) {
+		StringResponse response = new StringResponse();
+		
+		try {
+			subThemeService.removeSubTheme(idSubTheme);
+		} catch (SubThemeDoesNotExistException e) {
+			response.setResponse("The subtheme does not exist");
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+					.body(response);
+		}
+		
+		response.setResponse("Deletion successful");
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(response);
 	}
 }

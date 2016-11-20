@@ -4,9 +4,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
-import oonoz.exception.ThemeDoesntExistException;
+import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.manager.ThemeManager;
 import oonoz.repository.ThemeRepository;
 
@@ -59,15 +60,17 @@ public class ThemeManagerImpl implements ThemeManager {
 	 * Removes the theme.
 	 *
 	 * @param id the id
-	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
 	 */
-	public void remove(Long id) throws ThemeDoesntExistException {
+	public void remove(Theme theme) throws ThemeDoesNotExistException {
 		
-		Theme existingTheme = themeRepository.findOne(id);
+		Theme existingTheme = themeRepository.findOne(theme.getIdTheme());
 		if (existingTheme != null) {
-			themeRepository.delete(id);
+			existingTheme.setSubThemes(theme.getSubThemes());
+			System.out.println(existingTheme.toString());
+			themeRepository.delete(existingTheme);
 		} else {
-			throw new ThemeDoesntExistException("The theme with id " + id + "does not exist");
+			throw new ThemeDoesNotExistException("The theme with id " + theme.getIdTheme() + "does not exist");
 		}
 	}
 
@@ -76,15 +79,16 @@ public class ThemeManagerImpl implements ThemeManager {
 	 *
 	 * @param theme the theme
 	 * @return the theme
-	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
 	 */
-	public Theme update(Theme theme) throws ThemeDoesntExistException {
+	public Theme update(long id, Theme theme) throws ThemeDoesNotExistException {
 		
-		Theme existingTheme = themeRepository.findOne(theme.getIdTheme());
+		Theme existingTheme = themeRepository.findOne(id);
 		if (existingTheme != null) {
+			theme.setSubThemes(existingTheme.getSubThemes());
 			return themeRepository.save(theme);
 		} else {
-			throw new ThemeDoesntExistException("The theme does not exist");
+			throw new ThemeDoesNotExistException("The theme does not exist");
 		}
 	}
 }

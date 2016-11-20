@@ -3,7 +3,7 @@ package oonoz.exception;
 /**
  * The Class ThemeDoesntExistException.
  */
-public class ThemeDoesntExistException extends Exception {
+public class ThemeDoesNotExistException extends Exception {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -13,7 +13,7 @@ public class ThemeDoesntExistException extends Exception {
 	 *
 	 * @param message the message
 	 */
-	public ThemeDoesntExistException(String message) {
+	public ThemeDoesNotExistException(String message) {
 		super(message);
 	}
 }

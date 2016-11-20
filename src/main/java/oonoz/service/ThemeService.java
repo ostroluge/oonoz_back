@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
-import oonoz.exception.ThemeDoesntExistException;
+import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.ThemeManagerImpl;
 import oonoz.util.CheckThemeInformation;
@@ -19,11 +19,11 @@ public class ThemeService {
 	/** The theme manager. */
 	@Autowired
 	private ThemeManagerImpl themeManager;
-	
+
 	/** The check theme information. */
 	@Autowired
 	private CheckThemeInformation checkThemeInformation;
-	
+
 	/**
 	 * Find all.
 	 *
@@ -42,10 +42,10 @@ public class ThemeService {
 	 * @throws ThemeAlreadyExistException the theme already exist exception
 	 */
 	public Theme postTheme(Theme theme) throws WrongInformationException, ThemeAlreadyExistException {
-		
+
 		checkThemeInformation.checkLabel(theme.getLabel());
 		checkThemeInformation.checkDescription(theme.getDescription());
-	
+
 		return themeManager.create(theme);
 	}
 
@@ -53,10 +53,13 @@ public class ThemeService {
 	 * Removes the theme.
 	 *
 	 * @param id the id
-	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
 	 */
-	public void removeTheme(Long id) throws ThemeDoesntExistException {
-		themeManager.remove(id);
+	public void removeTheme(long id) throws ThemeDoesNotExistException {
+		Theme theme = themeManager.findOne(id);
+		if (theme != null) {
+			themeManager.remove(theme);
+		}
 	}
 
 	/**
@@ -64,9 +67,9 @@ public class ThemeService {
 	 *
 	 * @param theme the theme
 	 * @return the theme
-	 * @throws ThemeDoesntExistException the theme doesnt exist exception
+	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
 	 */
-	public Theme updateTheme(Theme theme) throws ThemeDoesntExistException {
-		return themeManager.update(theme);
+	public Theme updateTheme(long id, Theme theme) throws ThemeDoesNotExistException {
+		return themeManager.update(id, theme);
 	}
 }

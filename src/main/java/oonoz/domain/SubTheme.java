@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -124,5 +126,11 @@ public class SubTheme {
 	 */
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "SubTheme [id=" + id + ", idTheme=" + idTheme + ", label=" + label + ", description=" + description
+				+ ", iconUrl=" + iconUrl + "]";
 	}
 }
