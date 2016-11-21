@@ -14,7 +14,8 @@ mail varchar(50) NOT NULL unique,
 password varchar(100) NOT NULL,
 username varchar(20) NOT NULL unique,
 birthdate date NOT NULL,
-is_active boolean NOT NULL
+is_active boolean NOT NULL,
+is_supplier boolean NOT NULL,
 );
 
 CREATE TABLE SUPPLIER (
@@ -57,11 +58,11 @@ id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','password'); 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password) values ('Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','password');
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','password',FALSE); 
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values ('Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','password',FALSE);
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','password',FALSE);
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','password',TRUE);
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','password',TRUE);
 
 INSERT INTO admin values (1);
 INSERT INTO admin values (2);
