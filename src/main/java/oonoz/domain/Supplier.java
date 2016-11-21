@@ -25,6 +25,22 @@ import org.hibernate.validator.constraints.Length;
 public class Supplier extends Player{
 	
 	
+	public Supplier(){
+		
+	}
+	
+	public Supplier(Player player){
+		this.idPlayer=player.idPlayer;
+		this.firstName=player.firstName;
+		this.lastName=player.lastName;
+		this.birthDate=player.birthDate;
+		this.mail=player.mail;
+		this.username=player.username;
+		this.password=player.password;
+		this.isActive=player.isActive;
+		this.isSupplier=player.isSupplier;
+	}
+	
 	/** True if the supplier has validated his sign-up. */
 	@Column(unique = false, nullable = false,name="IS_VALID")
 	private Boolean isValid;

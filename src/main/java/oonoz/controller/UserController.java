@@ -209,14 +209,29 @@ public class UserController {
     	 return new ResponseEntity<>(playerService.filteredSearch(filteredSearch), HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePlayer", method = RequestMethod.POST)
     public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto) throws WrongInformationException, PlayerNotExistException{
-    	    	    	
-    	//TODO gérer la conversion dto supplier
+    	    	    	    	
     	Player player=playerDtoConverter.convertToEntity(playerDto);
+    	
     	//TODO modifier la conversion pour l'id
     	player.setId(playerDto.getIdPlayer());
     	playerService.updatePlayer(player);
+    	
+    	return new ResponseEntity<>("", HttpStatus.OK);
+    }
+    
+   @RequestMapping(value = "/updateSupplier", method = RequestMethod.POST)
+    public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto) throws WrongInformationException, PlayerNotExistException{
+    	    	    	
+    	Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
+    	supplierService.updateSupplier(supplier);
+    	/*Player player=playerDtoConverter.convertToEntity(playerDto);
+    	playerService.updatePlayer(player);
+    	
+    	//TODO modifier la conversion pour l'id
+    	player.setId(playerDto.getIdPlayer());
+    	playerService.updatePlayer(player);*/
     	 return new ResponseEntity<>("", HttpStatus.OK);
     }
     

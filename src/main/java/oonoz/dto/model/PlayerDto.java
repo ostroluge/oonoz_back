@@ -13,31 +13,31 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class PlayerDto {
 	
 	/** The id player. */
-	private long idPlayer;
+	protected long idPlayer;
 	
 	/** The first name. */
-	private String firstName;
+	protected String firstName;
 	
 	/** The last name. */
-	private String lastName;
+	protected String lastName;
 	
 	/** The mail. */
-	private String mail;
+	protected String mail;
 	
 	/** The username. */
-	private String username;
+	protected String username;
 	
 	/** The password. */
-	private String password;
+	protected String password;
 	
 	/** The birth date. */
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-	private Date birthDate;
+	protected Date birthDate;
 	
 	/** The is active. */
-	private boolean isActive;
+	protected boolean isActive;
 	
-	private boolean isSupplier;
+	protected boolean isSupplier;
 
 	/**
 	 * Gets the id player.

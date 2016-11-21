@@ -1,6 +1,25 @@
 package oonoz.dto.model;
 
+
+
 public class SupplierDto extends PlayerDto {
+	
+	public SupplierDto(){
+		
+	}
+	
+	public SupplierDto(PlayerDto playerDto){
+		this.idPlayer=playerDto.idPlayer;
+		this.firstName=playerDto.firstName;
+		this.lastName=playerDto.lastName;
+		this.username=playerDto.username;
+		this.password=playerDto.password;
+		this.isActive=playerDto.isActive;
+		this.isSupplier=playerDto.isSupplier;
+		this.mail=playerDto.mail;
+		this.birthDate=playerDto.birthDate;
+	}
+	
 	
 	private Boolean isValid;
 	

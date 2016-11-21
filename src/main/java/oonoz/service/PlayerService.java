@@ -116,6 +116,8 @@ public class PlayerService {
 		player_.setFirstName(player.getFirstName());
 		player_.setMail(player.getMail());
 		player_.setBirthDate(player.getBirthDate());
+		player_.setIsActive(player.isActive());
+		player_.setIsSupplier(player.getIsSupplier());
 		playerManager.update(player_);
 	}
 	

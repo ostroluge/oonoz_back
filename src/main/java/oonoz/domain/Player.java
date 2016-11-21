@@ -29,39 +29,39 @@ public class Player {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long idPlayer;
+	protected long idPlayer;
 	
 	
 	/** The first name. */
 	@Column(unique = false, nullable = false,name="FIRSTNAME")
-	private String firstName;
+	protected String firstName;
 	
 	/** The last name. */
 	@Column(unique = false, nullable = false,name="LASTNAME")
-	private String lastName;
+	protected String lastName;
 	
 	/** The mail. */
 	@Column(unique = true, nullable = false,name="MAIL")
-	private String mail;
+	protected String mail;
 	
 	/** The username. */
 	@Column(unique=true, nullable = false, name="USERNAME")
-	private String username;
+	protected String username;
 	
 	/** The password. */
 	@Column(unique=false, nullable = false, name="PASSWORD")
-	private String password;
+	protected String password;
 	
 	/** The birth date. */
 	@Column(unique = false, nullable = false,name="BIRTHDATE")
-	private Date birthDate;
+	protected Date birthDate;
 	
 	/** The is active. */
 	@Column(unique = false, nullable = false, name="IS_ACTIVE")
-	private Boolean isActive;
+	protected Boolean isActive;
 	
 	@Column(unique = false, nullable = false, name="IS_SUPPLIER")
-	private Boolean isSupplier;
+	protected Boolean isSupplier;
 	
 	/**
 	 * Sets the id.

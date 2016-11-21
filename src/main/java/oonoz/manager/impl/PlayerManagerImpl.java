@@ -22,8 +22,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.Player;
+import oonoz.domain.Supplier;
 import oonoz.dto.converter.PlayerDtoConverter;
+import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
+import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
@@ -48,6 +51,9 @@ public class PlayerManagerImpl  implements PlayerManager {
 		
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
+	
+	@Autowired
+	private SupplierDtoConverter supplierDtoConverter;
 	
 	/**
 	 * Check if the player does not already exist, then add the player to the database.
@@ -135,8 +141,13 @@ public class PlayerManagerImpl  implements PlayerManager {
 		PlayerDto playerDto=null;
     	List<PlayerDto> playersDto=new ArrayList<PlayerDto>();
 		for(Player player: playersPage.getContent()){
-    		playerDto=playerDtoConverter.convertToDto(player);
-    		playersDto.add(playerDto);
+			if(player instanceof Supplier){
+				playerDto=supplierDtoConverter.convertToDto((Supplier)player);
+			}
+			else{
+    		playerDto=playerDtoConverter.convertToDto(player);    		
+			}
+			playersDto.add(playerDto);
     	}
 		
     	Page<PlayerDto> playersDtoPage= new PageImpl<>(playersDto,pageable,playersPage.getTotalElements());
