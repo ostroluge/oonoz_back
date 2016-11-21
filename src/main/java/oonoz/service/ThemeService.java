@@ -34,6 +34,16 @@ public class ThemeService {
 	}
 
 	/**
+	 * Find one theme.
+	 *
+	 * @param id the id
+	 * @return the theme
+	 */
+	public Theme findOne(long id) {
+		return themeManager.findOne(id);
+	}
+	
+	/**
 	 * Post theme.
 	 *
 	 * @param theme the theme

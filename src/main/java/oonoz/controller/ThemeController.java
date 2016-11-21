@@ -63,6 +63,24 @@ public class ThemeController {
 	}
 	
 	/**
+	 * Gets the theme by id.
+	 *
+	 * @param id the id
+	 * @return the theme by id
+	 */
+	@RequestMapping(value = "/themes/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Theme> getThemeById(@PathVariable("id") long id) {
+		Theme theme = themeService.findOne(id);
+		if (theme != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(theme);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+	}
+	
+	/**
 	 * Post theme.
 	 *
 	 * @param theme the theme
@@ -155,6 +173,26 @@ public class ThemeController {
 			}
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
+	
+	/**
+	 * Gets the sub theme by id.
+	 *
+	 * @param idTheme the id theme
+	 * @param idSubTheme the id sub theme
+	 * @return the sub theme by id
+	 */
+	@RequestMapping(value = "/themes/{idTheme}/subthemes/{idSubTheme}", method = RequestMethod.GET)
+	public ResponseEntity<SubTheme> getSubThemeById(@PathVariable("idTheme") long idTheme,
+			@PathVariable("idSubTheme") long idSubTheme) {
+		SubTheme subTheme = subThemeService.findOne(idSubTheme);
+		if (subTheme != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(subTheme);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
 	}

@@ -25,6 +25,16 @@ public class SubThemeService {
 	private ThemeManagerImpl themeManager;
 	
 	/**
+	 * Find one subtheme.
+	 *
+	 * @param idSubTheme the id sub theme
+	 * @return the sub theme
+	 */
+	public SubTheme findOne(long idSubTheme) {
+		return subThemeManager.findOne(idSubTheme);
+	}
+	
+	/**
 	 * Post sub theme.
 	 *
 	 * @param idTheme the id theme
