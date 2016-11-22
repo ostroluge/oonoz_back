@@ -14,7 +14,8 @@ mail varchar(50) NOT NULL unique,
 password varchar(100) NOT NULL,
 username varchar(20) NOT NULL unique,
 birthdate date NOT NULL,
-is_active boolean NOT NULL
+is_active boolean NOT NULL,
+is_supplier boolean NOT NULL
 );
 
 CREATE TABLE SUPPLIER (
@@ -31,16 +32,20 @@ id_player BIGSERIAL references player(id) ON DELETE CASCADE
 );
 
 CREATE TABLE AUTHORITIES(
-id_player BIGSERIAL PRIMARY KEY,
-username varchar(20) not null REFERENCES player(username),
-role VARCHAR(20) not null
+id_authorities BIGSERIAL PRIMARY KEY,
+username varchar(20) not null,
+role VARCHAR(20) not null,
+CONSTRAINT authorities_player_fkey FOREIGN KEY (id_authorities)
+      REFERENCES player (id)
+ 
 );
 
 CREATE TABLE THEME (
 id SERIAL PRIMARY KEY,
 label VARCHAR(20) NOT NULL UNIQUE,
 description VARCHAR(100) NOT NULL,
-icon VARCHAR(150)
+icon VARCHAR(150),
+is_valid boolean NOT NULL
 );
 
 CREATE TABLE SUB_THEME (
@@ -48,7 +53,8 @@ id SERIAL PRIMARY KEY,
 id_theme SERIAL references theme(id) ON DELETE CASCADE,
 label VARCHAR(20) NOT NULL,
 description VARCHAR(100) NOT NULL,
-icon VARCHAR(150)
+icon VARCHAR(150),
+is_valid boolean NOT NULL
 );
 
 CREATE TABLE PLAYER_THEME (
@@ -57,11 +63,11 @@ id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','password'); 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password) values ('Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','password');
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE); 
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values ('Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE);
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE);
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE);
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE);
 
 INSERT INTO admin values (1);
 INSERT INTO admin values (2);
@@ -69,22 +75,22 @@ INSERT INTO admin values (2);
 INSERT INTO supplier (id_player, is_valid, is_private_individual) values (4, TRUE, TRUE);
 INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (5, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
 
-INSERT INTO AUTHORITIES (id_player,username,role) values (1,'Jilief','ROLE_ADMIN');
-INSERT INTO AUTHORITIES (id_player,username,role) values (2,'Ostroluge','ROLE_ADMIN');
-INSERT INTO AUTHORITIES (id_player,username,role) values (3,'Goubelf', 'ROLE_PLAYER');
-INSERT INTO AUTHORITIES (id_player,username,role) values (4,'ElPadre','ROLE_SUPPLIER');
-INSERT INTO AUTHORITIES (id_player,username,role) values (5,'Ching chong','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (1,'Jilief','ROLE_ADMIN');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (2,'Ostroluge','ROLE_ADMIN');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (3,'Goubelf', 'ROLE_PLAYER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (4,'ElPadre','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (5,'Ching chong','ROLE_SUPPLIER');
 
-INSERT INTO THEME (id, label, description) values (1, 'Sport', 'Theme sport');
-INSERT INTO THEME (id, label, description) values (2, 'Art', 'Theme art');
-INSERT INTO THEME (id, label, description) values (3, 'Musique', 'Theme musique');
+INSERT INTO THEME (id, label, description, is_valid) values (1, 'Sport', 'Theme sport', TRUE);
+INSERT INTO THEME (id, label, description, is_valid) values (2, 'Art', 'Theme art', FALSE);
+INSERT INTO THEME (id, label, description, is_valid) values (3, 'Musique', 'Theme musique', TRUE);
 
-INSERT INTO SUB_THEME(id, id_theme, label, description) values (1,1,'Football', 'Le ballon rond. What else ?');
-INSERT INTO SUB_THEME(id, id_theme, label, description) values (2,1,'Rugby', 'Un arrière goût de Ballabriga ici');
-INSERT INTO SUB_THEME(id, id_theme, label, description) values (3,2,'Peinture', 'Monet, monet, monet !');
-INSERT INTO SUB_THEME(id, id_theme, label, description) values (4,2,'Cinéma', 'Ici on trouvera forcément des quizz sur Scarlett !');
-INSERT INTO SUB_THEME(id, id_theme, label, description) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds');
-INSERT INTO SUB_THEME(id, id_theme, label, description) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz');
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (1,1,'Football', 'Le ballon rond. What else ?', TRUE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (2,1,'Rugby', 'Un arrière goût de Ballabriga ici', FALSE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (3,2,'Peinture', 'Monet, monet, monet !', TRUE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (4,2,'Cinéma', 'Ici on trouvera forcément des quizz sur Scarlett !', FALSE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
 
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (1,1);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (2,2);
