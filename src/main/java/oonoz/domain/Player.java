@@ -2,6 +2,7 @@ package oonoz.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 
 // 
@@ -22,6 +29,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="PLAYER")
 @Inheritance(strategy=InheritanceType.JOINED)
+@DynamicUpdate(value=true)
 public class Player {
 
 	
@@ -29,7 +37,7 @@ public class Player {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	protected long idPlayer;
+	protected long id;
 	
 	
 	/** The first name. */
@@ -63,13 +71,17 @@ public class Player {
 	@Column(unique = false, nullable = false, name="IS_SUPPLIER")
 	protected Boolean isSupplier;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	protected Authorities authorities;
+	
 	/**
 	 * Sets the id.
 	 *
 	 * @param idPlayer the new id
 	 */
 	public void setId(long idPlayer){
-		this.idPlayer = idPlayer;
+		this.id = idPlayer;
 	}
 	
 	/**
@@ -78,7 +90,7 @@ public class Player {
 	 * @return the id
 	 */
 	public long getId(){
-		return this.idPlayer;
+		return this.id;
 	}
 
 	/**
@@ -213,6 +225,14 @@ public class Player {
 
 	public void setIsSupplier(Boolean isSupplier) {
 		this.isSupplier = isSupplier;
+	}
+
+	public Authorities getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Authorities authorities) {
+		this.authorities = authorities;
 	}
 	
 	

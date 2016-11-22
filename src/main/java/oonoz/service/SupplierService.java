@@ -5,6 +5,7 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import oonoz.domain.Authorities;
 import oonoz.domain.Player;
 import oonoz.domain.Supplier;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -67,6 +68,10 @@ public class SupplierService {
 		String hashPassword=checkUserInformation.hashPassword(supplier.getPassword());
 		if(hashPassword!=null){	
 			supplier.setPassword(hashPassword);
+			Authorities authorities = new Authorities();
+			authorities.setRole("ROLE_SUPPLIER");
+			authorities.setUsername(supplier.getUsername());
+			supplier.setAuthorities(authorities);
 			supplierManager.create(supplier);
 			mailService.sendValidationMail(supplier);
 		}

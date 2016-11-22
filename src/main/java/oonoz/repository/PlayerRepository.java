@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -62,6 +63,7 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
     Page<Player> findByIsSupplierFalse(Pageable pageable);
     
     
+   
     //Page<Player> findAll(Pageable pageable);
     
     

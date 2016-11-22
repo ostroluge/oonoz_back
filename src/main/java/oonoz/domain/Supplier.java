@@ -30,7 +30,7 @@ public class Supplier extends Player{
 	}
 	
 	public Supplier(Player player){
-		this.idPlayer=player.idPlayer;
+		this.id=player.id;
 		this.firstName=player.firstName;
 		this.lastName=player.lastName;
 		this.birthDate=player.birthDate;

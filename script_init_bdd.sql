@@ -15,7 +15,7 @@ password varchar(100) NOT NULL,
 username varchar(20) NOT NULL unique,
 birthdate date NOT NULL,
 is_active boolean NOT NULL,
-is_supplier boolean NOT NULL,
+is_supplier boolean NOT NULL
 );
 
 CREATE TABLE SUPPLIER (
@@ -32,9 +32,12 @@ id_player BIGSERIAL references player(id) ON DELETE CASCADE
 );
 
 CREATE TABLE AUTHORITIES(
-id_player BIGSERIAL PRIMARY KEY,
-username varchar(20) not null REFERENCES player(username),
-role VARCHAR(20) not null
+id_authorities BIGSERIAL PRIMARY KEY,
+username varchar(20) not null,
+role VARCHAR(20) not null,
+CONSTRAINT authorities_player_fkey FOREIGN KEY (id_authorities)
+      REFERENCES player (id)
+ 
 );
 
 CREATE TABLE THEME (
@@ -70,11 +73,11 @@ INSERT INTO admin values (2);
 INSERT INTO supplier (id_player, is_valid, is_private_individual) values (4, TRUE, TRUE);
 INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (5, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
 
-INSERT INTO AUTHORITIES (id_player,username,role) values (1,'Jilief','ROLE_ADMIN');
-INSERT INTO AUTHORITIES (id_player,username,role) values (2,'Ostroluge','ROLE_ADMIN');
-INSERT INTO AUTHORITIES (id_player,username,role) values (3,'Goubelf', 'ROLE_PLAYER');
-INSERT INTO AUTHORITIES (id_player,username,role) values (4,'ElPadre','ROLE_SUPPLIER');
-INSERT INTO AUTHORITIES (id_player,username,role) values (5,'Ching chong','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (1,'Jilief','ROLE_ADMIN');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (2,'Ostroluge','ROLE_ADMIN');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (3,'Goubelf', 'ROLE_PLAYER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (4,'ElPadre','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (5,'Ching chong','ROLE_SUPPLIER');
 
 INSERT INTO THEME (id, label, description) values (1, 'Sport', 'Theme sport');
 INSERT INTO THEME (id, label, description) values (2, 'Art', 'Theme art');

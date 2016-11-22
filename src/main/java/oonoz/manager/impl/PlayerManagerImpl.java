@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import oonoz.domain.Authorities;
 import oonoz.domain.Player;
 import oonoz.domain.Supplier;
 import oonoz.dto.converter.PlayerDtoConverter;
@@ -31,6 +32,7 @@ import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.PlayerManager;
+import oonoz.repository.AuthoritiesRepository;
 import oonoz.repository.PlayerRepository;
 import oonoz.util.FilteredSearch;
 
@@ -47,6 +49,9 @@ public class PlayerManagerImpl  implements PlayerManager {
 	/** The player repository. */
 	@Resource
 	private PlayerRepository playerRepository;
+	
+	@Resource
+	private AuthoritiesRepository authoritiesRepository;
 
 		
 	@Autowired
@@ -62,11 +67,16 @@ public class PlayerManagerImpl  implements PlayerManager {
 	 * @throws PlayerAlreadyExistException if the player already exists.
 	 */
 	public void create(Player player) throws PlayerAlreadyExistException {
-
+		
 		List<Player> players = playerRepository.findByUsernameOrMail(player.getUsername(), player.getMail());
 		if (players.isEmpty()) {
-			player=playerRepository.save(player);	
-			playerRepository.addSupplierRole(player.getId(),player.getUsername());
+			player=playerRepository.save(player);
+			Authorities authorities = new Authorities();
+			authorities.setIdAuthorities(player.getId());
+			authorities.setRole("ROLE_PLAYER");
+			authorities.setUsername(player.getUsername());
+			
+			authoritiesRepository.save(authorities);
 		} else
 			throw new PlayerAlreadyExistException("The username or mail of " +player.getUsername()+ " already exist !");
 	}
@@ -154,6 +164,14 @@ public class PlayerManagerImpl  implements PlayerManager {
     	
     	return playersDtoPage;
 		 
+	}
+	
+	public Player getPlayer(long id){
+		return playerRepository.findOne(id);
+	}
+	
+	public void deletePlayer(long id){
+		 playerRepository.delete(id);
 	}
 
 }

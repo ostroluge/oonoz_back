@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import oonoz.domain.Authorities;
 import oonoz.domain.Player;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -60,7 +61,7 @@ public class PlayerService {
 		checkUserInformation.checkFirstName(player.getFirstName());
 		checkUserInformation.checkBirthDate(player.getBirthDate());
 		player.setIsActive(false);
-
+		
 		String hashPassword=checkUserInformation.hashPassword(player.getPassword());
 		if(hashPassword!=null){
 			player.setPassword(hashPassword);
@@ -121,7 +122,14 @@ public class PlayerService {
 		playerManager.update(player_);
 	}
 	
-	
+	public void deletePlayer(Long idPlayer) throws PlayerNotExistException{
+		Player player_=playerManager.getPlayer(idPlayer);
+		if(player_==null){
+			throw new PlayerNotExistException("The player does not exist !");
+		}
+		playerManager.deletePlayer(player_.getId());
+		
+	}
 	/**
 	 * Generate password.
 	 *
