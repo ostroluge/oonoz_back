@@ -23,6 +23,7 @@ public class ThemeDtoConverter {
 		theme.setLabel(themeDto.getLabel());
 		theme.setDescription(themeDto.getDescription());
 		theme.setIconUrl(themeDto.getIconUrl());
+		theme.setValidated(themeDto.isValidated());
 		return theme;
 	}
 
@@ -38,6 +39,7 @@ public class ThemeDtoConverter {
 		themeDto.setLabel(theme.getLabel());
 		themeDto.setDescription(theme.getDescription());
 		themeDto.setIconUrl(theme.getIconUrl());
+		themeDto.setValidated(theme.isValidated());
 		return themeDto;
 	}
 }

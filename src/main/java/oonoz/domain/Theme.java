@@ -43,6 +43,10 @@ public class Theme {
 	@JoinColumn(name = "ID_THEME")
 	private List<SubTheme> subThemes;
 	
+	/** The is validated. */
+	@Column(unique = false, nullable = false, name="IS_VALID")
+	private boolean isValidated;
+	
 	/**
 	 * Gets the id theme.
 	 *
@@ -134,6 +138,24 @@ public class Theme {
 	 */
 	public void setSubThemes(List<SubTheme> subThemes) {
 		this.subThemes = subThemes;
+	}
+	
+	/**
+	 * Checks if is validated.
+	 *
+	 * @return true, if is validated
+	 */
+	public boolean isValidated() {
+		return isValidated;
+	}
+
+	/**
+	 * Sets the validated.
+	 *
+	 * @param isValidated the new validated
+	 */
+	public void setValidated(boolean isValidated) {
+		this.isValidated = isValidated;
 	}
 
 	@Override

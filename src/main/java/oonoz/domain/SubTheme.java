@@ -38,6 +38,10 @@ public class SubTheme {
 	@Column(unique = false, nullable = true, name = "ICON")
 	private String iconUrl;
 
+	/** The is validated. */
+	@Column(unique = false, nullable = false, name="IS_VALID")
+	private boolean isValidated;
+	
 	/**
 	 * Gets the id.
 	 *
@@ -128,6 +132,24 @@ public class SubTheme {
 		this.iconUrl = iconUrl;
 	}
 
+	/**
+	 * Checks if is validated.
+	 *
+	 * @return true, if is validated
+	 */
+	public boolean isValidated() {
+		return isValidated;
+	}
+
+	/**
+	 * Sets the validated.
+	 *
+	 * @param isValidated the new validated
+	 */
+	public void setValidated(boolean isValidated) {
+		this.isValidated = isValidated;
+	}
+	
 	@Override
 	public String toString() {
 		return "SubTheme [id=" + id + ", idTheme=" + idTheme + ", label=" + label + ", description=" + description

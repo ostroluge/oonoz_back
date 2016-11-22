@@ -1,5 +1,6 @@
 package oonoz.dto.model;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ThemeDto.
  */
@@ -17,6 +18,9 @@ public class ThemeDto {
 	/** The icon url. */
 	private String iconUrl;
 
+	/** The is validated. */
+	private boolean isValidated;
+	
 	/**
 	 * Gets the label.
 	 *
@@ -87,5 +91,23 @@ public class ThemeDto {
 	 */
 	public void setIdTheme(long idTheme) {
 		this.idTheme = idTheme;
+	}
+
+	/**
+	 * Checks if is validated.
+	 *
+	 * @return true, if is validated
+	 */
+	public boolean isValidated() {
+		return isValidated;
+	}
+
+	/**
+	 * Sets the validated.
+	 *
+	 * @param isValidated the new validated
+	 */
+	public void setValidated(boolean isValidated) {
+		this.isValidated = isValidated;
 	}
 }

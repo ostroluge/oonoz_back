@@ -24,6 +24,7 @@ public class SubThemeDtoConverter {
 		subTheme.setLabel(subthemeDto.getLabel());
 		subTheme.setDescription(subthemeDto.getDescription());
 		subTheme.setIconUrl(subthemeDto.getIconUrl());
+		subTheme.setValidated(subthemeDto.isValidated());
 		return subTheme;
 	}
 
@@ -40,6 +41,7 @@ public class SubThemeDtoConverter {
 		subthemeDto.setLabel(subtheme.getLabel());
 		subthemeDto.setDescription(subtheme.getDescription());
 		subthemeDto.setIconUrl(subtheme.getIconUrl());
+		subthemeDto.setValidated(subtheme.isValidated());
 		return subthemeDto;
 	}
 }
