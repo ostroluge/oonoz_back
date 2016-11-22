@@ -9,9 +9,12 @@ import javax.mail.MessagingException;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import oonoz.controller.UserController;
 import oonoz.domain.Player;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotActiveException;
@@ -30,12 +33,12 @@ import oonoz.util.MailService;
 @Service
 public class PlayerService {
 
-	
+
 	/** The player manager. */
 	@Autowired
 	private PlayerManagerImpl playerManager;
-	
-		
+
+
 	/** The mail service. */
 	@Autowired
 	private MailService mailService;
@@ -43,6 +46,9 @@ public class PlayerService {
 	/** The check user information. */
 	@Autowired
 	private CheckUserInformation checkUserInformation;
+
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(PlayerService.class);
 
 	/**
 	 * Sign-up a new player.
@@ -72,7 +78,7 @@ public class PlayerService {
 			throw new WrongInformationException("Password invalid");
 		}
 	}
-	
+
 	/**
 	 * Hash the user password with sha-256 algorithm.
 	 * @param password
@@ -81,23 +87,22 @@ public class PlayerService {
 	 * 		the hash user password
 	 */
 	private String hashPassword(String password){
-		
+
 		MessageDigest messageDigest;
 		try {
 			messageDigest = MessageDigest.getInstance("SHA-256");
 			byte[] hash=messageDigest.digest(password.getBytes("UTF-8"));			
 			String hashPassword=DatatypeConverter.printHexBinary(hash).toLowerCase();
 			return hashPassword;
-			
+
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			
-			e.printStackTrace();
+			logger.error("Error during encoding password", e);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Validate mail of the new signed-up player.
 	 *
@@ -107,18 +112,18 @@ public class PlayerService {
 	 * @throws WrongInformationException the wrong information exception
 	 */
 	public void validationMail(String mail,String hash) throws PlayerNotExistException, WrongInformationException{
-		
-		 if (mail.hashCode() == Integer.valueOf(hash)) {
-            Player player=playerManager.findByMail(mail);
-            player.setIsActive(true);
-            playerManager.update(player);
-         }
-		 else{
-			 throw new WrongInformationException("The key and the mail does not correspond !");
-		 }
-			 
+
+		if (mail.hashCode() == Integer.valueOf(hash)) {
+			Player player=playerManager.findByMail(mail);
+			player.setIsActive(true);
+			playerManager.update(player);
+		}
+		else{
+			throw new WrongInformationException("The key and the mail does not correspond !");
+		}
+
 	}
-	
+
 	/**
 	 * Update player.
 	 *
@@ -127,18 +132,18 @@ public class PlayerService {
 	 */
 	//TODO use spring security authentication principal
 	public void updatePlayer(Player player) throws WrongInformationException{
-		
+
 		checkUserInformation.checkUsername(player.getUsername());
 		checkUserInformation.checkPassword(player.getPassword());
 		checkUserInformation.checkMail(player.getMail());
 		checkUserInformation.checkLastName(player.getLastName());
 		checkUserInformation.checkFirstName(player.getFirstName());
 		checkUserInformation.checkBirthDate(player.getBirthDate());
-		
+
 		playerManager.update(player);
 	}
-	
-	
+
+
 	/**
 	 * Generate password.
 	 *
@@ -149,7 +154,7 @@ public class PlayerService {
 	 * @throws PlayerNotActiveException the player not active exception
 	 */
 	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException{
-		
+
 		checkUserInformation.checkMail(mail);
 		Player player=playerManager.findByMail(mail);
 		checkUserInformation.checkIsActive(player.isActive());
@@ -167,17 +172,18 @@ public class PlayerService {
 	 * 		the new generated password.
 	 */
 	private String generateNewPassword(){
-		
+
 		String password = RandomStringUtils.random(9, 0, 0, true, true, null, new SecureRandom());
-		
+
 		try{
-		checkUserInformation.checkPassword(password);
-		return password;
+			checkUserInformation.checkPassword(password);
+			return password;
 		}
 		catch(WrongInformationException e){
+			logger.error("Regenerate a new Password", e);
 			return generateNewPassword();
 		}
-		
+
 	}
 
 }

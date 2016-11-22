@@ -25,7 +25,7 @@ public class PlayerManagerImpl implements PlayerManager {
 	@Resource
 	private PlayerRepository playerRepository;
 
-	
+
 	/**
 	 * Check if the player does not already exist, then add the player to the database.
 	 *
@@ -36,13 +36,13 @@ public class PlayerManagerImpl implements PlayerManager {
 
 		List<Player> players = playerRepository.findByUsernameOrMail(player.getUsername(), player.getMail());
 		if (players.isEmpty()) {
-			player=playerRepository.save(player);	
-			playerRepository.addSupplierRole(player.getId(),player.getUsername());
+			Player createdPlayer=playerRepository.save(player);	
+			playerRepository.addSupplierRole(createdPlayer.getId(),createdPlayer.getUsername());
 		} else
 			throw new PlayerAlreadyExistException("The username or mail of " +player.getUsername()+ " already exist !");
 	}
-	
-	
+
+
 	/**
 	 * Find a player by his mail.
 	 *
@@ -51,15 +51,15 @@ public class PlayerManagerImpl implements PlayerManager {
 	 * @throws PlayerNotExistException if the player does not exist.
 	 */
 	public Player findByMail(String mail) throws PlayerNotExistException{
-		
+
 		Player player= playerRepository.findByMail(mail);
 		if(player==null){
 			throw new PlayerNotExistException("The player with the mail "+mail+" does not exist !");
 		}
-		
+
 		return player;
 	}
-	
+
 	/**
 	 * Update.
 	 *
