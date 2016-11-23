@@ -11,26 +11,28 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-
 /**
  * The Class SecurityConfig.
  * 
- * Description :
- * 		Configuration class for Spring Security framework.
- * 		Handle access to the different REST service.
+ * Description : Configuration class for Spring Security framework. Handle
+ * access to the different REST service.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /** The data source. */
-    @Autowired
-    DataSource dataSource;
+	/** The data source. */
+	@Autowired
+	DataSource dataSource;
 
-    /* (non-Javadoc)
-     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
-     */
-    protected void configure(HttpSecurity http) throws Exception {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.
+	 * config.annotation.web.builders.HttpSecurity)
+	 */
+	protected void configure(HttpSecurity http) throws Exception {
         http
                 /*.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()
@@ -44,11 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();*/
         
 		        .authorizeRequests()
-		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()	
+		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()
 		        .antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
 		        .antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
 		        .antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
 		        .antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
+		        .antMatchers(HttpMethod.GET, "/admin/getSupplierRequest").permitAll()
+		        .antMatchers(HttpMethod.DELETE,"/admin/refuseSupplierRequest").permitAll()
+		        .antMatchers(HttpMethod.POST,"/admin/acceptSupplierRequest").permitAll()
 		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
@@ -66,41 +71,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        http.csrf().disable();
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth
-                .jdbcAuthentication()
-                .passwordEncoder(new ShaPasswordEncoder(256))
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select username , password, is_active as enabled " +
-                                "from player " +
-                                "where username=?")
-                .authoritiesByUsernameQuery(
-                "select username, role from authorities where username=?");
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.
+	 * config.annotation.authentication.builders.AuthenticationManagerBuilder)
+	 */
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().passwordEncoder(new ShaPasswordEncoder(256)).dataSource(dataSource)
+				.usersByUsernameQuery(
+						"select username , password, is_active as enabled " + "from player " + "where username=?")
+				.authoritiesByUsernameQuery("select username, role from authorities where username=?");
+	}
 
-    /**
-     * Gets the data source.
-     *
-     * @return the data source
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+	/**
+	 * Gets the data source.
+	 *
+	 * @return the data source
+	 */
+	public DataSource getDataSource() {
+		return dataSource;
+	}
 
-    /**
-     * Sets the data source.
-     *
-     * @param dataSource the new data source
-     */
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
+	/**
+	 * Sets the data source.
+	 *
+	 * @param dataSource
+	 *            the new data source
+	 */
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 }

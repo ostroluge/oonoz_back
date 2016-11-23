@@ -28,6 +28,31 @@ public class SupplierManagerImpl implements SupplierManager {
 		}
 
 	}
+	
+	public List<Supplier> findNotValidSupplier(){
+		List<Supplier> suppliers = supplierRepository.findByIsValidFalse();
+		return suppliers;
+	}
+	
+	
+	public void refuseSupplierRequest(long idPlayer){
+		supplierRepository.deleteSupplierRequest(idPlayer);
+	}
+	
+	/**
+	 * Update.
+	 *
+	 * @param player the player
+	 */
+	public void update(Supplier supplier){		
+		supplierRepository.save(supplier);
+	}
+
+	public void acceptSupplierRequest(Long idPlayer) {
+		Supplier supplier = supplierRepository.findOne(idPlayer);
+		supplier.setIsValid(true);
+		supplierRepository.save(supplier);
+	}
 
 
 }

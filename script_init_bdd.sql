@@ -1,10 +1,20 @@
-DROP TABLE SUPPLIER;
+﻿DROP TABLE SUPPLIER;
 DROP TABLE ADMIN;
 DROP TABLE AUTHORITIES;
 DROP TABLE SUB_THEME;
 DROP TABLE PLAYER_THEME;
 DROP TABLE PLAYER;
 DROP TABLE THEME;
+
+drop sequence admin_id_player_seq;
+drop sequence authorities_id_player_seq;
+drop sequence player_id_seq;
+drop sequence player_theme_id_theme_seq;
+drop sequence sub_theme_id_seq;
+drop sequence sub_theme_id_theme_seq;
+drop sequence supplier_id_player_seq;
+drop sequence theme_id_seq;
+
 
 CREATE TABLE PLAYER (
 id BIGSERIAL PRIMARY KEY,
@@ -61,7 +71,7 @@ INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, p
 INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password) values ('Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','password');
 INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','password');
 INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','password');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','password');
+INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Drem','Password59');
 
 INSERT INTO admin values (1);
 INSERT INTO admin values (2);
@@ -73,7 +83,7 @@ INSERT INTO AUTHORITIES (id_player,username,role) values (1,'Jilief','ROLE_ADMIN
 INSERT INTO AUTHORITIES (id_player,username,role) values (2,'Ostroluge','ROLE_ADMIN');
 INSERT INTO AUTHORITIES (id_player,username,role) values (3,'Goubelf', 'ROLE_PLAYER');
 INSERT INTO AUTHORITIES (id_player,username,role) values (4,'ElPadre','ROLE_SUPPLIER');
-INSERT INTO AUTHORITIES (id_player,username,role) values (5,'Ching chong','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_player,username,role) values (5,'Drem','ROLE_SUPPLIER');
 
 INSERT INTO THEME (id, label, description) values (1, 'Sport', 'Theme sport');
 INSERT INTO THEME (id, label, description) values (2, 'Art', 'Theme art');

@@ -1,5 +1,7 @@
 package oonoz.service;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,20 @@ public class SupplierService {
 
 		supplierManager.create(supplier);
 		mailService.sendValidationMail(supplier);
+		
+	}
+	
+	public List<Supplier> getSupplierRequest(){
+		List<Supplier> supplierList = supplierManager.findNotValidSupplier();
+		return supplierList;
+	}
+	
+	public void refuseSupplierRequest(long idPlayer){
+		supplierManager.refuseSupplierRequest(idPlayer);
+	}
+
+	public void acceptSupplierRequest(long idPlayer) {
+		supplierManager.acceptSupplierRequest(idPlayer);
 		
 	}
 
