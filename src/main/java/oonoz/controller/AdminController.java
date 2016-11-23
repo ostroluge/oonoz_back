@@ -1,5 +1,7 @@
 package oonoz.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,9 @@ import oonoz.util.FilteredSearch;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+	
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	/** The player service. */
 	@Autowired
@@ -41,41 +46,66 @@ public class AdminController {
 	private SupplierDtoConverter supplierDtoConverter;
 	
 	@RequestMapping(value = "/filteredSearch", method = RequestMethod.POST)
-    public ResponseEntity<Page<PlayerDto>> filteredSearch(@RequestBody FilteredSearch filteredSearch) throws WrongInformationException{
-    	    	    	
-    	 return new ResponseEntity<>(playerService.filteredSearch(filteredSearch), HttpStatus.OK);
+    public ResponseEntity<Page<PlayerDto>> filteredSearch(@RequestBody FilteredSearch filteredSearch){
+    	  
+		try{
+			return new ResponseEntity<>(playerService.filteredSearch(filteredSearch), HttpStatus.OK);
+		}
+		catch(WrongInformationException e){
+			logger.error("The page number must be greater or equal than zero !",e);
+    		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+    	 
     }
     
     @RequestMapping(value = "/updatePlayer", method = RequestMethod.POST)
-    public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto) throws WrongInformationException, PlayerNotExistException{
+    public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto){
     	    	    	    	
     	Player player=playerDtoConverter.convertToEntity(playerDto);
-    	
-    	//TODO modifier la conversion pour l'id
-    	player.setId(playerDto.getIdPlayer());
-    	playerService.updatePlayer(player);
-    	
+    	try{
+    		playerService.updatePlayer(player);
+    	}
+    	catch(PlayerNotExistException e){
+    		logger.error("The player does not exist !",e);
+    		return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
+    	}
+    	catch(WrongInformationException e){
+    		logger.error("Information about player are not valid !",e);
+    		return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
+    	}
     	return new ResponseEntity<>("", HttpStatus.OK);
     }
     
     @RequestMapping(value = "/updateSupplier", method = RequestMethod.POST)
-    public ResponseEntity<String> updateSupplier( SupplierDto supplierDto) throws WrongInformationException, PlayerNotExistException{
+    public ResponseEntity<String> updateSupplier( SupplierDto supplierDto){
     	    	    	
     	Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
-    	supplierService.updateSupplier(supplier);
-    	/*Player player=playerDtoConverter.convertToEntity(playerDto);
-    	playerService.updatePlayer(player);
-    	
-    	//TODO modifier la conversion pour l'id
-    	player.setId(playerDto.getIdPlayer());
-    	playerService.updatePlayer(player);*/
+    	try{
+    		supplierService.updateSupplier(supplier);
+    	}
+    	catch(PlayerNotExistException e){
+    		logger.error("The supplier does not exist !",e);
+    		return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
+    	}
+    	catch(WrongInformationException e){
+    		logger.error("Information about supplier are not valid !",e);
+    		return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
+    	}
+    		
     	 return new ResponseEntity<>("", HttpStatus.OK);
     }
     
     @RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
     	
-    	playerService.deletePlayer(idPlayer);
+    	try{
+    		playerService.deletePlayer(idPlayer);
+    	}
+    	catch(PlayerNotExistException e){
+    		logger.error("The user does not exist !",e);
+    		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
+    	}
+    	
     	return new ResponseEntity<>("", HttpStatus.OK);
     }
 }

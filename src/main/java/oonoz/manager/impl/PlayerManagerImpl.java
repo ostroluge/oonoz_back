@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -72,7 +73,7 @@ public class PlayerManagerImpl  implements PlayerManager {
 		if (players.isEmpty()) {
 			player=playerRepository.save(player);
 			Authorities authorities = new Authorities();
-			authorities.setIdAuthorities(player.getId());
+			authorities.setIdAuthorities(player.getIdPlayer());
 			authorities.setRole("ROLE_PLAYER");
 			authorities.setUsername(player.getUsername());
 			
@@ -119,7 +120,8 @@ public class PlayerManagerImpl  implements PlayerManager {
 		
 		Specification<Player> spec=null;
 		
-		Pageable pageable=new PageRequest(filteredSearch.getPageNumber(),filteredSearch.getPageSize());
+		
+		Pageable pageable=new PageRequest(filteredSearch.getPageNumber(),filteredSearch.getPageSize(),Direction.ASC,"idPlayer");
 		
 		
 		if(filteredSearch.getUsernameSearch()!=null && !filteredSearch.getUsernameSearch().equals("")){			
@@ -147,6 +149,8 @@ public class PlayerManagerImpl  implements PlayerManager {
 		}
 		
 		Page<Player> playersPage =playerRepository.findAll(spec, pageable);
+		
+		
 				
 		PlayerDto playerDto=null;
     	List<PlayerDto> playersDto=new ArrayList<PlayerDto>();

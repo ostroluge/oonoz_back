@@ -61,23 +61,23 @@ id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','password',FALSE); 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values ('Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','password',FALSE);
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','password',FALSE);
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','password',TRUE);
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values ('Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','password',TRUE);
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','password',FALSE); 
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','password',FALSE);
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','password',FALSE);
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','password',TRUE);
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','password',TRUE);
 
 INSERT INTO admin values (1);
 INSERT INTO admin values (2);
 
-INSERT INTO supplier (id_player, is_valid, is_private_individual) values (4, TRUE, TRUE);
-INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (5, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
+INSERT INTO supplier (id_player, is_valid, is_private_individual) values (104, TRUE, TRUE);
+INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (105, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
 
-INSERT INTO AUTHORITIES (id_authorities,username,role) values (1,'Jilief','ROLE_ADMIN');
-INSERT INTO AUTHORITIES (id_authorities,username,role) values (2,'Ostroluge','ROLE_ADMIN');
-INSERT INTO AUTHORITIES (id_authorities,username,role) values (3,'Goubelf', 'ROLE_PLAYER');
-INSERT INTO AUTHORITIES (id_authorities,username,role) values (4,'ElPadre','ROLE_SUPPLIER');
-INSERT INTO AUTHORITIES (id_authorities,username,role) values (5,'Ching chong','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (101,'Jilief','ROLE_ADMIN');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (102,'Ostroluge','ROLE_ADMIN');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (103,'Goubelf', 'ROLE_PLAYER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (104,'ElPadre','ROLE_SUPPLIER');
+INSERT INTO AUTHORITIES (id_authorities,username,role) values (105,'Ching chong','ROLE_SUPPLIER');
 
 INSERT INTO THEME (id, label, description) values (1, 'Sport', 'Theme sport');
 INSERT INTO THEME (id, label, description) values (2, 'Art', 'Theme art');

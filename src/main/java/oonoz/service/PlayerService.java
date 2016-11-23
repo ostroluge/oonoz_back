@@ -127,7 +127,7 @@ public class PlayerService {
 		if(player_==null){
 			throw new PlayerNotExistException("The player does not exist !");
 		}
-		playerManager.deletePlayer(player_.getId());
+		playerManager.deletePlayer(player_.getIdPlayer());
 		
 	}
 	/**

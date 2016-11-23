@@ -45,7 +45,7 @@ public class PlayerDtoConverter {
 	 */
 	public PlayerDto convertToDto(Player player){
 		PlayerDto playerDto = new PlayerDto();
-		playerDto.setIdPlayer(player.getId());
+		playerDto.setIdPlayer(player.getIdPlayer());
 		playerDto.setLastName(player.getLastName());
 		playerDto.setFirstName(player.getFirstName());
 		playerDto.setMail(player.getMail());

@@ -37,7 +37,7 @@ public class Player {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	protected long id;
+	protected long idPlayer;
 	
 	
 	/** The first name. */
@@ -75,23 +75,27 @@ public class Player {
 	@PrimaryKeyJoinColumn
 	protected Authorities authorities;
 	
-	/**
-	 * Sets the id.
-	 *
-	 * @param idPlayer the new id
-	 */
-	public void setId(long idPlayer){
-		this.id = idPlayer;
-	}
+	
 	
 	/**
 	 * Gets the id.
 	 *
 	 * @return the id
 	 */
-	public long getId(){
-		return this.id;
+	public long getIdPlayer() {
+		return idPlayer;
 	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param idPlayer the new id
+	 */
+	public void setIdPlayer(long idPlayer) {
+		this.idPlayer = idPlayer;
+	}
+
+	
 
 	/**
 	 * Sets the first name.

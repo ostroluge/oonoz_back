@@ -68,10 +68,6 @@ public class SupplierService {
 		String hashPassword=checkUserInformation.hashPassword(supplier.getPassword());
 		if(hashPassword!=null){	
 			supplier.setPassword(hashPassword);
-			Authorities authorities = new Authorities();
-			authorities.setRole("ROLE_SUPPLIER");
-			authorities.setUsername(supplier.getUsername());
-			supplier.setAuthorities(authorities);
 			supplierManager.create(supplier);
 			mailService.sendValidationMail(supplier);
 		}
