@@ -82,4 +82,15 @@ public class ThemeService {
 	public Theme updateTheme(long id, Theme theme) throws ThemeDoesNotExistException {
 		return themeManager.update(id, theme);
 	}
+
+	/**
+	 * Validate theme.
+	 *
+	 * @param id the id
+	 * @return the theme
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
+	 */
+	public Theme validateTheme(long id) throws ThemeDoesNotExistException {
+		return themeManager.validate(id);
+	}
 }

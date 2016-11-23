@@ -91,4 +91,21 @@ public class ThemeManagerImpl implements ThemeManager {
 			throw new ThemeDoesNotExistException("The theme does not exist");
 		}
 	}
+
+	/**
+	 * Validate the theme.
+	 *
+	 * @param id the id
+	 * @return the theme
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
+	 */
+	public Theme validate(long id) throws ThemeDoesNotExistException {
+		Theme existingTheme = themeRepository.findOne(id);
+		if (existingTheme != null) {
+			existingTheme.setValidated(true);
+			return themeRepository.save(existingTheme);
+		} else {
+			throw new ThemeDoesNotExistException("The theme with id "+ id + " does not exist");
+		}
+	}
 }

@@ -75,4 +75,21 @@ public class SubThemeManagerImpl implements SubThemeManager {
 			throw new SubThemeDoesNotExistException("The subTheme with id " + subtheme.getIdTheme() + "does not exist");
 		}
 	}
+
+	/**
+	 * Validate the subtheme.
+	 *
+	 * @param id the id
+	 * @return the sub theme
+	 * @throws SubThemeDoesNotExistException the sub theme does not exist exception
+	 */
+	public SubTheme validate(long id) throws SubThemeDoesNotExistException {
+		SubTheme existingSubTheme = subThemeRepository.findOne(id);
+		if (existingSubTheme != null) {
+			existingSubTheme.setValidated(true);
+			return subThemeRepository.save(existingSubTheme);
+		} else {
+			throw new SubThemeDoesNotExistException("The subtheme with id "+ id + " does not exist");
+		}
+	}
 }

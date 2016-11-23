@@ -60,6 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .antMatchers(HttpMethod.DELETE, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
 		        .antMatchers(HttpMethod.GET, "/themes/{id}").permitAll()
 		        .antMatchers(HttpMethod.GET, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
+		        .antMatchers(HttpMethod.PUT, "/themes/{idTheme}/subthemes/{idSubTheme}/validation").permitAll()
+		        .antMatchers(HttpMethod.PUT, "/themes/{id}/validation").permitAll()
 		        
 		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()

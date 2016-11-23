@@ -79,4 +79,15 @@ public class SubThemeService {
 			throw new SubThemeDoesNotExistException("The subTheme with id " + idSubTheme + " does not exist");
 		}
 	}
+	
+	/**
+	 * Validate sub theme.
+	 *
+	 * @param id the id
+	 * @return the sub theme
+	 * @throws SubThemeDoesNotExistException the sub theme does not exist exception
+	 */
+	public SubTheme validateSubTheme(long id) throws SubThemeDoesNotExistException {
+		return subThemeManager.validate(id);
+	}
 }

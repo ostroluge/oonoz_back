@@ -249,4 +249,43 @@ public class ThemeController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(response);
 	}
+	
+	/**
+	 * Validate the theme.
+	 *
+	 * @param idTheme the id theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/themes/{idTheme}/validation", method = RequestMethod.PUT)
+	public ResponseEntity<Theme> validateTheme(@PathVariable("idTheme") long idTheme) {
+		try {
+			Theme result = themeService.validateTheme(idTheme);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(result);
+		} catch (ThemeDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+	}
+	
+	/**
+	 * Validate sub theme.
+	 *
+	 * @param idTheme the id theme
+	 * @param idSubTheme the id sub theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/themes/{idTheme}/subthemes/{idSubTheme}/validation", method = RequestMethod.PUT)
+	public ResponseEntity<SubTheme> validateSubTheme(@PathVariable("idTheme") long idTheme,
+			@PathVariable("idSubTheme") long idSubTheme) {
+		try {
+			SubTheme result = subThemeService.validateSubTheme(idSubTheme);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(result);
+		} catch (SubThemeDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+		
+	}
 }
