@@ -10,13 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 // 
@@ -60,7 +60,9 @@ public class Player {
 	@Column(unique=false, nullable = false, name="PASSWORD")
 	protected String password;
 	
+
 	/** The birth date. */
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd",timezone="CET")
 	@Column(unique = false, nullable = false,name="BIRTHDATE")
 	protected Date birthDate;
 	

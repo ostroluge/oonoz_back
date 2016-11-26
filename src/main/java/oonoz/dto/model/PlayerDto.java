@@ -31,7 +31,7 @@ public class PlayerDto {
 	protected String password;
 	
 	/** The birth date. */
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd",timezone="CET")
 	protected Date birthDate;
 	
 	/** The is active. */

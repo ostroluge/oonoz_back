@@ -1,7 +1,13 @@
 package oonoz.manager.impl;
 
 import static oonoz.repository.PlayerSpecifications.firstnameStartWith;
-import static oonoz.repository.PlayerSpecifications.*;
+import static oonoz.repository.PlayerSpecifications.isActive;
+import static oonoz.repository.PlayerSpecifications.isPlayer;
+import static oonoz.repository.PlayerSpecifications.isSupplier;
+import static oonoz.repository.PlayerSpecifications.isUnactive;
+import static oonoz.repository.PlayerSpecifications.lastnameStartWith;
+import static oonoz.repository.PlayerSpecifications.mailStartWith;
+import static oonoz.repository.PlayerSpecifications.usernameStartWith;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 import java.util.ArrayList;
@@ -24,7 +30,6 @@ import oonoz.domain.Supplier;
 import oonoz.dto.converter.PlayerDtoConverter;
 import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
-import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
