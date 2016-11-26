@@ -117,7 +117,7 @@ public class PlayerService {
 		player_.setFirstName(player.getFirstName());
 		player_.setMail(player.getMail());
 		player_.setBirthDate(player.getBirthDate());
-		player_.setIsActive(player.isActive());
+		player_.setIsActive(player.getIsActive());
 		player_.setIsSupplier(player.getIsSupplier());
 		playerManager.update(player_);
 	}
@@ -143,7 +143,7 @@ public class PlayerService {
 		
 		checkUserInformation.checkMail(mail);
 		Player player=playerManager.findByMail(mail);
-		checkUserInformation.checkIsActive(player.isActive());
+		checkUserInformation.checkIsActive(player.getIsActive());
 		String password=generateNewPassword();
 		String hashPassword=checkUserInformation.hashPassword(password);
 		player.setPassword(hashPassword);

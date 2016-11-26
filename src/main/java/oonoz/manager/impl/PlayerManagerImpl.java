@@ -1,11 +1,7 @@
 package oonoz.manager.impl;
 
 import static oonoz.repository.PlayerSpecifications.firstnameStartWith;
-import static oonoz.repository.PlayerSpecifications.isActive;
-import static oonoz.repository.PlayerSpecifications.isSupplier;
-import static oonoz.repository.PlayerSpecifications.isUnactive;
-import static oonoz.repository.PlayerSpecifications.lastnameStartWith;
-import static oonoz.repository.PlayerSpecifications.usernameStartWith;
+import static oonoz.repository.PlayerSpecifications.*;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 import java.util.ArrayList;
@@ -125,28 +121,38 @@ public class PlayerManagerImpl  implements PlayerManager {
 		
 		
 		if(filteredSearch.getUsernameSearch()!=null && !filteredSearch.getUsernameSearch().equals("")){			
-			spec=where(usernameStartWith(filteredSearch.getUsernameSearch()));
+			spec=where(usernameStartWith(filteredSearch.getUsernameSearch().toLowerCase()));
 		}
 		
 		if(filteredSearch.getLastnameSearch()!=null && !filteredSearch.getLastnameSearch().equals("")){			
-			spec=where(lastnameStartWith(filteredSearch.getLastnameSearch()));
+			spec=where(spec).and(lastnameStartWith(filteredSearch.getLastnameSearch().toLowerCase()));
 		}
 		
 		if(filteredSearch.getFirstnameSearch()!=null && !filteredSearch.getFirstnameSearch().equals("")){			
-			spec=where(firstnameStartWith(filteredSearch.getFirstnameSearch()));
+			spec=where(spec).and(firstnameStartWith(filteredSearch.getFirstnameSearch().toLowerCase()));
 		}
 		
-		if(filteredSearch.getUserStatus()!=null && filteredSearch.getUserStatus().equals("supplier")){
+		if(filteredSearch.getMailSearch()!=null && !filteredSearch.getMailSearch().equals("")){			
+			spec=where(spec).and(mailStartWith(filteredSearch.getMailSearch().toLowerCase()));
+		}
+		
+		if(filteredSearch.isPlayerStatus()){			
+			spec=where(spec).and(isPlayer());
+		}
+		
+		if(filteredSearch.isSupplierStatus()){			
 			spec=where(spec).and(isSupplier());
 		}
 		
-		if(filteredSearch.getUserActive()!=null && filteredSearch.getUserActive().equals("active")){
+		if(filteredSearch.isUserActive()){
 			spec=where(spec).and(isActive());
 		}
 		
-		if(filteredSearch.getUserActive()!=null && filteredSearch.getUserActive().equals("unactive")){
+		if(filteredSearch.isUserInactive()){
 			spec=where(spec).and(isUnactive());
 		}
+		
+		
 		
 		Page<Player> playersPage =playerRepository.findAll(spec, pageable);
 		

@@ -8,13 +8,23 @@ public class FilteredSearch {
 	
 	private String firstnameSearch;
 	
-	private String userStatus;
+	private String mailSearch;
 	
 	private int pageNumber;
 	
 	private int pageSize;
 	
-	private String userActive;
+	private boolean userActive;
+	
+	private boolean userInactive;
+	
+	private boolean playerStatus;
+	
+	private boolean supplierStatus;
+	
+	private boolean supplierAccountValid;
+	
+	private boolean supplierAccountNotValid;
 		
 	public int getPageSize() {
 		return pageSize;
@@ -33,13 +43,6 @@ public class FilteredSearch {
 		this.usernameSearch = usernameSearch;
 	}
 
-	public String getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(String userStatus) {
-		this.userStatus = userStatus;
-	}
 
 	public int getPageNumber() {
 		return pageNumber;
@@ -49,13 +52,6 @@ public class FilteredSearch {
 		this.pageNumber = pageNumber;
 	}
 
-	public String getUserActive() {
-		return userActive;
-	}
-
-	public void setUserActive(String userActive) {
-		this.userActive = userActive;
-	}
 
 	public String getLastnameSearch() {
 		return lastnameSearch;
@@ -73,6 +69,64 @@ public class FilteredSearch {
 		this.firstnameSearch = firstnameSearch;
 	}
 
+	public boolean isUserActive() {
+		return userActive;
+	}
+
+	public void setUserActive(boolean userActive) {
+		this.userActive = userActive;
+	}
+
+	public boolean isUserInactive() {
+		return userInactive;
+	}
+
+	public void setUserInactive(boolean userInactive) {
+		this.userInactive = userInactive;
+	}
+
+	public String getMailSearch() {
+		return mailSearch;
+	}
+
+	public void setMailSearch(String mailSearch) {
+		this.mailSearch = mailSearch;
+	}
+
+	public boolean isPlayerStatus() {
+		return playerStatus;
+	}
+
+	public void setPlayerStatus(boolean playerStatus) {
+		this.playerStatus = playerStatus;
+	}
+
+	public boolean isSupplierStatus() {
+		return supplierStatus;
+	}
+
+	public void setSupplierStatus(boolean supplierStatus) {
+		this.supplierStatus = supplierStatus;
+	}
+
+	public boolean isSupplierAccountValid() {
+		return supplierAccountValid;
+	}
+
+	public void setSupplierAccountValid(boolean supplierAccountValid) {
+		this.supplierAccountValid = supplierAccountValid;
+	}
+
+	public boolean isSupplierAccountNotValid() {
+		return supplierAccountNotValid;
+	}
+
+	public void setSupplierAccountNotValid(boolean supplierAccountNotValid) {
+		this.supplierAccountNotValid = supplierAccountNotValid;
+	}
+
+	
+	
 	
 	
 	

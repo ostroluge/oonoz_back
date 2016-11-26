@@ -100,9 +100,11 @@ public class SupplierService {
 		supplier_.setFirstName(supplier.getFirstName());
 		supplier_.setMail(supplier.getMail());
 		supplier_.setBirthDate(supplier.getBirthDate());
-		supplier_.setIsActive(supplier.isActive());
+		supplier_.setIsActive(supplier.getIsActive());
 		supplier_.setIsPrivateIndividual(supplier.getIsPrivateIndividual());
 		supplier_.setIsValid(supplier.getIsValid());
+		supplier_.setIsSupplier(supplier.getIsSupplier());
+		
 		
 
 		if(supplier_.getIsPrivateIndividual()!=null && !supplier_.getIsPrivateIndividual()){

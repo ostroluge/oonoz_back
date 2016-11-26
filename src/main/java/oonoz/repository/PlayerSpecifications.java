@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.Player;
+import oonoz.domain.Supplier;
 
 @Component
 public class PlayerSpecifications {
@@ -24,12 +25,23 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	public static Specification<Player> isPlayer() {
+		return new Specification<Player>() {
+
+			@Override
+			public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> arg1, CriteriaBuilder builder) {
+				return builder.isFalse(root.get("isSupplier"));
+			}
+
+		};
+	}
+	
 	public static Specification<Player> mailStartWith(String searchString) {
 		return new Specification<Player>() {
 
 			@Override
 			public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> arg1, CriteriaBuilder builder) {
-				return builder.like(root.get("mail"),searchString+"%");
+				return builder.like(builder.lower(root.get("mail")),searchString+"%");
 			}
 
 		};
@@ -40,7 +52,7 @@ public class PlayerSpecifications {
 
 			@Override
 			public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> arg1, CriteriaBuilder builder) {
-				return builder.like(root.get("username"),searchString+"%");
+				return builder.like(builder.lower(root.get("username")),searchString+"%");
 			}
 
 		};
@@ -51,7 +63,7 @@ public class PlayerSpecifications {
 
 			@Override
 			public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> arg1, CriteriaBuilder builder) {
-				return builder.like(root.get("lastName"),searchString+"%");
+				return builder.like(builder.lower(root.get("lastName")),searchString+"%");
 			}
 
 		};
@@ -62,7 +74,9 @@ public class PlayerSpecifications {
 
 			@Override
 			public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> arg1, CriteriaBuilder builder) {
-				return builder.like(root.get("firstName"),searchString+"%");
+				
+				return builder.like(builder.lower(root.get("firstName")),searchString+"%");
+				
 			}
 
 		};
@@ -89,5 +103,11 @@ public class PlayerSpecifications {
 
 		};
 	}
+	
+	
+	
+	
+	
+	
 
 }

@@ -58,7 +58,7 @@ public class AdminController {
     	 
     }
     
-    @RequestMapping(value = "/updatePlayer", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePlayer", method = RequestMethod.PUT)
     public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto){
     	    	    	    	
     	Player player=playerDtoConverter.convertToEntity(playerDto);
@@ -76,8 +76,8 @@ public class AdminController {
     	return new ResponseEntity<>("", HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/updateSupplier", method = RequestMethod.POST)
-    public ResponseEntity<String> updateSupplier( SupplierDto supplierDto){
+    @RequestMapping(value = "/updateSupplier", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto){
     	    	    	
     	Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
     	try{

@@ -31,8 +31,8 @@ public class PlayerDtoConverter {
 		player.setUsername(playerDto.getUsername());
 		player.setPassword(playerDto.getPassword());
 		player.setBirthDate(playerDto.getBirthDate());
-		player.setIsActive(playerDto.isActive());
-		player.setIsSupplier(playerDto.isSupplier());
+		player.setIsActive(playerDto.getIsActive());
+		player.setIsSupplier(playerDto.getIsSupplier());
 		
 		return player;
 	}
@@ -52,8 +52,8 @@ public class PlayerDtoConverter {
 		playerDto.setUsername(player.getUsername());
 		//playerDto.setPassword(player.getPassword());
 		playerDto.setBirthDate(player.getBirthDate());
-		playerDto.setIsActive(player.isActive());
-		playerDto.setSupplier(player.getIsSupplier());
+		playerDto.setIsActive(player.getIsActive());
+		playerDto.setIsSupplier(player.getIsSupplier());
 		return playerDto;
 	}
 }

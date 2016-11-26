@@ -205,22 +205,14 @@ public class Player {
 		return this.birthDate;
 	}
 	
-	/**
-	 * Sets the checks if is active.
-	 *
-	 * @param isActive the new checks if is active
-	 */
-	public void setIsActive(Boolean isActive){
-		this.isActive = isActive;
-	}
 	
-	/**
-	 * Checks if is active.
-	 *
-	 * @return the boolean
-	 */
-	public Boolean isActive(){
-		return this.isActive;
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public Boolean getIsSupplier() {
