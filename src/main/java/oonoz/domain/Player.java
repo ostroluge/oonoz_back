@@ -19,7 +19,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
-// 
 /**
  * The Class Player.
  * 
