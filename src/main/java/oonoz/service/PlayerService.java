@@ -68,7 +68,7 @@ public class PlayerService {
 		checkUserInformation.checkFirstName(player.getFirstName());
 		checkUserInformation.checkBirthDate(player.getBirthDate());
 		player.setIsActive(false);
-		
+		player.setIsSupplier(false);
 		String hashPassword=checkUserInformation.hashPassword(player.getPassword());
 		if(hashPassword!=null){
 			player.setPassword(hashPassword);
