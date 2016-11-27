@@ -63,7 +63,7 @@ public class AdminController {
 	public ResponseEntity<StringResponse> acceptSupplierRequest(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer){
 		supplierService.acceptSupplierRequest(idPlayer);
 		StringResponse response = new StringResponse();
-		response.setResponse("La demande a été refusée");
+		response.setResponse("La demande a été acceptée");
 		return  ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
