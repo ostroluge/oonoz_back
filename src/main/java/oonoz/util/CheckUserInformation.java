@@ -18,8 +18,8 @@ import oonoz.exception.WrongInformationException;
 @Component
 public class CheckUserInformation {
 	
-	/** The Constant REGEXPASSWORD. */
-	public final static String REGEXPASSWORD = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
+	/** The Constant REGEXPASSWD. */
+	public final static String REGEXPASSWD = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
 	
 	/** The Constant REGEXMAIL. */
 	protected final static String REGEXMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -47,7 +47,7 @@ public class CheckUserInformation {
 	 *             raised if the information is not valid.
 	 */
 	public void checkPassword(String password) throws WrongInformationException {
-		if (password == null || !password.matches(this.REGEXPASSWORD)) {
+		if (password == null || !password.matches(CheckUserInformation.REGEXPASSWD)) {
 			throw new WrongInformationException("The password is invalid !");
 		}
 	}
@@ -61,7 +61,7 @@ public class CheckUserInformation {
 	 *             raised if the information is not valid.
 	 */
 	public void checkMail(String mail) throws WrongInformationException {
-		if (mail == null || !mail.matches(this.REGEXMAIL)) {
+		if (mail == null || !mail.matches(CheckUserInformation.REGEXMAIL)) {
 			throw new WrongInformationException("The mail is invalid !");
 		}
 	}

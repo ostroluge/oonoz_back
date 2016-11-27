@@ -11,82 +11,82 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-
 /**
  * The Class SecurityConfig.
  * 
- * Description :
- * 		Configuration class for Spring Security framework.
- * 		Handle access to the different REST service.
+ * Description : Configuration class for Spring Security framework. Handle
+ * access to the different REST service.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /** The data source. */
-    @Autowired
-    DataSource dataSource;
+	/** The data source. */
+	@Autowired
+	DataSource dataSource;
 
-    /* (non-Javadoc)
-     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
-     */
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-              
-		        .authorizeRequests()
-		        .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()	
-		        .antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
-		        .antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
-		        .antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
-		        .antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
-		        .antMatchers(HttpMethod.PUT, "/admin/updatePlayer").permitAll()
-		        .antMatchers(HttpMethod.PUT, "/admin/updateSupplier").permitAll()
-		        .antMatchers(HttpMethod.DELETE, "/admin/deleteUser").permitAll()
-		        .antMatchers(HttpMethod.POST, "/admin/filteredSearch").permitAll().and()
-		        //.antMatchers(HttpMethod.GET, "/user/login").hasRole("PLAYER").and()		        
-		        .authorizeRequests()
-		        .anyRequest().authenticated().and()
-		        .httpBasic();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.
+	 * config.annotation.web.builders.HttpSecurity)
+	 */
+	protected void configure(HttpSecurity http) throws Exception {
+		http
 
-       http.csrf().disable();
-    }
+				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
+				.antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
+				.antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
+				.antMatchers(HttpMethod.PUT, "/admin/updatePlayer").permitAll()
+				.antMatchers(HttpMethod.PUT, "/admin/updateSupplier").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/admin/deleteUser").permitAll()
+				.antMatchers(HttpMethod.POST, "/admin/filteredSearch").permitAll().and()
+				// .antMatchers(HttpMethod.GET,
+				// "/user/login").hasRole("PLAYER").and()
+				.authorizeRequests().anyRequest().authenticated().and().httpBasic();
 
-    /* (non-Javadoc)
-     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth
-                .jdbcAuthentication()
-                .passwordEncoder(new ShaPasswordEncoder(256))
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select username , password, is_active as enabled " +
-                                "from player " +
-                                "where username=?")
-                .authoritiesByUsernameQuery(
-                "select username, role from authorities where username=?");
-        
-    }
+		http.csrf().disable();
+	}
 
-    /**
-     * Gets the data source.
-     *
-     * @return the data source
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.
+	 * config.annotation.authentication.builders.AuthenticationManagerBuilder)
+	 */
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().passwordEncoder(new ShaPasswordEncoder(256)).dataSource(dataSource)
+				.usersByUsernameQuery("select mail, password,  is_active FROM player where mail = ?")
+				.authoritiesByUsernameQuery(
+						"select username, role from authorities where username=(select username from player where mail = ?)");
 
-    /**
-     * Sets the data source.
-     *
-     * @param dataSource the new data source
-     */
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+		auth.jdbcAuthentication().passwordEncoder(new ShaPasswordEncoder(256)).dataSource(dataSource)
+				.usersByUsernameQuery("select username, password, is_active from player where username=?")
+				.authoritiesByUsernameQuery("select username, role from authorities where username=?");
+	}
 
+	/**
+	 * Gets the data source.
+	 *
+	 * @return the data source
+	 */
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	/**
+	 * Sets the data source.
+	 *
+	 * @param dataSource
+	 *            the new data source
+	 */
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 }

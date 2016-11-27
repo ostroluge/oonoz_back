@@ -19,25 +19,28 @@ public class SupplierManagerImpl implements SupplierManager {
 
 	@Resource
 	private SupplierRepository supplierRepository;
-	
-	@Resource 
+
+	@Resource
 	private AuthoritiesRepository authoritiesRepository;
-	
-	public void create(Supplier supplier) throws PlayerAlreadyExistException{
-		
+
+	public void create(Supplier supplier) throws PlayerAlreadyExistException {
+
 		List<Player> suppliers = supplierRepository.findByUsernameOrMail(supplier.getUsername(), supplier.getMail());
 		if (suppliers.isEmpty()) {
-			supplier= supplierRepository.save(supplier);		
+
+			supplier = supplierRepository.save(supplier);
 			Authorities authorities = new Authorities();
 			authorities.setIdAuthorities(supplier.getIdPlayer());
 			authorities.setRole("ROLE_SUPPLIER");
 			authorities.setUsername(supplier.getUsername());
-			
+
 			authoritiesRepository.save(authorities);
-		} else
-			throw new PlayerAlreadyExistException("The username or mail of " +supplier.getUsername()+ " already exist !");
-		
+		} else {
+
+			throw new PlayerAlreadyExistException(
+					"The username or mail of " + supplier.getUsername() + " already exist !");
+		}
+
 	}
-	
-	
+
 }

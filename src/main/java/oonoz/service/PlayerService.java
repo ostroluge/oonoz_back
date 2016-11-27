@@ -1,15 +1,19 @@
 package oonoz.service;
 
+
 import java.security.SecureRandom;
 
 import javax.mail.MessagingException;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
 import oonoz.domain.Authorities;
+import oonoz.controller.UserController;
 import oonoz.domain.Player;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -30,12 +34,12 @@ import oonoz.util.MailService;
 @Service
 public class PlayerService {
 
-	
+
 	/** The player manager. */
 	@Autowired
 	private PlayerManagerImpl playerManager;
-	
-		
+
+
 	/** The mail service. */
 	@Autowired
 	private MailService mailService;
@@ -43,6 +47,9 @@ public class PlayerService {
 	/** The check user information. */
 	@Autowired
 	private CheckUserInformation checkUserInformation;
+
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(PlayerService.class);
 
 	/**
 	 * Sign-up a new player.
@@ -72,9 +79,9 @@ public class PlayerService {
 			throw new WrongInformationException("Password invalid");
 		}
 	}
+
 	
-	/**
-	 * Validate mail of the new signed-up player.
+	/* Validate mail of the new signed-up player.
 	 *
 	 * @param mail the mail
 	 * @param hash the hash
@@ -82,18 +89,18 @@ public class PlayerService {
 	 * @throws WrongInformationException the wrong information exception
 	 */
 	public void validationMail(String mail,String hash) throws PlayerNotExistException, WrongInformationException{
-		
-		 if (mail.hashCode() == Integer.valueOf(hash)) {
-            Player player=playerManager.findByMail(mail);
-            player.setIsActive(true);
-            playerManager.update(player);
-         }
-		 else{
-			 throw new WrongInformationException("The key and the mail does not correspond !");
-		 }
-			 
+
+		if (mail.hashCode() == Integer.valueOf(hash)) {
+			Player player=playerManager.findByMail(mail);
+			player.setIsActive(true);
+			playerManager.update(player);
+		}
+		else{
+			throw new WrongInformationException("The key and the mail does not correspond !");
+		}
+
 	}
-	
+
 	/**
 	 * Update player.
 	 *
@@ -102,6 +109,7 @@ public class PlayerService {
 	 * @throws PlayerNotExistException 
 	 */
 	//TODO use spring security authentication principal
+
 	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
 		
 		checkUserInformation.checkUsername(player.getUsername());
@@ -109,7 +117,6 @@ public class PlayerService {
 		checkUserInformation.checkMail(player.getMail());
 		checkUserInformation.checkLastName(player.getLastName());
 		checkUserInformation.checkFirstName(player.getFirstName());
-		//TODO 
 		checkUserInformation.checkBirthDate(player.getBirthDate());
 		Player player_=playerManager.findByMail(player.getMail());
 		player_.setUsername(player.getUsername());
@@ -130,6 +137,8 @@ public class PlayerService {
 		playerManager.deletePlayer(player_.getIdPlayer());
 		
 	}
+
+
 	/**
 	 * Generate password.
 	 *
@@ -140,7 +149,7 @@ public class PlayerService {
 	 * @throws PlayerNotActiveException the player not active exception
 	 */
 	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException{
-		
+
 		checkUserInformation.checkMail(mail);
 		Player player=playerManager.findByMail(mail);
 		checkUserInformation.checkIsActive(player.getIsActive());
@@ -158,17 +167,18 @@ public class PlayerService {
 	 * 		the new generated password.
 	 */
 	private String generateNewPassword(){
-		
+
 		String password = RandomStringUtils.random(9, 0, 0, true, true, null, new SecureRandom());
-		
+
 		try{
-		checkUserInformation.checkPassword(password);
-		return password;
+			checkUserInformation.checkPassword(password);
+			return password;
 		}
 		catch(WrongInformationException e){
+			logger.error("Regenerate a new Password", e);
 			return generateNewPassword();
 		}
-		
+
 	}
 	
 	public Page<PlayerDto> filteredSearch(FilteredSearch filteredSearch) throws WrongInformationException{

@@ -34,24 +34,24 @@ public class MailService {
 	@Value("${oonoz.mail.password}")
 	private String password;
 
-	/*@Value("${oonoz.mail.ssl.enable}")
-	private boolean sslEnable;*/
-
 	/** The sender. */
 	@Value("${oonoz.mail.sender}")
 	private String sender;
 
 	/** The host. */
-	@Value("${oonoz.host}")
+	@Value("${server.host}")
 	private String host;
 
 	/** The port. */
-	@Value("${oonoz.port}")
+	@Value("${server.port}")
 	private int port;
 
 	/** The props. */
 	private Properties props;
 
+	public MailService(){
+		
+	}
 	/**
 	 * Instantiates a new mail service.
 	 *
@@ -60,7 +60,7 @@ public class MailService {
 	 * @param tlsEnable the tls enable
 	 * @param authEnable the auth enable
 	 */
-	public MailService(@Value("${oonoz.mail.host}") String hostMail, @Value("${oonoz.mail.port}") int portMail,@Value("${oonoz.mail.tls.enable}") boolean tlsEnable, @Value("${oonoz.mail.auth}") String authEnable) {
+	public MailService(@Value("${oonoz.mail.host}") String hostMail, @Value("${oonoz.mail.port}") int portMail,@Value("${oonoz.mail.tls_enable}") boolean tlsEnable, @Value("${oonoz.mail.auth}") String authEnable) {
 
 		this.props = new Properties();
 		this.props.put("mail.smtp.host", hostMail);
