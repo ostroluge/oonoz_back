@@ -44,7 +44,7 @@ CREATE TABLE THEME (
 id SERIAL PRIMARY KEY,
 label VARCHAR(20) NOT NULL UNIQUE,
 description VARCHAR(100) NOT NULL,
-icon VARCHAR(150),
+icon TEXT,
 is_valid boolean NOT NULL
 );
 
@@ -53,7 +53,7 @@ id SERIAL PRIMARY KEY,
 id_theme SERIAL references theme(id) ON DELETE CASCADE,
 label VARCHAR(20) NOT NULL,
 description VARCHAR(100) NOT NULL,
-icon VARCHAR(150),
+icon TEXT,
 is_valid boolean NOT NULL
 );
 
