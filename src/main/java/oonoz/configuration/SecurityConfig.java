@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .antMatchers(HttpMethod.GET, "/admin/getSupplierRequest").permitAll()
 		        .antMatchers(HttpMethod.DELETE,"/admin/refuseSupplierRequest").permitAll()
 		        .antMatchers(HttpMethod.POST,"/admin/acceptSupplierRequest").permitAll()
+		        .antMatchers(HttpMethod.POST,"/admin/createSupplierAccount").permitAll()
+		        .antMatchers(HttpMethod.POST,"/admin/createPlayerAccount").permitAll()
 		        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		        .authorizeRequests()
 		        .anyRequest().authenticated().and()
