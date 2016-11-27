@@ -43,7 +43,7 @@ import oonoz.util.MailService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=OonozApplication.class)
 @DataJpaTest
-@TestPropertySource(locations = {"classpath:application-test.properties"})
+@TestPropertySource(locations = {"classpath:/test/config.properties"})
 public class PlayerServiceTest {
 
 
