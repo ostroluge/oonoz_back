@@ -64,7 +64,7 @@ public class SupplierService {
 		}
 		supplier.setIsValid(false);
 		supplier.setIsActive(false);
-
+		supplier.setIsSupplier(true);
 		String hashPassword=checkUserInformation.hashPassword(supplier.getPassword());
 		if(hashPassword!=null){	
 			supplier.setPassword(hashPassword);
