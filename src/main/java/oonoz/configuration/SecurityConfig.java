@@ -55,12 +55,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.PUT, "/themes/{idTheme}/subthemes/{idSubTheme}/validation").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{id}/validation").permitAll()
 
+		.antMatchers(HttpMethod.GET, "/admin/getSupplierRequest").permitAll()
+		.antMatchers(HttpMethod.DELETE,"/admin/refuseSupplierRequest").permitAll()
+		.antMatchers(HttpMethod.POST,"/admin/acceptSupplierRequest").permitAll()
+
 		.antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		.authorizeRequests()
 		.anyRequest().authenticated().and()
 		.httpBasic();
-
-
 
 		http.csrf().disable();
 	}
