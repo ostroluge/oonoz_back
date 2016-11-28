@@ -2,6 +2,7 @@ package oonoz.controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -23,23 +24,28 @@ import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerNotExistException;
+import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.SupplierService;
 import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
 
+/**
+ * The Class AdminController.
+ */
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
 	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-
+	
 	/** The player service. */
 	@Autowired
 	private PlayerService playerService;
 	
+	/** The supplier service. */
 	@Autowired
 	private SupplierService supplierService;
 	
@@ -47,9 +53,16 @@ public class AdminController {
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
 	
+	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
 	
+	/**
+	 * Filtered search.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the response entity
+	 */
 	@RequestMapping(value = "/filteredSearch", method = RequestMethod.POST)
     public ResponseEntity<Page<PlayerDto>> filteredSearch(@RequestBody FilteredSearch filteredSearch){
     	  
@@ -63,6 +76,12 @@ public class AdminController {
     	 
     }
     
+    /**
+     * Update user.
+     *
+     * @param playerDto the player dto
+     * @return the response entity
+     */
     @RequestMapping(value = "/updatePlayer", method = RequestMethod.PUT)
     public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto){
     	    	    	    	
@@ -81,6 +100,12 @@ public class AdminController {
     	return new ResponseEntity<>("", HttpStatus.OK);
     }
     
+    /**
+     * Update supplier.
+     *
+     * @param supplierDto the supplier dto
+     * @return the response entity
+     */
     @RequestMapping(value = "/updateSupplier", method = RequestMethod.PUT)
     public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto){
     	    	    	
@@ -100,6 +125,13 @@ public class AdminController {
     	 return new ResponseEntity<>("", HttpStatus.OK);
     }
     
+    /**
+     * Delete user.
+     *
+     * @param idPlayer the id player
+     * @return the response entity
+     * @throws PlayerNotExistException the player not exist exception
+     */
     @RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
     	
@@ -129,31 +161,98 @@ public class AdminController {
 	}
 
 	/**
-	 * Authenticate users.
+	 * Refuse supplier request.
 	 *
-	 * @param request
-	 *            the request
+	 * @param idPlayer the id player
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/refuseSupplierRequest", method=RequestMethod.DELETE)
-	public ResponseEntity<StringResponse> refuseSupplierRequest(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer){
-//	public ResponseEntity<List<Supplier>> refuseSupplierRequest(HttpServletRequest request) {
+	@RequestMapping(value = "/refuseSupplierRequest", method = RequestMethod.DELETE)
+	public ResponseEntity<StringResponse> refuseSupplierRequest(
+			@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) {
+		// public ResponseEntity<List<Supplier>>
+		// refuseSupplierRequest(HttpServletRequest request) {
 		supplierService.refuseSupplierRequest(idPlayer);
 		StringResponse response = new StringResponse();
 		response.setResponse("La demande a été refusée");
-		return  ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	
+
 	/**
-	 * 
-	 * @param idPlayer
-	 * @return
+	 * Accept supplier request.
+	 *
+	 * @param idPlayer the id player
+	 * @return the response entity
 	 */
-	@RequestMapping(value = "/acceptSupplierRequest", method=RequestMethod.POST)
-	public ResponseEntity<StringResponse> acceptSupplierRequest(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer){
+	@RequestMapping(value = "/acceptSupplierRequest", method = RequestMethod.POST)
+	public ResponseEntity<StringResponse> acceptSupplierRequest(
+			@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) {
 		supplierService.acceptSupplierRequest(idPlayer);
 		StringResponse response = new StringResponse();
 		response.setResponse("La demande a été acceptée");
-		return  ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+	/**
+	 * Creates the player account.
+	 *
+	 * @param playerDto the player dto
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/createPlayerAccount", method = RequestMethod.POST)
+	public ResponseEntity<StringResponse> createPlayerAccount(@RequestBody PlayerDto playerDto) {
+
+		Player player = playerDtoConverter.convertToEntity(playerDto);
+		StringResponse response = new StringResponse();
+		try {
+			this.playerService.signUp(player);
+		} catch (WrongInformationException e) {
+			logger.error(e.getMessage());
+			response.setResponse("The information of sign-up are not valid !");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+			// return new ResponseEntity<>("The information of sign-up are not
+			// valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
+		} catch (PlayerAlreadyExistException e) {
+			logger.error(e.getMessage());
+			response.setResponse("The player already exists !");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+			// return new ResponseEntity<>("The player already exist !",
+			// HttpStatus.BAD_REQUEST);
+		} catch (MessagingException e) {
+			logger.error(e.getMessage());
+			response.setResponse("A error occurs when sending validation mail !");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			// return new ResponseEntity<>("A error occurs when sending
+			// validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.setResponse("Player created !");
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+		// return new ResponseEntity<>("", HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * create supplier account.
+	 *
+	 * @param supplierDto the supplier dto
+	 * 		The light representation of the supplier entity
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/createSupplierAccount", method = RequestMethod.POST)
+    public ResponseEntity<String> createSupplierAccount(@RequestBody SupplierDto supplierDto) {
+		
+		Supplier supplier = supplierDtoConverter.convertToEntity(supplierDto);
+		try {
+			this.supplierService.signUp(supplier);
+		} catch (WrongInformationException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
+		} catch (PlayerAlreadyExistException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("The player already exist !", HttpStatus.CONFLICT);
+		} catch (MessagingException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		 return new ResponseEntity<>("", HttpStatus.OK);
 	}
 }
