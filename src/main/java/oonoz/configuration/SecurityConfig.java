@@ -25,28 +25,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.security.config.annotation.web.configuration.
-	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.
-	 * config.annotation.web.builders.HttpSecurity)
+	/* (non-Javadoc)
+	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
 	 */
 	protected void configure(HttpSecurity http) throws Exception {
-		http
+		http    
+		.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
+		.antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
+		.antMatchers(HttpMethod.PUT, "/admin/updatePlayer").permitAll()
+		.antMatchers(HttpMethod.PUT, "/admin/updateSupplier").permitAll()
+		.antMatchers(HttpMethod.DELETE, "/admin/deleteUser").permitAll()
+		.antMatchers(HttpMethod.POST, "/admin/filteredSearch").permitAll()
+		// .antMatchers(HttpMethod.GET,
+		// "/user/login").hasRole("PLAYER").and()
+		//		.authorizeRequests().anyRequest().authenticated().and().httpBasic();
+		//TODO 09/11/16 : permission management
+		.antMatchers(HttpMethod.GET, "/themes").permitAll()
+		.antMatchers(HttpMethod.POST, "/themes").permitAll()
+		.antMatchers(HttpMethod.DELETE, "/themes/{id}").permitAll()
+		.antMatchers(HttpMethod.PUT, "/themes/{id}").permitAll()
+		.antMatchers(HttpMethod.POST, "/themes/{id}/subthemes").permitAll()
+		.antMatchers(HttpMethod.PUT, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
+		.antMatchers(HttpMethod.DELETE, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
+		.antMatchers(HttpMethod.GET, "/themes/{id}").permitAll()
+		.antMatchers(HttpMethod.GET, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
+		.antMatchers(HttpMethod.PUT, "/themes/{idTheme}/subthemes/{idSubTheme}/validation").permitAll()
+		.antMatchers(HttpMethod.PUT, "/themes/{id}/validation").permitAll()
 
-				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/user/signUpPlayer").permitAll()
-				.antMatchers(HttpMethod.POST, "/user/signUpSupplier").permitAll()
-				.antMatchers(HttpMethod.POST, "/user/generatePassword").permitAll()
-				.antMatchers(HttpMethod.GET, "/user/validationMail").permitAll()
-				.antMatchers(HttpMethod.PUT, "/admin/updatePlayer").permitAll()
-				.antMatchers(HttpMethod.PUT, "/admin/updateSupplier").permitAll()
-				.antMatchers(HttpMethod.DELETE, "/admin/deleteUser").permitAll()
-				.antMatchers(HttpMethod.POST, "/admin/filteredSearch").permitAll().and()
-				// .antMatchers(HttpMethod.GET,
-				// "/user/login").hasRole("PLAYER").and()
-				.authorizeRequests().anyRequest().authenticated().and().httpBasic();
+		.antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
+		.authorizeRequests()
+		.anyRequest().authenticated().and()
+		.httpBasic();
+
+
 
 		http.csrf().disable();
 	}
@@ -61,13 +75,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().passwordEncoder(new ShaPasswordEncoder(256)).dataSource(dataSource)
-				.usersByUsernameQuery("select mail, password,  is_active FROM player where mail = ?")
-				.authoritiesByUsernameQuery(
-						"select username, role from authorities where username=(select username from player where mail = ?)");
+		.usersByUsernameQuery("select mail, password,  is_active FROM player where mail = ?")
+		.authoritiesByUsernameQuery(
+				"select username, role from authorities where username=(select username from player where mail = ?)");
 
 		auth.jdbcAuthentication().passwordEncoder(new ShaPasswordEncoder(256)).dataSource(dataSource)
-				.usersByUsernameQuery("select username, password, is_active from player where username=?")
-				.authoritiesByUsernameQuery("select username, role from authorities where username=?");
+		.usersByUsernameQuery("select username, password, is_active from player where username=?")
+		.authoritiesByUsernameQuery("select username, role from authorities where username=?");
 	}
 
 	/**
