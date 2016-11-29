@@ -80,6 +80,33 @@ public class PlayerService {
 		}
 	}
 
+	/**
+	 * Sign-up a new player already active without mail.
+	 *
+	 * @param player Contains player's information
+	 * @throws WrongInformationException  If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException  If the player which is signing-up already exist.
+	 * @throws MessagingException the messaging exception
+	 */
+	public void signUpByAdmin(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
+
+		checkUserInformation.checkUsername(player.getUsername());
+		checkUserInformation.checkPassword(player.getPassword());
+		checkUserInformation.checkMail(player.getMail());
+		checkUserInformation.checkLastName(player.getLastName());
+		checkUserInformation.checkFirstName(player.getFirstName());
+		checkUserInformation.checkBirthDate(player.getBirthDate());
+		player.setIsActive(true);
+		player.setIsSupplier(false);
+		String hashPassword=checkUserInformation.hashPassword(player.getPassword());
+		if(hashPassword!=null){
+			player.setPassword(hashPassword);
+			playerManager.create(player);
+		}
+		else{
+			throw new WrongInformationException("Password invalid");
+		}
+	}
 	
 	/* Validate mail of the new signed-up player.
 	 *

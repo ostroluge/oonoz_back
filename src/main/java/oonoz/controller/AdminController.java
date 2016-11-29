@@ -204,7 +204,7 @@ public class AdminController {
 		Player player = playerDtoConverter.convertToEntity(playerDto);
 		StringResponse response = new StringResponse();
 		try {
-			this.playerService.signUp(player);
+			this.playerService.signUpByAdmin(player);
 		} catch (WrongInformationException e) {
 			logger.error(e.getMessage());
 			response.setResponse("The information of sign-up are not valid !");
@@ -242,7 +242,7 @@ public class AdminController {
 		
 		Supplier supplier = supplierDtoConverter.convertToEntity(supplierDto);
 		try {
-			this.supplierService.signUp(supplier);
+			this.supplierService.signUpByAdmin(supplier);
 		} catch (WrongInformationException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
