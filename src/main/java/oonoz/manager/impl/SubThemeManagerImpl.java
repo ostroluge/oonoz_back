@@ -5,9 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.SubTheme;
-import oonoz.domain.Theme;
 import oonoz.exception.SubThemeDoesNotExistException;
-import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.manager.SubThemeManager;
 import oonoz.repository.SubThemeRepository;
 

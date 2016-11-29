@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
 import oonoz.exception.ThemeDoesNotExistException;
@@ -20,7 +19,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	/** The theme repository. */
 	@Resource
 	private ThemeRepository themeRepository;
-
+	
 	/**
 	 * Find all.
 	 *
@@ -66,8 +65,6 @@ public class ThemeManagerImpl implements ThemeManager {
 		
 		Theme existingTheme = themeRepository.findOne(theme.getIdTheme());
 		if (existingTheme != null) {
-			existingTheme.setSubThemes(theme.getSubThemes());
-			System.out.println(existingTheme.toString());
 			themeRepository.delete(existingTheme);
 		} else {
 			throw new ThemeDoesNotExistException("The theme with id " + theme.getIdTheme() + "does not exist");
