@@ -1,5 +1,7 @@
 package oonoz.service;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +74,50 @@ public class SupplierService {
 	}
 
 	/**
+	 * Sign-up a new supplier already active without mail.
+	 * 
+	 * @param player
+	 *            Contains player's information
+	 * @throws WrongInformationException
+	 *             If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException
+	 *             If the player which is signing-up already exist.
+	 * @throws MessagingException 
+	 */
+	public void signUpByAdmin(Supplier supplier) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
+
+		checkUserInformation.checkUsername(supplier.getUsername());
+		checkUserInformation.checkPassword(supplier.getPassword());
+		checkUserInformation.checkMail(supplier.getMail());
+		checkUserInformation.checkLastName(supplier.getLastName());
+		checkUserInformation.checkFirstName(supplier.getFirstName());
+		checkUserInformation.checkBirthDate(supplier.getBirthDate());
+		
+		if(supplier.getIsPrivateIndividual()!=null && !supplier.getIsPrivateIndividual()){
+			checkUserInformation.checkSiretNumber(supplier.getSiretNumber());
+			checkUserInformation.checkCompanyAddress(supplier.getCompanyAddress());
+			checkUserInformation.checkCompanyName(supplier.getCompanyName());
+		}
+		else{
+			supplier.setIsPrivateIndividual(true);
+			supplier.setSiretNumber(null);
+			supplier.setCompanyAddress(null);
+			supplier.setCompanyName(null);
+		}
+		supplier.setIsValid(true);
+		supplier.setIsActive(true);
+		supplier.setIsSupplier(true);
+		String hashPassword=checkUserInformation.hashPassword(supplier.getPassword());
+		if(hashPassword!=null){	
+			supplier.setPassword(hashPassword);
+			supplierManager.create(supplier);
+		}
+		else{
+			throw new WrongInformationException("Password invalid");
+		}	
+	}
+	
+	/**
 	 * Update supplier.
 	 *
 	 * @param player
@@ -117,6 +163,20 @@ public class SupplierService {
 		} else {
 			throw new PlayerNotExistException("The player does not exist !");
 		}
+	}
+	
+	public List<Supplier> getSupplierRequest(){
+		List<Supplier> supplierList = supplierManager.findNotValidSupplier();
+		return supplierList;
+	}
+	
+	public void refuseSupplierRequest(long idPlayer){
+		supplierManager.refuseSupplierRequest(idPlayer);
+	}
+
+	public void acceptSupplierRequest(long idPlayer) {
+		supplierManager.acceptSupplierRequest(idPlayer);
+		
 	}
 
 }
