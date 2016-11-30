@@ -62,9 +62,15 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
      */
     Page<Player> findByIsSupplierFalse(Pageable pageable);
     
-    
-   
+	@Transactional
+	@Modifying
+    @Query(value="UPDATE player SET type_user='Supplier'  where id=?1",nativeQuery = true)
+    int updatePlayerToSupplier(long idPlayer);
+ 
     //Page<Player> findAll(Pageable pageable);
     
-    
+	@Transactional
+	@Modifying
+	@Query(value="INSERT INTO supplier (id_player,is_valid,is_private_individual) VALUES (?1,false,true)",nativeQuery = true)
+	int createSupplierRow(long idPlayer);
 }

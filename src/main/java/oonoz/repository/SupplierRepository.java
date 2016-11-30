@@ -2,9 +2,12 @@ package oonoz.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import oonoz.domain.Player;
 import oonoz.domain.Supplier;
 
 /**
@@ -21,6 +24,12 @@ public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 	 * @param mail the mail
 	 * @return the list
 	 */
-	List<Player> findByUsernameOrMail(String username,String mail);
-
+	List<Supplier> findByUsernameOrMail(String username,String mail);
+	
+	@Transactional
+	@Modifying
+	@Query(value="delete from supplier where id_supplier=?1 ",nativeQuery = true)
+    int deleteSupplierById(long idPlayer);
+	
+	
 }

@@ -113,6 +113,11 @@ public class PlayerManagerImpl  implements PlayerManager {
 		playerRepository.save(player);
 	}
 	
+	
+	public Player findById(long id){
+		return playerRepository.findOne(id);
+	}
+	
 	/**
 	 * Find all players. Results are split in several page.
 	 * @param pageNumber
@@ -192,4 +197,24 @@ public class PlayerManagerImpl  implements PlayerManager {
 		 playerRepository.delete(id);
 	}
 
+	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
+		Player player=playerRepository.findOne(idPlayer);
+		if(player!=null){
+			if(!player.getIsSupplier() && !(player instanceof Supplier)){
+				playerRepository.updatePlayerToSupplier(idPlayer);
+				playerRepository.createSupplierRow(idPlayer);
+				player.setIsSupplier(true);
+			}
+			else if(player.getIsSupplier()){
+				player.setIsSupplier(false);	
+			}
+			else{
+				player.setIsSupplier(true);
+			}
+			playerRepository.save(player);
+		}
+		else{
+			throw new PlayerNotExistException("The player does not exist !");
+		}
+	}
 }

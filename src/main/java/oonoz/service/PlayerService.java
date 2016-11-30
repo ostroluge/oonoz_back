@@ -38,8 +38,7 @@ public class PlayerService {
 	/** The player manager. */
 	@Autowired
 	private PlayerManagerImpl playerManager;
-
-
+	
 	/** The mail service. */
 	@Autowired
 	private MailService mailService;
@@ -125,7 +124,7 @@ public class PlayerService {
 		player_.setMail(player.getMail());
 		player_.setBirthDate(player.getBirthDate());
 		player_.setIsActive(player.getIsActive());
-		player_.setIsSupplier(player.getIsSupplier());
+		player_.setIsSupplier(false);
 		playerManager.update(player_);
 	}
 	
@@ -191,6 +190,13 @@ public class PlayerService {
 		
 	}
 	
+	public Player getPlayerById(long idPlayer){
+		return playerManager.getPlayer(idPlayer);
+	}
+	
+	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
+		playerManager.changeStatusUser(idPlayer);
+	}
 	
 
 }

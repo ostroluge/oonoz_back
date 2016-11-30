@@ -3,6 +3,7 @@ package oonoz.manager.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class SupplierManagerImpl implements SupplierManager {
 
 	public void create(Supplier supplier) throws PlayerAlreadyExistException {
 
-		List<Player> suppliers = supplierRepository.findByUsernameOrMail(supplier.getUsername(), supplier.getMail());
+		List<Supplier> suppliers = supplierRepository.findByUsernameOrMail(supplier.getUsername(), supplier.getMail());
 		if (suppliers.isEmpty()) {
 
 			supplier = supplierRepository.save(supplier);
@@ -42,5 +43,20 @@ public class SupplierManagerImpl implements SupplierManager {
 		}
 
 	}
+	
+	public Player findById(long id){
+		
+		return supplierRepository.findOne(id);
+	}
+	
+	public Player update(Supplier supplier){
+		return supplierRepository.save(supplier);
+	}
+	
+	public void deleteSupplierById(long idPlayer){
+		supplierRepository.deleteSupplierById(idPlayer);
+	}
+	
+	
 
 }

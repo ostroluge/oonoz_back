@@ -39,6 +39,7 @@ public class Supplier extends Player{
 		this.password=player.password;
 		this.isActive=player.isActive;
 		this.isSupplier=player.isSupplier;
+		this.authorities=player.authorities;
 	}
 	
 	/** True if the supplier has validated his sign-up. */
