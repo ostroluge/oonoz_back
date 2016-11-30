@@ -80,6 +80,7 @@ public class AdminController {
     public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto){
     	    	    	
     	Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
+    	supplier.setIdPlayer(supplierDto.getIdPlayer());
     	try{
     		supplierService.updateSupplier(supplier);
     	}
@@ -108,4 +109,20 @@ public class AdminController {
     	
     	return new ResponseEntity<>("", HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/changeStatusUser", method = RequestMethod.GET)
+    public ResponseEntity<String> changeStatusUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
+    	
+    	try{
+    		if(idPlayer!=null)
+    			playerService.changeStatusUser(idPlayer);
+    	}
+    	catch(PlayerNotExistException e){
+    		logger.error("The user does not exist !",e);
+    		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
+    	}
+    	
+    	return new ResponseEntity<>("", HttpStatus.OK);
+    }
+    
 }
