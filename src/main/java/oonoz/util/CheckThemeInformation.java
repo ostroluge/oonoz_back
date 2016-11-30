@@ -30,7 +30,7 @@ public class CheckThemeInformation {
 	 */
 	public void checkDescription(String description) throws WrongInformationException {
 		if (description == null || description.length() < 4 
-				|| description.length() > 20) {
+				|| description.length() > 300) {
 			throw new WrongInformationException("The description theme is invalid !");
 		}
 	}
