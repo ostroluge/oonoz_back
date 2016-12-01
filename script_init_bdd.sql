@@ -1,4 +1,7 @@
-﻿DROP TABLE SUPPLIER;
+﻿DROP TABLE SUB_THEME_QCM;
+DROP TABLE QUESTION;
+DROP TABLE QCM;
+DROP TABLE SUPPLIER;
 DROP TABLE ADMIN;
 DROP TABLE AUTHORITIES;
 DROP TABLE SUB_THEME;
@@ -6,7 +9,6 @@ DROP TABLE PLAYER_THEME;
 DROP TABLE PLAYER;
 DROP TABLE THEME;
 DROP TABLE ADMIN;
-
 
 drop sequence admin_id_player_seq;
 drop sequence authorities_id_player_seq;
@@ -84,15 +86,46 @@ id_player BIGSERIAL references player(id) ON DELETE CASCADE,
 id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
+CREATE TABLE QCM (
+id BIGSERIAL PRIMARY KEY,
+id_theme SERIAL references theme(id) ON DELETE CASCADE,
+id_player BIGSERIAL references player(id) ON DELETE CASCADE,
+name VARCHAR(40) not null,
+description VARCHAR(150) not null,
+isValidated boolean not null,
+isFree boolean not null,
+price float(2),
+iconQCM VARCHAR(100),
+prizeName VARCHAR(50),
+prizeDescription VARCHAR(150),
+minimalScore integer,
+categorie VARCHAR(10) not null
+);
+
+CREATE TABLE QUESTION (
+id BIGSERIAL PRIMARY KEY, 
+id_qcm BIGSERIAL references QCM(id) ON DELETE CASCADE,
+title VARCHAR(200) not null,
+typeMedia VARCHAR(10),
+media VARCHAR(100),
+answer VARCHAR(50) not null,
+proposition1 VARCHAR(50) not null,
+proposition2 VARCHAR(50) not null,
+proposition3 VARCHAR(50) not null,
+time integer
+);
+
+CREATE TABLE SUB_THEME_QCM (
+id_sub_theme SERIAL references sub_theme(id) ON DELETE CASCADE,
+id_qcm BIGSERIAL references qcm(id) ON DELETE CASCADE
+);
 
 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
-
-
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
 
 INSERT INTO supplier (id_player, is_valid, is_private_individual) values (104, TRUE, TRUE);
 INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (105, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
@@ -114,8 +147,37 @@ INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (4,2,'C
 INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
 INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
 
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (1,1);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (2,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (3,3);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (4,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (5,1);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (101,1);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (102,2);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
+
+INSERT INTO QCM (id, id_theme, id_player, name, description, isValidated, isFree, categorie) values (101, 1, 101, 'Ligue 1',
+'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif');
+INSERT INTO QCM (id, id_theme, id_player, name, description, isValidated, isFree, categorie) values (102, 2, 102, 'Max et Léon',
+'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif');
+INSERT INTO QCM (id, id_theme, id_player, name, description, isValidated, isFree, categorie) values (103, 3, 103, 'B2oba',
+'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif');
+
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (101, 101,
+ 'Quelle équipe a remporté le championnat de France de L1 lors de la saison 1997-1998 ?', 'RC Lens', 'Olympique Lyonnais', 
+ 'Olympique de Marseille', 'AS Monaco');
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (102, 101,
+ 'Quelle équipe a remporté le championnat de France de L1 lors de la saison 2015-2016 ?', 'Paris Saint Germain',
+  'Olympique Lyonnais', 'Olympique de Marseille', 'AS Monaco');
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (103, 102,
+ 'Pendant quelle guerre l action se déroule t elle ?', 'La seconde guerre mondiale',
+  'La première guerre mondiale', 'La guerre du Vietnam', 'La guerre froide');
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (104, 102,
+ 'De quelle ville les 2 personnages sont ils originaires ?', 'Macon',
+  'Paris', 'Marseille', 'Lyon');
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (105, 103,
+ 'Quel département est cité lors de son célèbre slogan ?', '92', '93', '94', '62');
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (106, 103,
+ 'En quelle année le rapeur est-il né ?', '1976', '1986', '1982', '1978');
+
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (1, 101);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (4, 101);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (4, 102);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (5, 103);
