@@ -9,16 +9,6 @@ DROP TABLE PLAYER_THEME;
 DROP TABLE PLAYER;
 DROP TABLE THEME;
 
-
-drop sequence admin_id_player_seq;
-drop sequence authorities_id_player_seq;
-drop sequence player_id_seq;
-drop sequence player_theme_id_theme_seq;
-drop sequence sub_theme_id_seq;
-drop sequence sub_theme_id_theme_seq;
-drop sequence supplier_id_player_seq;
-drop sequence theme_id_seq;
-
 drop sequence admin_id_player_seq;
 drop sequence authorities_id_player_seq;
 drop sequence player_id_seq;
