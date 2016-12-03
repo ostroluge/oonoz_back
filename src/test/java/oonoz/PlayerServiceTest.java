@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.mail.MessagingException;
-import javax.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -179,6 +178,5 @@ public class PlayerServiceTest {
 		//[-- VERIFICATION --]
 		//Throw PlayerNotActiveException
 	}
-	
-	
+
 }
