@@ -8,7 +8,7 @@ DROP TABLE SUB_THEME;
 DROP TABLE PLAYER_THEME;
 DROP TABLE PLAYER;
 DROP TABLE THEME;
-DROP TABLE ADMIN;
+
 
 drop sequence admin_id_player_seq;
 drop sequence authorities_id_player_seq;
@@ -89,17 +89,17 @@ id_theme SERIAL references theme(id) ON DELETE CASCADE
 CREATE TABLE QCM (
 id BIGSERIAL PRIMARY KEY,
 id_theme SERIAL references theme(id) ON DELETE CASCADE,
-id_player BIGSERIAL references player(id) ON DELETE CASCADE,
+id_supplier BIGSERIAL references player(id) ON DELETE CASCADE,
 name VARCHAR(40) not null,
 description VARCHAR(150) not null,
-isValidated boolean not null,
-isFree boolean not null,
+is_validated boolean not null,
+is_free boolean not null,
 price float(2),
-iconQCM VARCHAR(100),
-prizeName VARCHAR(50),
-prizeDescription VARCHAR(150),
+icon VARCHAR(100),
+prize_name VARCHAR(50),
+prize_description VARCHAR(150),
 minimalScore integer,
-categorie VARCHAR(10) not null
+category VARCHAR(10) not null
 );
 
 CREATE TABLE QUESTION (
@@ -153,11 +153,11 @@ INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
 
-INSERT INTO QCM (id, id_theme, id_player, name, description, isValidated, isFree, categorie) values (101, 1, 101, 'Ligue 1',
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category) values (101, 1, 101, 'Ligue 1',
 'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif');
-INSERT INTO QCM (id, id_theme, id_player, name, description, isValidated, isFree, categorie) values (102, 2, 102, 'Max et Léon',
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category) values (102, 2, 102, 'Max et Léon',
 'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif');
-INSERT INTO QCM (id, id_theme, id_player, name, description, isValidated, isFree, categorie) values (103, 3, 103, 'B2oba',
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category) values (103, 3, 103, 'B2oba',
 'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif');
 
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (101, 101,
