@@ -12,7 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 
 
@@ -26,8 +30,22 @@ public class QCM {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
+	/** The name. */
+	@Column(unique = true, nullable = false,name="ID_THEME")
 	private long idTheme;
+	
+	@OneToOne
+	@JoinColumn(name="ID_THEME",insertable = false,updatable = false)
+	private Theme theme;
+	
+	@Column(unique = true, nullable = false,name="ID_SUPPLIER")
 	private long idSupplier;
+	
+	
+	@OneToMany
+	@LazyCollection(LazyCollectionOption.TRUE)
+    @JoinTable(name="SUB_THEME_QCM",joinColumns =@JoinColumn(name = "ID_QCM") ,inverseJoinColumns = @JoinColumn(name="ID_SUB_THEME"))
+	private List<SubTheme> subThemes;
 	
 	/** The name. */
 	@Column(unique = true, nullable = false,name="NAME")
@@ -57,21 +75,14 @@ public class QCM {
 	@Column(unique = false, nullable = true,name="PRIZE_DESCRIPTION")
 	private String prizeDescription;
 	
-	@Column(unique = false, nullable = true,name="MINIMAL_SCORE")
+	@Column(name="MINIMAL_SCORE")
 	private int minimalScore;
 	
 	@Column(unique = false, nullable = false,name="CATEGORY")
 	private String category;
 	
-	/** The sub themes. */
-	
-	
-	@OneToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_QCM"),
-            inverseJoinColumns = @JoinColumn(name = "ID_SUB_THEME"))
-	private List<SubTheme> subThemes;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany( cascade = CascadeType.ALL)
 	@JoinColumn(name = "ID_QCM",updatable = false)
 	private List<Question> questions;
 
@@ -165,15 +176,6 @@ public class QCM {
 		this.category = category;
 	}
 
-	
-
-	public List<SubTheme> getSubThemes() {
-		return subThemes;
-	}
-
-	public void setSubThemes(List<SubTheme> subThemes) {
-		this.subThemes = subThemes;
-	}
 
 	public long getIdTheme() {
 		return idTheme;
@@ -189,6 +191,22 @@ public class QCM {
 
 	public void setIdSupplier(long idSupplier) {
 		this.idSupplier = idSupplier;
+	}
+
+	public List<SubTheme> getSubThemes() {
+		return subThemes;
+	}
+
+	public void setSubThemes(List<SubTheme> subThemes) {
+		this.subThemes = subThemes;
+	}
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 	
 	

@@ -106,7 +106,7 @@ CREATE TABLE QUESTION (
 id BIGSERIAL PRIMARY KEY, 
 id_qcm BIGSERIAL references QCM(id) ON DELETE CASCADE,
 title VARCHAR(200) not null,
-typeMedia VARCHAR(10),
+media_type VARCHAR(10),
 media VARCHAR(100),
 answer VARCHAR(50) not null,
 proposition1 VARCHAR(50) not null,
@@ -153,12 +153,12 @@ INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
 
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category) values (101, 1, 101, 'Ligue 1',
-'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif');
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category) values (102, 2, 102, 'Max et Léon',
-'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif');
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category) values (103, 3, 103, 'B2oba',
-'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif');
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category,price,minimal_score) values (101, 1, 101, 'Ligue 1',
+'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif',0,0);
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category,price,minimal_score) values (102, 2, 102, 'Max et Léon',
+'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif',0,0);
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category,price,minimal_score) values (103, 3, 103, 'B2oba',
+'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif',0,0);
 
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (101, 101,
  'Quelle équipe a remporté le championnat de France de L1 lors de la saison 1997-1998 ?', 'RC Lens', 'Olympique Lyonnais', 
