@@ -6,7 +6,6 @@ DROP TABLE PLAYER_THEME;
 DROP TABLE PLAYER;
 DROP TABLE THEME;
 
-
 drop sequence admin_id_player_seq;
 drop sequence authorities_id_player_seq;
 drop sequence player_id_seq;
@@ -15,7 +14,6 @@ drop sequence sub_theme_id_seq;
 drop sequence sub_theme_id_theme_seq;
 drop sequence supplier_id_player_seq;
 drop sequence theme_id_seq;
-
 
 CREATE TABLE PLAYER (
 id BIGSERIAL PRIMARY KEY,
@@ -74,15 +72,11 @@ id_player BIGSERIAL references player(id) ON DELETE CASCADE,
 id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
-
-
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
-INSERT INTO player (firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
-
-
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
 
 INSERT INTO supplier (id_player, is_valid, is_private_individual) values (104, TRUE, TRUE);
 INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (105, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
