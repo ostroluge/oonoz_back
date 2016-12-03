@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST,"/admin/createPlayerAccount").permitAll()
 		
         .antMatchers(HttpMethod.GET, "/qcms").permitAll()
+        .antMatchers(HttpMethod.POST, "/qcms").permitAll()
         
 		.antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		.authorizeRequests()

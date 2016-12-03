@@ -29,4 +29,13 @@ public class QCMManagerImpl implements QCMManager{
 		return (List<QCM>) QCMRepository.findAll();
 	}
 
+	/**
+	 * Post QCM.
+	 *
+	 * @param qcm the qcm
+	 * @return the qcm
+	 */
+	public QCM postQCM(QCM qcm) {
+		return QCMRepository.save(qcm);
+	}
 }

@@ -1,8 +1,6 @@
 package oonoz.domain;
 
 
-import java.time.Duration;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,7 +55,7 @@ public class Question {
 	
 	/** The proposition 3. */
 	@Column(unique = false, nullable = true,name="TIME")
-	private Duration time;
+	private int time;
 
 	/**
 	 * Gets the id.
@@ -226,7 +224,7 @@ public class Question {
 	 *
 	 * @return the time
 	 */
-	public Duration getTime() {
+	public int getTime() {
 		return time;
 	}
 
@@ -235,7 +233,7 @@ public class Question {
 	 *
 	 * @param time the new time
 	 */
-	public void setTime(Duration time) {
+	public void setTime(int time) {
 		this.time = time;
 	}
 }
