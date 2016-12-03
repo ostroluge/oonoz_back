@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -37,13 +38,12 @@ import oonoz.util.MailService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=OonozApplication.class)
-@TestPropertySource(locations = {"classpath:/test/config.properties"})
 public class PlayerServiceTest {
 
 	
 	/** The player service. */
 	@Autowired
-	//@InjectMocks
+	@InjectMocks
 	private PlayerService playerService;
 
 	/** The mail service. */
@@ -180,15 +180,5 @@ public class PlayerServiceTest {
 		//Throw PlayerNotActiveException
 	}
 	
-	@Test(expected = PlayerNotActiveException.class)
-	public void updatePlayer() throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException, ParseException{
-		//[-- INITIALISATION --]
-		Player player=playerService.getPlayerById(101);
-		
-		//[-- APPEL DU SERVICE --]
-		System.out.println("test");
-
-		//[-- VERIFICATION --]
-		//Throw PlayerNotActiveException
-	}
+	
 }
