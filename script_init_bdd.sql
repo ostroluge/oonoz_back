@@ -72,11 +72,11 @@ id_player BIGSERIAL references player(id) ON DELETE CASCADE,
 id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
-INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '23/01/1994', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
-INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '23/01/1994', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
-INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '01/01/1994', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
-INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '01/01/1934', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
-INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '01/01/1984', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '1994-01-23', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '1994-01-23', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '1994-01-01', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '1934-01-01', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
+INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '1984-01-01', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
 
 INSERT INTO supplier (id_player, is_valid, is_private_individual) values (104, TRUE, TRUE);
 INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (105, TRUE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
@@ -98,8 +98,8 @@ INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (4,2,'C
 INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
 INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
 
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (1,1);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (2,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (3,3);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (4,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (5,1);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (101,1);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (102,2);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
