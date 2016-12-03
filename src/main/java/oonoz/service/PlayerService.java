@@ -4,7 +4,6 @@ package oonoz.service;
 import java.security.SecureRandom;
 
 import javax.mail.MessagingException;
-import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
@@ -12,8 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import oonoz.domain.Authorities;
-import oonoz.controller.UserController;
+
 import oonoz.domain.Player;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -225,5 +223,5 @@ public class PlayerService {
 		playerManager.changeStatusUser(idPlayer);
 	}
 	
-
+	
 }

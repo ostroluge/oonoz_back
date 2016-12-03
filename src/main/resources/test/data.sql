@@ -1,8 +1,8 @@
-INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '1994-01-23', TRUE, 'Jilief','password',FALSE); 
-INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username,password,is_supplier) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '1994-01-23', TRUE, 'Ostroluge','password',FALSE);
-INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '1994-01-23', TRUE, 'Goubelf','password',FALSE);
-INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '1994-01-23', TRUE, 'ElPadre','password',TRUE);
-INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '1994-01-23', TRUE, 'Ching chong','password',TRUE);
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier,type_user) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '1994-01-23', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username,password,is_supplier,type_user) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '1994-01-23', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier,type_user) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '1994-01-23', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier,type_user) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '1994-01-23', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
+INSERT INTO player (id,firstname, lastname, mail, birthdate, is_active, username, password,is_supplier,type_user) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '1994-01-23', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
 
 
 
@@ -14,5 +14,4 @@ INSERT INTO AUTHORITIES (id_authorities,username,role) values (102,'Ostroluge','
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (103,'Goubelf', 'ROLE_PLAYER');
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (104,'ElPadre','ROLE_SUPPLIER');
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (105,'Ching chong','ROLE_SUPPLIER');
-
 

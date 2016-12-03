@@ -4,23 +4,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.mail.MessagingException;
+import javax.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-
-import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import oonoz.domain.Player;
@@ -42,14 +37,13 @@ import oonoz.util.MailService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=OonozApplication.class)
-@DataJpaTest
 @TestPropertySource(locations = {"classpath:/test/config.properties"})
 public class PlayerServiceTest {
 
-
+	
 	/** The player service. */
 	@Autowired
-	@InjectMocks
+	//@InjectMocks
 	private PlayerService playerService;
 
 	/** The mail service. */
@@ -148,7 +142,7 @@ public class PlayerServiceTest {
 
 		//[-- APPEL DU SERVICE --]
 		playerService.signUp(player);
-
+		
 		//[-- VERIFICATION --]
 		final ArgumentCaptor<Supplier> argument = ArgumentCaptor.forClass(Supplier.class);
 		Mockito.verify(this.playerManager, Mockito.times(1)).create(argument.capture());
@@ -181,6 +175,18 @@ public class PlayerServiceTest {
 
 		//[-- APPEL DU SERVICE --]
 		playerService.generatePassword("vincentmargerin59@gmail.com");
+
+		//[-- VERIFICATION --]
+		//Throw PlayerNotActiveException
+	}
+	
+	@Test(expected = PlayerNotActiveException.class)
+	public void updatePlayer() throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException, ParseException{
+		//[-- INITIALISATION --]
+		Player player=playerService.getPlayerById(101);
+		
+		//[-- APPEL DU SERVICE --]
+		System.out.println("test");
 
 		//[-- VERIFICATION --]
 		//Throw PlayerNotActiveException
