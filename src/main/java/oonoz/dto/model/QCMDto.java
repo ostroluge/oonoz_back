@@ -1,101 +1,62 @@
-package oonoz.domain;
+package oonoz.dto.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import oonoz.domain.Question;
+import oonoz.domain.SubTheme;
+import oonoz.domain.Theme;
 
 /**
- * The Class QCM.
+ * The Class QCMDto.
  */
-@Entity
-@Table(name="QCM")
-public class QCM {
-	
-	/** The id QCM. */
-	@Id
-	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+public class QCMDto {
+
+	/** The id. */
 	private long id;
 	
-	/** The name. */
-	@Column(unique = true, nullable = false,name="ID_THEME")
+	/** The id theme. */
 	private long idTheme;
 	
 	/** The theme. */
-	@OneToOne
-	@JoinColumn(name="ID_THEME",insertable = false,updatable = false)
 	private Theme theme;
 	
 	/** The id supplier. */
-	@Column(unique = true, nullable = false,name="ID_SUPPLIER")
 	private long idSupplier;
 	
 	/** The sub themes. */
-	@JsonIgnore
-	@OneToMany
-	@LazyCollection(LazyCollectionOption.TRUE)
-    @JoinTable(name="SUB_THEME_QCM",joinColumns =@JoinColumn(name = "ID_QCM") ,inverseJoinColumns = @JoinColumn(name="ID_SUB_THEME"))
 	private List<SubTheme> subThemes;
 	
 	/** The name. */
-	@Column(unique = true, nullable = false,name="NAME")
 	private String name;
 	
 	/** The description. */
-	@Column(unique = false, nullable = false,name="DESCRIPTION")
 	private String description;
 	
 	/** The is validated. */
-	@Column(unique = false, nullable = false,name="IS_VALIDATED")
 	private boolean isValidated;
 	
 	/** The is free. */
-	@Column(unique = false, nullable = false,name="IS_FREE")
 	private boolean isFree;
 	
 	/** The price. */
-	@Column(unique = false, nullable = true,name="PRICE")
 	private float price;
 	
 	/** The icon. */
-	@Column(unique = false, nullable = true,name="ICON")
 	private String icon;
 	
 	/** The prize name. */
-	@Column(unique = false, nullable = true,name="PRIZE_NAME")
 	private String prizeName;
 	
 	/** The prize description. */
-	@Column(unique = false, nullable = true,name="PRIZE_DESCRIPTION")
 	private String prizeDescription;
 	
 	/** The minimal score. */
-	@Column(name="MINIMAL_SCORE")
 	private int minimalScore;
 	
 	/** The category. */
-	@Column(unique = false, nullable = false,name="CATEGORY")
 	private String category;
 	
 	/** The questions. */
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany( cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_QCM",updatable = false)
 	private List<Question> questions;
 
 	/**
@@ -114,6 +75,78 @@ public class QCM {
 	 */
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	/**
+	 * Gets the id theme.
+	 *
+	 * @return the id theme
+	 */
+	public long getIdTheme() {
+		return idTheme;
+	}
+
+	/**
+	 * Sets the id theme.
+	 *
+	 * @param idTheme the new id theme
+	 */
+	public void setIdTheme(long idTheme) {
+		this.idTheme = idTheme;
+	}
+
+	/**
+	 * Gets the theme.
+	 *
+	 * @return the theme
+	 */
+	public Theme getTheme() {
+		return theme;
+	}
+
+	/**
+	 * Sets the theme.
+	 *
+	 * @param theme the new theme
+	 */
+	public void setTheme(Theme theme) {
+		this.theme = theme;
+	}
+
+	/**
+	 * Gets the id supplier.
+	 *
+	 * @return the id supplier
+	 */
+	public long getIdSupplier() {
+		return idSupplier;
+	}
+
+	/**
+	 * Sets the id supplier.
+	 *
+	 * @param idSupplier the new id supplier
+	 */
+	public void setIdSupplier(long idSupplier) {
+		this.idSupplier = idSupplier;
+	}
+
+	/**
+	 * Gets the sub themes.
+	 *
+	 * @return the sub themes
+	 */
+	public List<SubTheme> getSubThemes() {
+		return subThemes;
+	}
+
+	/**
+	 * Sets the sub themes.
+	 *
+	 * @param subThemes the new sub themes
+	 */
+	public void setSubThemes(List<SubTheme> subThemes) {
+		this.subThemes = subThemes;
 	}
 
 	/**
@@ -294,61 +327,6 @@ public class QCM {
 	 */
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-
-	/**
-	 * Gets the id theme.
-	 *
-	 * @return the id theme
-	 */
-	public long getIdTheme() {
-		return idTheme;
-	}
-
-	/**
-	 * Sets the id theme.
-	 *
-	 * @param idTheme the new id theme
-	 */
-	public void setIdTheme(long idTheme) {
-		this.idTheme = idTheme;
-	}
-
-	/**
-	 * Gets the id supplier.
-	 *
-	 * @return the id supplier
-	 */
-	public long getIdSupplier() {
-		return idSupplier;
-	}
-
-	/**
-	 * Sets the id supplier.
-	 *
-	 * @param idSupplier the new id supplier
-	 */
-	public void setIdSupplier(long idSupplier) {
-		this.idSupplier = idSupplier;
-	}
-
-	/**
-	 * Gets the sub themes.
-	 *
-	 * @return the sub themes
-	 */
-	public List<SubTheme> getSubThemes() {
-		return subThemes;
-	}
-
-	/**
-	 * Sets the sub themes.
-	 *
-	 * @param subThemes the new sub themes
-	 */
-	public void setSubThemes(List<SubTheme> subThemes) {
-		this.subThemes = subThemes;
 	}
 
 	/**
