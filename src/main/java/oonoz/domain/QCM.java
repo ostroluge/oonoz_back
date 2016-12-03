@@ -14,7 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
+
 
 @Entity
 @Table(name="QCM")
@@ -27,7 +27,6 @@ public class QCM {
 	private long id;
 	
 	private long idTheme;
-	
 	private long idSupplier;
 	
 	/** The name. */
@@ -58,21 +57,23 @@ public class QCM {
 	@Column(unique = false, nullable = true,name="PRIZE_DESCRIPTION")
 	private String prizeDescription;
 	
-	@Column(unique = false, nullable = true,name="PRIZE_DESCRIPTION")
+	@Column(unique = false, nullable = true,name="MINIMAL_SCORE")
 	private int minimalScore;
 	
 	@Column(unique = false, nullable = false,name="CATEGORY")
 	private String category;
 	
 	/** The sub themes. */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "ID_QCM", updatable = false)
-	private List<Question> questions;
+	
 	
 	@OneToMany(fetch=FetchType.LAZY)
     @JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_QCM"),
             inverseJoinColumns = @JoinColumn(name = "ID_SUB_THEME"))
 	private List<SubTheme> subThemes;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_QCM",updatable = false)
+	private List<Question> questions;
 
 	public long getId() {
 		return id;
@@ -82,21 +83,7 @@ public class QCM {
 		this.id = id;
 	}
 
-	public long getIdTheme() {
-		return idTheme;
-	}
-
-	public void setIdTheme(long idTheme) {
-		this.idTheme = idTheme;
-	}
-
-	public long getIdSupplier() {
-		return idSupplier;
-	}
-
-	public void setIdSupplier(long idSupplier) {
-		this.idSupplier = idSupplier;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -178,13 +165,7 @@ public class QCM {
 		this.category = category;
 	}
 
-	public List<Question> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
-	}
+	
 
 	public List<SubTheme> getSubThemes() {
 		return subThemes;
@@ -192,6 +173,22 @@ public class QCM {
 
 	public void setSubThemes(List<SubTheme> subThemes) {
 		this.subThemes = subThemes;
+	}
+
+	public long getIdTheme() {
+		return idTheme;
+	}
+
+	public void setIdTheme(long idTheme) {
+		this.idTheme = idTheme;
+	}
+
+	public long getIdSupplier() {
+		return idSupplier;
+	}
+
+	public void setIdSupplier(long idSupplier) {
+		this.idSupplier = idSupplier;
 	}
 	
 	

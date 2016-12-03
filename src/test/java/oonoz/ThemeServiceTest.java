@@ -27,8 +27,6 @@ import oonoz.service.ThemeService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=OonozApplication.class)
-@DataJpaTest
-@TestPropertySource(locations = {"classpath:/test/config.properties"})
 public class ThemeServiceTest {
 
 	/** The theme service. */

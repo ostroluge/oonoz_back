@@ -21,7 +21,7 @@ public class Question {
 	private long id;
 	
 	/** The title. */
-	@Column(unique = false, nullable = false,name="ID_QCM")
+	@Column(name="ID_QCM")
 	private long idQCM;
 	
 	/** The title. */
@@ -104,8 +104,6 @@ public class Question {
 		this.answer = answer;
 	}
 
-	
-
 	public String getProposition1() {
 		return proposition1;
 	}
@@ -137,6 +135,8 @@ public class Question {
 	public void setTime(Duration time) {
 		this.time = time;
 	}
+
+	
 	
 	
 

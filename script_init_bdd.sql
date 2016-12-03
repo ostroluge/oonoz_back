@@ -98,7 +98,7 @@ price float(2),
 icon VARCHAR(100),
 prize_name VARCHAR(50),
 prize_description VARCHAR(150),
-minimalScore integer,
+minimal_score integer,
 category VARCHAR(10) not null
 );
 
