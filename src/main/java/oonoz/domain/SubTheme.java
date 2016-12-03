@@ -47,28 +47,24 @@ public class SubTheme {
 	@Column(unique = false, nullable = false, name="IS_VALID")
 	private boolean isValidated;
 	
-	
-	/** The QC ms. */
+	/** The list of qcm. */
 	@OneToMany(fetch=FetchType.LAZY)
     @JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_SUB_THEME"),inverseJoinColumns = @JoinColumn(name = "ID_QCM"))
 	private List<QCM> QCMs;
 	
-	
-	
-	
 	/**
-	 * Gets the QC ms.
+	 * Gets the list of qcm.
 	 *
-	 * @return the QC ms
+	 * @return the list of qcm
 	 */
 	public List<QCM> getQCMs() {
 		return QCMs;
 	}
 
 	/**
-	 * Sets the QC ms.
+	 * Sets list of qcm.
 	 *
-	 * @param qCMs the new QC ms
+	 * @param qCMs the new list of qcm
 	 */
 	public void setQCMs(List<QCM> qCMs) {
 		QCMs = qCMs;

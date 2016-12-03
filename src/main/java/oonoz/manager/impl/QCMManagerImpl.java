@@ -10,6 +10,9 @@ import oonoz.domain.QCM;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
 
+/**
+ * The Class QCMManagerImpl.
+ */
 @Component(value = "QCMManager")
 public class QCMManagerImpl implements QCMManager{
 	
@@ -17,6 +20,11 @@ public class QCMManagerImpl implements QCMManager{
 	@Resource
 	private QCMRepository QCMRepository;
 	
+	/**
+	 * Gets the all the qcm.
+	 *
+	 * @return all the qcm
+	 */
 	public List<QCM> getAllQCMs(){
 		return (List<QCM>) QCMRepository.findAll();
 	}
