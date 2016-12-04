@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.QCMManagerImpl;
 import oonoz.manager.impl.QuestionManagerImpl;
@@ -18,19 +19,19 @@ import oonoz.util.CheckQCMInformation;
  */
 @Service
 public class QCMService {
-	
+
 	/** The QCM manager. */
 	@Autowired
 	private QCMManagerImpl QCMManager;
-	
+
 	/** The question manager. */
 	@Autowired
 	private QuestionManagerImpl questionManager;
-	
+
 	/** The check QCM information. */
 	@Autowired
 	private CheckQCMInformation checkQCMInformation;
-	
+
 	/**
 	 * Find all.
 	 *
@@ -48,11 +49,11 @@ public class QCMService {
 	 * @throws WrongInformationException the wrong information exception
 	 */
 	public QCM postQCM(QCM qcm) throws WrongInformationException {
-		
+
 		checkQCMInformation.checkName(qcm.getName());
 		checkQCMInformation.checkDescription(qcm.getDescription());
 		checkQCMInformation.checkCategory(qcm.getCategory());
-		
+
 		return QCMManager.postQCM(qcm);
 	}
 
@@ -64,17 +65,21 @@ public class QCMService {
 	 * @return the question
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
-	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException {
+	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException, TooManyQuestionsException {
 		QCM qcm = QCMManager.findOne(idQCM);
-		
+
 		if (qcm != null) {
-			question.setIdQCM(qcm.getId());
-			return questionManager.postQuestion(question);
+			if (qcm.getQuestions().size() < 20) {
+				question.setIdQCM(qcm.getId());
+				return questionManager.postQuestion(question);
+			} else {
+				throw new TooManyQuestionsException("Too many questions for QCM with id " + idQCM);
+			}
 		} else {
 			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
 		}
 	}
-	
+
 	/**
 	 * Delete QCM.
 	 *

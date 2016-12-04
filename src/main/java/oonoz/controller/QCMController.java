@@ -18,6 +18,7 @@ import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QuestionDto;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.QCMService;
 import oonoz.util.StringResponse;
@@ -92,6 +93,9 @@ public class QCMController {
 						.body(result);
 			} catch (QCMDoesNotExistException e) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			} catch (TooManyQuestionsException e) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN)
 						.body(null);
 			}
 		} else {
