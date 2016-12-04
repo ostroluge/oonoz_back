@@ -9,12 +9,20 @@ import java.util.Date;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import oonoz.exception.PlayerNotActiveException;
 import oonoz.exception.WrongInformationException;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CheckUserInformation.
+ * 
+ * Description :
+ */
 @Component
 public class CheckUserInformation {
 	
@@ -24,6 +32,8 @@ public class CheckUserInformation {
 	/** The Constant REGEXMAIL. */
 	protected final static String REGEXMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(CheckUserInformation.class);
 	/**
 	 * I check that the user pseudo is valid.
 	 *
@@ -124,7 +134,7 @@ public class CheckUserInformation {
 	 * I check that the user birth date is valid.
 	 *
 	 * @param isActive the is active
-	 * @throws WrongInformationException             raised if the information is not valid.
+	 * @throws PlayerNotActiveException the player not active exception
 	 */
 	public void checkIsActive(boolean isActive) throws PlayerNotActiveException {
 
@@ -134,6 +144,12 @@ public class CheckUserInformation {
 	}
 	
 	
+	/**
+	 * Check supplier is valid.
+	 *
+	 * @param isActive the is active
+	 * @throws WrongInformationException the wrong information exception
+	 */
 	public void checkSupplierIsValid(boolean isActive) throws WrongInformationException {
 
 		if (isActive) {
@@ -141,18 +157,36 @@ public class CheckUserInformation {
 		}
 	}
 	
+	/**
+	 * Check company name.
+	 *
+	 * @param companyName the company name
+	 * @throws WrongInformationException the wrong information exception
+	 */
 	public void checkCompanyName(String companyName) throws WrongInformationException{
 		if (companyName == null || companyName.length() < 3 || companyName.length() > 40) {
 			throw new WrongInformationException("The company name is invalid !");
 		}
 	}
 	
+	/**
+	 * Check company address.
+	 *
+	 * @param companyAddress the company address
+	 * @throws WrongInformationException the wrong information exception
+	 */
 	public void checkCompanyAddress(String companyAddress) throws WrongInformationException{
 		if (companyAddress == null || companyAddress.length() < 3 || companyAddress.length() > 40) {
 			throw new WrongInformationException("The company address is invalid !");
 		}
 	}
 	
+	/**
+	 * Check siret number.
+	 *
+	 * @param siretNumber the siret number
+	 * @throws WrongInformationException the wrong information exception
+	 */
 	public void checkSiretNumber(String siretNumber) throws WrongInformationException{
 		if (siretNumber == null || siretNumber.length() < 14 || siretNumber.length() > 14) {
 			throw new WrongInformationException("The siret number is invalid !");
@@ -193,8 +227,7 @@ public class CheckUserInformation {
 			return hashPassword;
 			
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			
-			e.printStackTrace();
+			logger.error("Error during encoding password", e);
 		}
 		
 		return null;
