@@ -20,6 +20,7 @@ import oonoz.dto.model.QuestionDto;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.QCMService;
+import oonoz.util.StringResponse;
 
 /**
  * The Class QCMController.
@@ -97,5 +98,28 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(null);
 		}
+	}
+	
+	/**
+	 * Delete QCM.
+	 *
+	 * @param id the id
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<StringResponse> deleteQCM(@PathVariable long id) {
+		StringResponse response = new StringResponse();
+		
+		try {
+			qcmService.deleteQCM(id);
+		} catch (QCMDoesNotExistException e) {
+			response.setResponse("The QCM does not exist");
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+					.body(response);
+		}
+		
+		response.setResponse("Deletion successful");
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(response);
 	}
 }

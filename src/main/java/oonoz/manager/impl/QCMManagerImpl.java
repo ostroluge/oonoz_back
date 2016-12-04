@@ -48,4 +48,13 @@ public class QCMManagerImpl implements QCMManager {
 	public QCM postQCM(QCM qcm) {
 		return QCMRepository.save(qcm);
 	}
+	
+	/**
+	 * Delete.
+	 *
+	 * @param id the id
+	 */
+	public void delete(long id) {
+		QCMRepository.delete(id);
+	}
 }

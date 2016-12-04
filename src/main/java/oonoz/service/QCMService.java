@@ -74,4 +74,19 @@ public class QCMService {
 			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
 		}
 	}
+	
+	/**
+	 * Delete QCM.
+	 *
+	 * @param id the id
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	public void deleteQCM(long id) throws QCMDoesNotExistException {
+		QCM qcm = QCMManager.findOne(id);
+		if (qcm != null) {
+			QCMManager.delete(id);
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
+		}
+	}
 }
