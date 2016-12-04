@@ -5,14 +5,19 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import oonoz.domain.QCM;
+import oonoz.domain.Question;
 import oonoz.dto.converter.QCMDtoConverter;
+import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.model.QCMDto;
+import oonoz.dto.model.QuestionDto;
+import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.QCMService;
 
@@ -30,6 +35,10 @@ public class QCMController {
 	@Autowired
 	QCMDtoConverter qcmDtoConverter;
 	
+	/** The question dto converter. */
+	@Autowired
+	QuestionDtoConverter questionDtoConverter;
+	
 	/**
 	 * Gets the all.
 	 *
@@ -46,6 +55,7 @@ public class QCMController {
 	 *
 	 * @param qcmDto the qcm dto
 	 * @return the response entity
+	 * @throws WrongInformationException the wrong information exception
 	 */
 	@RequestMapping(value="/qcms", method = RequestMethod.POST)
 	public ResponseEntity<QCM> postQCM(@RequestBody QCMDto qcmDto) throws WrongInformationException {
@@ -60,5 +70,32 @@ public class QCMController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(result);
+	}
+	
+	/**
+	 * Post question.
+	 *
+	 * @param idQCM the id QCM
+	 * @param questionDto the question dto
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/questions", method = RequestMethod.POST)
+	public ResponseEntity<Question> postQuestion(@PathVariable("idQCM") long idQCM,
+			@RequestBody QuestionDto questionDto) {
+		Question questionToPost = questionDtoConverter.convertToEntity(questionDto);
+		
+		if (questionToPost != null) {
+			try {
+				Question result = qcmService.postQuestion(idQCM, questionToPost);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(result);
+			} catch (QCMDoesNotExistException e) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
 	}
 }

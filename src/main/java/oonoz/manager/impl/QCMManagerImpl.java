@@ -14,7 +14,7 @@ import oonoz.repository.QCMRepository;
  * The Class QCMManagerImpl.
  */
 @Component(value = "QCMManager")
-public class QCMManagerImpl implements QCMManager{
+public class QCMManagerImpl implements QCMManager {
 	
 	/** The player repository. */
 	@Resource
@@ -29,6 +29,16 @@ public class QCMManagerImpl implements QCMManager{
 		return (List<QCM>) QCMRepository.findAll();
 	}
 
+	/**
+	 * Find one.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 */
+	public QCM findOne(long id) {
+		return QCMRepository.findOne(id);
+	}
+	
 	/**
 	 * Post QCM.
 	 *

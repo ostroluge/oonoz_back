@@ -1,60 +1,38 @@
-package oonoz.domain;
-
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package oonoz.dto.model;
 
 /**
- * The Class Question.
+ * The Class QuestionDto.
  */
-@Entity
-@Table(name="QUESTION")
-public class Question {
-	
-	/** The id QUESTION. */
-	@Id
-	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+public class QuestionDto {
+
+	/** The id. */
 	private long id;
 	
-	/** The title. */
-	@Column(name="ID_QCM")
+	/** The id QCM. */
 	private long idQCM;
 	
 	/** The title. */
-	@Column(unique = false, nullable = false,name="TITLE")
 	private String title;
 	
 	/** The media type. */
-	@Column(unique = false, nullable = true,name="MEDIA_TYPE")
 	private String mediaType;
 	
 	/** The media. */
-	@Column(unique = false, nullable = true,name="MEDIA")
 	private String media;
 	
 	/** The answer. */
-	@Column(unique = false, nullable = false,name="ANSWER")
 	private String answer;
 	
 	/** The proposition 1. */
-	@Column(unique = false, nullable = false,name="PROPOSITION1")
 	private String proposition1;
 	
 	/** The proposition 2. */
-	@Column(unique = false, nullable = false,name="PROPOSITION2")
 	private String proposition2;
 	
 	/** The proposition 3. */
-	@Column(unique = false, nullable = false,name="PROPOSITION3")
 	private String proposition3;
 	
-	/** The proposition 3. */
-	@Column(unique = false, nullable = true,name="TIME")
+	/** The time. */
 	private Integer time;
 
 	/**
