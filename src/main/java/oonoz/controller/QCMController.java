@@ -19,6 +19,8 @@ import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QuestionDto;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
+import oonoz.exception.SubThemeAlreadyAddedException;
+import oonoz.exception.SubThemeDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.QCMService;
@@ -153,10 +155,76 @@ public class QCMController {
 		
 	}
 	
+	/**
+	 * Gets the qcm.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
 	@RequestMapping(value="/qcms/{id}", method = RequestMethod.GET)
-	public ResponseEntity<QCM> getQCM(@PathVariable("id") long id) {
+	public ResponseEntity<QCM> getQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getQCM(id);
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(qcm);
+
+		if (qcm != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(qcm);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+	}
+	
+	/**
+	 * Delete question.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idQuestion the id question
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/questions/{idQuestion}", method = RequestMethod.DELETE)
+	public ResponseEntity<StringResponse> deleteQuestion(@PathVariable("idQCM") long idQCM,
+			@PathVariable("idQuestion") long idQuestion) {
+		StringResponse response = new StringResponse();
+		try {
+			qcmService.deleteQuestion(idQCM, idQuestion);
+			response.setResponse("Deletion successful");
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(response);
+		} catch (QCMDoesNotExistException e) {
+			response.setResponse("The QCM does not exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		} catch (QuestionDoesNotExistException e) {
+			response.setResponse("The question does not exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}		
+	}
+	
+	/**
+	 * Adds the sub theme.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idSubTheme the id sub theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/subthemes/{idSubTheme}", method = RequestMethod.POST)
+	public ResponseEntity<QCM> addSubTheme(@PathVariable("idQCM") long idQCM,
+			@PathVariable("idSubTheme") long idSubTheme) {
+		try {
+			QCM result = qcmService.addSubTheme(idQCM, idSubTheme);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(result);
+		} catch (QCMDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		} catch (SubThemeDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		} catch (SubThemeAlreadyAddedException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(null);
+		}
 	}
 }

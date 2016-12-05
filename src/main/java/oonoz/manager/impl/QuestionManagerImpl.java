@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.manager.QuestionManager;
 import oonoz.repository.QuestionRepository;
@@ -36,5 +37,14 @@ public class QuestionManagerImpl implements QuestionManager {
 	 */
 	public Question getQuestion(long idQuestion) {
 		return questionRepository.findOne(idQuestion);
+	}
+	
+	/**
+	 * Delete question.
+	 *
+	 * @param idQuestion the id question
+	 */
+	public void deleteQuestion(long idQuestion) {
+		questionRepository.delete(idQuestion);
 	}
 }

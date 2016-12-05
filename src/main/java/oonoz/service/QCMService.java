@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 
 import oonoz.domain.QCM;
 import oonoz.domain.Question;
+import oonoz.domain.SubTheme;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
+import oonoz.exception.SubThemeAlreadyAddedException;
+import oonoz.exception.SubThemeDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.QCMManagerImpl;
 import oonoz.manager.impl.QuestionManagerImpl;
+import oonoz.manager.impl.SubThemeManagerImpl;
 import oonoz.util.CheckQCMInformation;
 
 /**
@@ -28,6 +32,10 @@ public class QCMService {
 	/** The question manager. */
 	@Autowired
 	private QuestionManagerImpl questionManager;
+	
+	/** The sub theme manager. */
+	@Autowired
+	private SubThemeManagerImpl subThemeManager;
 
 	/** The check QCM information. */
 	@Autowired
@@ -98,6 +106,29 @@ public class QCMService {
 	}
 
 	/**
+	 * Delete question.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idQuestion the id question
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QuestionDoesNotExistException the question does not exist exception
+	 */
+	public void deleteQuestion(long idQCM, long idQuestion) throws QCMDoesNotExistException,
+		QuestionDoesNotExistException {
+		QCM qcm = QCMManager.findOne(idQCM);
+		if (qcm != null) {
+			Question question = questionManager.getQuestion(idQuestion);
+			if (question != null) {
+				questionManager.deleteQuestion(question.getId());
+			} else {
+				throw new QuestionDoesNotExistException("The question with id " + idQuestion + " does not exist");
+			}
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
+	
+	/**
 	 * Gets the question.
 	 *
 	 * @param idQCM the id QCM
@@ -121,7 +152,48 @@ public class QCMService {
 		}
 	}
 	
-	public QCM getQCM(long id) {
-		return QCMManager.findOne(id);
+	/**
+	 * Gets the qcm.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	public QCM getQCM(long id) throws QCMDoesNotExistException {
+		QCM qcm = QCMManager.findOne(id);
+		if (qcm != null) {
+			return qcm;
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
+		}
+	}
+	
+	/**
+	 * Adds the sub theme.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idSubTheme the id sub theme
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws SubThemeDoesNotExistException the sub theme does not exist exception
+	 */
+	public QCM addSubTheme(long idQCM, long idSubTheme) throws QCMDoesNotExistException,
+		SubThemeDoesNotExistException, SubThemeAlreadyAddedException {
+		QCM qcm = QCMManager.findOne(idQCM);
+		if (qcm != null) {
+			SubTheme subtheme = subThemeManager.findOne(idSubTheme);
+			if (subtheme != null) {
+				if (!qcm.getSubThemes().contains(subtheme)) {
+					qcm.getSubThemes().add(subtheme);
+					return QCMManager.save(qcm);
+				} else {
+					throw new SubThemeAlreadyAddedException("The subtheme is already linked to the qcm");
+				}
+			} else {
+				throw new SubThemeDoesNotExistException("The subtheme with id " + idSubTheme + " does not exist");
+			}
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
 	}
 }
