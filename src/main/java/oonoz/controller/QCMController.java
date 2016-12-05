@@ -227,4 +227,30 @@ public class QCMController {
 					.body(null);
 		}
 	}
+
+	/**
+	 * Delete sub theme.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idSubTheme the id sub theme
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/subthemes/{idSubTheme}", method = RequestMethod.DELETE)
+	public ResponseEntity<StringResponse> deleteSubTheme(@PathVariable("idQCM") long idQCM,
+			@PathVariable("idSubTheme") long idSubTheme) {
+		StringResponse response = new StringResponse();
+		
+		try {
+			qcmService.deleteSubTheme(idQCM, idSubTheme);
+			response.setResponse("Deletion successful");
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(response);
+		} catch (QCMDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		} catch (SubThemeDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+	}
 }

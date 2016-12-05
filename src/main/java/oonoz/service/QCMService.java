@@ -32,7 +32,7 @@ public class QCMService {
 	/** The question manager. */
 	@Autowired
 	private QuestionManagerImpl questionManager;
-	
+
 	/** The sub theme manager. */
 	@Autowired
 	private SubThemeManagerImpl subThemeManager;
@@ -114,7 +114,7 @@ public class QCMService {
 	 * @throws QuestionDoesNotExistException the question does not exist exception
 	 */
 	public void deleteQuestion(long idQCM, long idQuestion) throws QCMDoesNotExistException,
-		QuestionDoesNotExistException {
+	QuestionDoesNotExistException {
 		QCM qcm = QCMManager.findOne(idQCM);
 		if (qcm != null) {
 			Question question = questionManager.getQuestion(idQuestion);
@@ -127,7 +127,7 @@ public class QCMService {
 			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
 		}
 	}
-	
+
 	/**
 	 * Gets the question.
 	 *
@@ -151,7 +151,7 @@ public class QCMService {
 			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
 		}
 	}
-	
+
 	/**
 	 * Gets the qcm.
 	 *
@@ -167,7 +167,7 @@ public class QCMService {
 			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
 		}
 	}
-	
+
 	/**
 	 * Adds the sub theme.
 	 *
@@ -176,9 +176,10 @@ public class QCMService {
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 * @throws SubThemeDoesNotExistException the sub theme does not exist exception
+	 * @throws SubThemeAlreadyAddedException the sub theme already added exception
 	 */
 	public QCM addSubTheme(long idQCM, long idSubTheme) throws QCMDoesNotExistException,
-		SubThemeDoesNotExistException, SubThemeAlreadyAddedException {
+	SubThemeDoesNotExistException, SubThemeAlreadyAddedException {
 		QCM qcm = QCMManager.findOne(idQCM);
 		if (qcm != null) {
 			SubTheme subtheme = subThemeManager.findOne(idSubTheme);
@@ -188,6 +189,32 @@ public class QCMService {
 					return QCMManager.save(qcm);
 				} else {
 					throw new SubThemeAlreadyAddedException("The subtheme is already linked to the qcm");
+				}
+			} else {
+				throw new SubThemeDoesNotExistException("The subtheme with id " + idSubTheme + " does not exist");
+			}
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
+
+	/**
+	 * Delete sub theme.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idSubTheme the id sub theme
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws SubThemeDoesNotExistException the sub theme does not exist exception
+	 */
+	public void deleteSubTheme(long idQCM, long idSubTheme) throws QCMDoesNotExistException,
+	SubThemeDoesNotExistException {
+		QCM qcm = QCMManager.findOne(idQCM);
+		if (qcm != null) {
+			SubTheme subtheme = subThemeManager.findOne(idSubTheme);
+			if (subtheme != null) {
+				if (qcm.getSubThemes().contains(subtheme)) {
+					qcm.getSubThemes().remove(subtheme);
+					QCMManager.save(qcm);
 				}
 			} else {
 				throw new SubThemeDoesNotExistException("The subtheme with id " + idSubTheme + " does not exist");
