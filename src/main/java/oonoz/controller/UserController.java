@@ -1,6 +1,6 @@
 package oonoz.controller;
 
-
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import oonoz.domain.Player;
+import oonoz.domain.QCM;
 import oonoz.domain.Supplier;
 import oonoz.dto.converter.PlayerDtoConverter;
 import oonoz.dto.converter.SupplierDtoConverter;
@@ -29,16 +29,15 @@ import oonoz.exception.PlayerNotActiveException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
+import oonoz.service.QCMService;
 import oonoz.service.SupplierService;
-import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
-
 
 /**
  * The Class UserController.
  * 
- * Description :
- * 		The REST service which manages Player, Supplier and Admin entity.
+ * Description : The REST service which manages Player, Supplier and Admin
+ * entity.
  */
 @RestController
 @RequestMapping("/user")
@@ -54,6 +53,9 @@ public class UserController {
 	@Autowired
 	private SupplierService supplierService;
 
+	@Autowired
+	private QCMService qcmService;
+
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
@@ -61,11 +63,11 @@ public class UserController {
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
 
-
 	/**
 	 * Authenticate users.
 	 *
-	 * @param request the request
+	 * @param request
+	 *            the request
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -75,19 +77,19 @@ public class UserController {
 
 		HttpSession session = request.getSession(false);
 
-		/*if (request.isRequestedSessionIdValid() && session != null) {
-            session.invalidate();
-            return new ResponseEntity<>("", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);*/
+		/*
+		 * if (request.isRequestedSessionIdValid() && session != null) {
+		 * session.invalidate(); return new ResponseEntity<>("", HttpStatus.OK);
+		 * } return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		 */
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
 	/**
 	 * Signup player.
 	 *
-	 * @param playerDto the player dto
-	 * 		The light representation of the player entity
+	 * @param playerDto
+	 *            the player dto The light representation of the player entity
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/signUpPlayer", method = RequestMethod.POST)
@@ -95,39 +97,39 @@ public class UserController {
 
 		Player player = playerDtoConverter.convertToEntity(playerDto);
 		StringResponse response = new StringResponse();
-		
+
 		try {
 			this.playerService.signUp(player);
 		} catch (WrongInformationException e) {
 			logger.error("Wrong information", e);
 			response.setResponse("The information of sign-up are not valid !");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(response);
-			//			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+			// return new ResponseEntity<>("The information of sign-up are not
+			// valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
 			logger.error("This player already exist", e);
 			response.setResponse("The player already exists !");
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body(response);
-			//			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+			// return new ResponseEntity<>("The player already exist !",
+			// HttpStatus.BAD_REQUEST);
 		} catch (MessagingException e) {
 			logger.error("Impossible to send validation mail", e);
 			response.setResponse("A error occurs when sending validation mail !");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(response);
-			//			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			// return new ResponseEntity<>("A error occurs when sending
+			// validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.setResponse("Player created !");
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(response);
-		//		return new ResponseEntity<>("", HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+		// return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
 	/**
 	 * Signup supplier.
 	 *
-	 * @param supplierDto the supplier dto
-	 * 		The light representation of the supplier entity
+	 * @param supplierDto
+	 *            the supplier dto The light representation of the supplier
+	 *            entity
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/signUpSupplier", method = RequestMethod.POST)
@@ -138,29 +140,35 @@ public class UserController {
 			this.supplierService.signUp(supplier);
 		} catch (WrongInformationException e) {
 			logger.error("Wrong information", e);
-			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("The information of sign-up are not valid ! " + e.getMessage(),
+					HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
 			logger.error("Supplier already exist", e);
 			return new ResponseEntity<>("The player already exist !", HttpStatus.CONFLICT);
 		} catch (MessagingException e) {
 			logger.error("Impossible to send validation mail", e);
-			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("A error occurs when sending validation mail !",
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
 	/**
-	 * Rest service receiving a email and a token.
-	 * If the token is right I will activate the account of the user matching the mail.
-	 * @param mail The email of the user to activate.
-	 * @param hash The token to verify the link.
+	 * Rest service receiving a email and a token. If the token is right I will
+	 * activate the account of the user matching the mail.
+	 * 
+	 * @param mail
+	 *            The email of the user to activate.
+	 * @param hash
+	 *            The token to verify the link.
 	 * @return A response containing a string with the answer.
 	 */
 	@RequestMapping(value = "/validationMail", method = RequestMethod.GET)
-	public ResponseEntity<String> validationMail(@RequestParam(value = "mail", defaultValue = "") String mail, @RequestParam(value = "key", defaultValue = "0") String hash) {
+	public ResponseEntity<String> validationMail(@RequestParam(value = "mail", defaultValue = "") String mail,
+			@RequestParam(value = "key", defaultValue = "0") String hash) {
 
 		try {
-			playerService.validationMail(mail,hash);
+			playerService.validationMail(mail, hash);
 		} catch (PlayerNotExistException e) {
 			logger.error("This player doesn't exist", e);
 			return new ResponseEntity<>("The player with this mail does not exist !", HttpStatus.BAD_REQUEST);
@@ -174,10 +182,13 @@ public class UserController {
 	}
 
 	/**
-	 * Rest service receiving a email and a token.
-	 * If the token is right I will activate the account of the user matching the mail.
-	 * @param mail The email of the user to activate.
-	 * @param hash The token to verify the link.
+	 * Rest service receiving a email and a token. If the token is right I will
+	 * activate the account of the user matching the mail.
+	 * 
+	 * @param mail
+	 *            The email of the user to activate.
+	 * @param hash
+	 *            The token to verify the link.
 	 * @return A response containing a string with the answer.
 	 */
 	@RequestMapping(value = "/generatePassword", method = RequestMethod.POST)
@@ -202,5 +213,22 @@ public class UserController {
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
+	/**
+	 * Authenticate users.
+	 *
+	 * @param request
+	 *            the request
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.POST)
+	public ResponseEntity<List<QCM>> getSupplierQCM(@RequestParam(value = "idSupplier") long idSupplier) {
+		List<QCM> QcmList = qcmService.getSupplierQCM(idSupplier);
+		if (QcmList != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(QcmList);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+
+	}
 
 }

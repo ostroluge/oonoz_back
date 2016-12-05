@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.QCM;
+import oonoz.domain.Question;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
 
@@ -27,6 +28,10 @@ public class QCMManagerImpl implements QCMManager{
 	 */
 	public List<QCM> getAllQCMs(){
 		return (List<QCM>) QCMRepository.findAll();
+	}
+
+	public List<QCM> findSupplierQuestions(long idSupplier) {
+		return QCMRepository.findByIdSupplier(idSupplier);
 	}
 
 }
