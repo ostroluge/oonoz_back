@@ -46,9 +46,8 @@ public class QCM {
 	private long idSupplier;
 	
 	/** The sub themes. */
-	@JsonIgnore
 	@OneToMany
-	@LazyCollection(LazyCollectionOption.TRUE)
+	@LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name="SUB_THEME_QCM",joinColumns =@JoinColumn(name = "ID_QCM") ,inverseJoinColumns = @JoinColumn(name="ID_SUB_THEME"))
 	private List<SubTheme> subThemes;
 	

@@ -1,6 +1,8 @@
 package oonoz.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +49,10 @@ public class QCMController {
 	 * @return the all
 	 */
 	@RequestMapping(value="/qcms", method = RequestMethod.GET)
-	public ResponseEntity<Collection<QCM>> getAll() {
+	public ResponseEntity<List<QCM>> getAll() {
+		
+	
+		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(qcmService.findAll());
 	}
