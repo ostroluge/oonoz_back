@@ -27,4 +27,14 @@ public class QuestionManagerImpl implements QuestionManager {
 	public Question postQuestion(Question question) {
 		return questionRepository.save(question);
 	}
+
+	/**
+	 * Gets the question.
+	 *
+	 * @param idQuestion the id question
+	 * @return the question
+	 */
+	public Question getQuestion(long idQuestion) {
+		return questionRepository.findOne(idQuestion);
+	}
 }

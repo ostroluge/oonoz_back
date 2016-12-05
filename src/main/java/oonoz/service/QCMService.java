@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.QCMManagerImpl;
@@ -64,6 +65,7 @@ public class QCMService {
 	 * @param question the question
 	 * @return the question
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws TooManyQuestionsException the too many questions exception
 	 */
 	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException, TooManyQuestionsException {
 		QCM qcm = QCMManager.findOne(idQCM);
@@ -93,5 +95,33 @@ public class QCMService {
 		} else {
 			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
 		}
+	}
+
+	/**
+	 * Gets the question.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idQuestion the id question
+	 * @return the question
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QuestionDoesNotExistException the question does not exist exception
+	 */
+	public Question getQuestion(long idQCM, long idQuestion) throws QCMDoesNotExistException, 
+	QuestionDoesNotExistException {
+		QCM qcm = QCMManager.findOne(idQCM);
+		if (qcm != null) {
+			Question question = questionManager.getQuestion(idQuestion);
+			if (question != null) {
+				return question;
+			} else {
+				throw new QuestionDoesNotExistException("The question with id " + idQuestion + " does not exist");
+			}
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
+	
+	public QCM getQCM(long id) {
+		return QCMManager.findOne(id);
 	}
 }

@@ -1,7 +1,5 @@
 package oonoz.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QuestionDto;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.QCMService;
@@ -50,9 +49,6 @@ public class QCMController {
 	 */
 	@RequestMapping(value="/qcms", method = RequestMethod.GET)
 	public ResponseEntity<List<QCM>> getAll() {
-		
-	
-		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(qcmService.findAll());
 	}
@@ -130,5 +126,37 @@ public class QCMController {
 		response.setResponse("Deletion successful");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(response);
+	}
+	
+	/**
+	 * Gets the question.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idQuestion the id question
+	 * @return the question
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QuestionDoesNotExistException the question does not exist exception
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/questions/{idQuestion}", method = RequestMethod.GET)
+	public ResponseEntity<Question> getQuestion(@PathVariable("idQCM") long idQCM,
+			@PathVariable("idQuestion") long idQuestion) throws QCMDoesNotExistException, QuestionDoesNotExistException {
+		
+		Question question = qcmService.getQuestion(idQCM, idQuestion);
+		
+		if (question != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(question);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+		
+	}
+	
+	@RequestMapping(value="/qcms/{id}", method = RequestMethod.GET)
+	public ResponseEntity<QCM> getQCM(@PathVariable("id") long id) {
+		QCM qcm = qcmService.getQCM(id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(qcm);
 	}
 }
