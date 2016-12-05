@@ -18,6 +18,7 @@ import oonoz.manager.impl.QCMManagerImpl;
 import oonoz.manager.impl.QuestionManagerImpl;
 import oonoz.manager.impl.SubThemeManagerImpl;
 import oonoz.util.CheckQCMInformation;
+import oonoz.util.CheckQuestionInformation;
 
 /**
  * The Class QCMService.
@@ -40,6 +41,9 @@ public class QCMService {
 	/** The check QCM information. */
 	@Autowired
 	private CheckQCMInformation checkQCMInformation;
+	
+	@Autowired
+	private CheckQuestionInformation checkQuestionInformation;
 
 	/**
 	 * Find all.
@@ -74,13 +78,22 @@ public class QCMService {
 	 * @return the question
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 * @throws TooManyQuestionsException the too many questions exception
+	 * @throws WrongInformationException 
 	 */
-	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException, TooManyQuestionsException {
+	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException,
+	TooManyQuestionsException, WrongInformationException {
 		QCM qcm = QCMManager.findOne(idQCM);
 
 		if (qcm != null) {
 			if (qcm.getQuestions().size() < 20) {
 				question.setIdQCM(qcm.getId());
+				
+				checkQuestionInformation.checkTitle(question.getTitle());
+				checkQuestionInformation.checkAnswer(question.getAnswer());
+				checkQuestionInformation.checkProposition1(question.getProposition1());
+				checkQuestionInformation.checkProposition2(question.getProposition2());
+				checkQuestionInformation.checkProposition3(question.getProposition3());
+				
 				return questionManager.postQuestion(question);
 			} else {
 				throw new TooManyQuestionsException("Too many questions for QCM with id " + idQCM);

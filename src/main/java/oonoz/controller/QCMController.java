@@ -86,7 +86,7 @@ public class QCMController {
 	 */
 	@RequestMapping(value="/qcms/{idQCM}/questions", method = RequestMethod.POST)
 	public ResponseEntity<Question> postQuestion(@PathVariable("idQCM") long idQCM,
-			@RequestBody QuestionDto questionDto) {
+			@RequestBody QuestionDto questionDto) throws WrongInformationException {
 		Question questionToPost = questionDtoConverter.convertToEntity(questionDto);
 		
 		if (questionToPost != null) {
@@ -100,7 +100,7 @@ public class QCMController {
 			} catch (TooManyQuestionsException e) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN)
 						.body(null);
-			}
+			} 
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(null);
