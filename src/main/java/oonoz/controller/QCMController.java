@@ -164,12 +164,12 @@ public class QCMController {
 	 */
 	@RequestMapping(value="/qcms/{id}", method = RequestMethod.GET)
 
-	public ResponseEntity<QCM> getQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
+	public ResponseEntity<QCMDto> getQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getQCM(id);
 
 		if (qcm != null) {
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(qcm);
+					.body(qcmDtoConverter.convertToDto(qcm));
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
