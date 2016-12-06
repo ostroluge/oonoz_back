@@ -34,4 +34,8 @@ public class QCMManagerImpl implements QCMManager{
 		return QCMRepository.findByIdSupplier(idSupplier);
 	}
 
+	public List<QCM> findSupplierQCMByTheme(String theme) {
+		return QCMRepository.findByTheme(theme);
+	}
+
 }

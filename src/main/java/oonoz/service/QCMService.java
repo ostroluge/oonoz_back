@@ -23,5 +23,11 @@ public class QCMService {
 		List<QCM> questionList = QCMManager.findSupplierQuestions(idSupplier);
 		return questionList;
 	}
+
+
+	public List<QCM> searchSupplierQCM(String theme) {
+		List<QCM> questionList = QCMManager.findSupplierQCMByTheme(theme);
+		return questionList;
+	}
 	
 }

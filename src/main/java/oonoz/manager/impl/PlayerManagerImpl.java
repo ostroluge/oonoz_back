@@ -193,6 +193,10 @@ public class PlayerManagerImpl  implements PlayerManager {
 		return playerRepository.findOne(id);
 	}
 	
+	public Player getPlayerByUsername(String username){
+		return playerRepository.findByUsername(username);
+	}
+	
 	public void deletePlayer(long id){
 		 playerRepository.delete(id);
 	}
@@ -217,4 +221,6 @@ public class PlayerManagerImpl  implements PlayerManager {
 			throw new PlayerNotExistException("The player does not exist !");
 		}
 	}
+	
+	
 }

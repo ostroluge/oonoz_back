@@ -1,6 +1,7 @@
 package oonoz.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +33,9 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
+import oonoz.service.SubThemeService;
 import oonoz.service.SupplierService;
+import oonoz.util.CheckThemeInformation;
 import oonoz.util.StringResponse;
 
 /**
@@ -55,7 +60,16 @@ public class UserController {
 
 	@Autowired
 	private QCMService qcmService;
-
+	
+	@Autowired
+	private SubThemeService themeService;
+	
+	@Autowired
+	private QCMService subThemeService;
+	
+	@Autowired
+	private CheckThemeInformation checkThemeInformation;
+	
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
@@ -214,21 +228,43 @@ public class UserController {
 	}
 
 	/**
-	 * Authenticate users.
+	 * List of Supplier QCM
 	 *
 	 * @param request
 	 *            the request
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.POST)
-	public ResponseEntity<List<QCM>> getSupplierQCM(@RequestParam(value = "idSupplier") long idSupplier) {
-		List<QCM> QcmList = qcmService.getSupplierQCM(idSupplier);
+	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.GET)
+	public ResponseEntity<List<QCM>> getSupplierQCM(Authentication authentication) {
+		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
+		Player p = playerService.getPlayerByUsername(playerUsername);
+		List<QCM> QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
 		if (QcmList != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(QcmList);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
+	}
+
+	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.POST)
+	public ResponseEntity<List<QCM>> searchSupplierQCM(Authentication authentication,@RequestParam Map<String, String> requestParams) {
+		String theme = requestParams.get("theme");
+		String subTheme = requestParams.get("subTheme");
+		
+		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
+		Player p = playerService.getPlayerByUsername(playerUsername);
+
+//		if(theme!=null && subTheme != null){
+//			
+//		}
+		
+//		if (QcmList != null) {
+//			return ResponseEntity.status(HttpStatus.OK).body(QcmList);
+//		} else {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//		}
+		 return null;
 	}
 
 }

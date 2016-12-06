@@ -13,5 +13,7 @@ public interface QCMRepository extends CrudRepository<QCM, Long> {
 
 	
 	List<QCM> findByIdSupplier(long idSupplier);
+
+	List<QCM> findByTheme(String theme);
 	
 }

@@ -221,6 +221,10 @@ public class PlayerService {
 		return playerManager.getPlayer(idPlayer);
 	}
 	
+	public Player getPlayerByUsername(String username){
+		return playerManager.getPlayerByUsername(username);
+	}
+	
 	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
 		playerManager.changeStatusUser(idPlayer);
 	}
