@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.QCM;
+import oonoz.domain.Question;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
 
@@ -56,5 +57,15 @@ public class QCMManagerImpl implements QCMManager {
 	 */
 	public void delete(long id) {
 		QCMRepository.delete(id);
+	}
+	
+	/**
+	 * Save.
+	 *
+	 * @param qcm the qcm
+	 * @return the qcm
+	 */
+	public QCM save(QCM qcm) {
+		return QCMRepository.save(qcm);
 	}
 }
