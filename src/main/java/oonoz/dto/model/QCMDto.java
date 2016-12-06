@@ -18,10 +18,12 @@ public class QCMDto {
 	private long idTheme;
 	
 	/** The theme. */
-	private Theme theme;
+	private String themeName;
 	
 	/** The id supplier. */
 	private long idSupplier;
+	
+	private String supplierName;
 	
 	/** The sub themes. */
 	private List<SubTheme> subThemes;
@@ -95,23 +97,7 @@ public class QCMDto {
 		this.idTheme = idTheme;
 	}
 
-	/**
-	 * Gets the theme.
-	 *
-	 * @return the theme
-	 */
-	public Theme getTheme() {
-		return theme;
-	}
-
-	/**
-	 * Sets the theme.
-	 *
-	 * @param theme the new theme
-	 */
-	public void setTheme(Theme theme) {
-		this.theme = theme;
-	}
+	
 
 	/**
 	 * Gets the id supplier.
@@ -346,4 +332,22 @@ public class QCMDto {
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
+
+	public String getThemeName() {
+		return themeName;
+	}
+
+	public void setThemeName(String themeName) {
+		this.themeName = themeName;
+	}
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+	
+	
 }

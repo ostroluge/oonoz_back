@@ -154,9 +154,10 @@ public class QCMController {
 	}
 	
 	@RequestMapping(value="/qcms/{id}", method = RequestMethod.GET)
-	public ResponseEntity<QCM> getQCM(@PathVariable("id") long id) {
+	public ResponseEntity<QCMDto> getQCM(@PathVariable("id") long id) {
 		QCM qcm = qcmService.getQCM(id);
+		
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(qcm);
+				.body(qcmDtoConverter.convertToDto(qcm));
 	}
 }

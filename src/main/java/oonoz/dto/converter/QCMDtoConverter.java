@@ -49,7 +49,9 @@ public class QCMDtoConverter {
 
 		qcmDto.setId(qcm.getId());
 		qcmDto.setIdTheme(qcm.getIdTheme());
+		qcmDto.setThemeName(qcm.getTheme().getLabel());
 		qcmDto.setIdSupplier(qcm.getIdSupplier());
+		qcmDto.setSupplierName(qcm.getSupplier().getLastName());
 		qcmDto.setSubThemes(qcm.getSubThemes());
 		qcmDto.setName(qcm.getName());
 		qcmDto.setDescription(qcm.getDescription());

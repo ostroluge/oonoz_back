@@ -19,6 +19,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class QCM.
  */
@@ -44,6 +45,11 @@ public class QCM {
 	/** The id supplier. */
 	@Column(unique = true, nullable = false,name="ID_SUPPLIER")
 	private long idSupplier;
+	
+	/** The theme. */
+	@OneToOne
+	@JoinColumn(name="ID_SUPPLIER",insertable = false,updatable = false)
+	private Supplier supplier;
 	
 	/** The sub themes. */
 	@OneToMany
@@ -131,6 +137,24 @@ public class QCM {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * Gets the theme.
+	 *
+	 * @return the theme
+	 */
+	public Theme getTheme() {
+		return theme;
+	}
+
+	/**
+	 * Sets the theme.
+	 *
+	 * @param theme the new theme
+	 */
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
 
 	/**
@@ -367,4 +391,14 @@ public class QCM {
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
+
+	public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
+	
+	
 }
