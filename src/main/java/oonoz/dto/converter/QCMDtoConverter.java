@@ -30,6 +30,7 @@ public class QCMDtoConverter {
 		qcm.setFree(qcmDto.isFree());
 		qcm.setIcon(qcmDto.getIcon());
 		qcm.setPrizeName(qcmDto.getPrizeName());
+		qcm.setPrice(qcmDto.getPrice());
 		qcm.setPrizeDescription(qcmDto.getPrizeDescription());
 		qcm.setMinimalScore(qcmDto.getMinimalScore());
 		qcm.setCategory(qcmDto.getCategory());
@@ -58,6 +59,7 @@ public class QCMDtoConverter {
 		qcmDto.setDescription(qcm.getDescription());
 		qcmDto.setValidated(qcm.isValidated());
 		qcmDto.setFree(qcm.isFree());
+		qcmDto.setPrice(qcm.getPrice());
 		qcmDto.setIcon(qcm.getIcon());
 		qcmDto.setPrizeName(qcm.getPrizeName());
 		qcmDto.setPrizeDescription(qcm.getPrizeDescription());
