@@ -148,6 +148,13 @@ public class AdminController {
     }
 
     
+    /**
+     * Change status user.
+     *
+     * @param idPlayer the id player
+     * @return the response entity
+     * @throws PlayerNotExistException the player not exist exception
+     */
     @RequestMapping(value = "/changeStatusUser", method = RequestMethod.GET)
     public ResponseEntity<String> changeStatusUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
     	
@@ -188,8 +195,6 @@ public class AdminController {
 	@RequestMapping(value = "/refuseSupplierRequest", method = RequestMethod.DELETE)
 	public ResponseEntity<StringResponse> refuseSupplierRequest(
 			@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) {
-		// public ResponseEntity<List<Supplier>>
-		// refuseSupplierRequest(HttpServletRequest request) {
 		supplierService.refuseSupplierRequest(idPlayer);
 		StringResponse response = new StringResponse();
 		response.setResponse("La demande a été refusée");
@@ -225,27 +230,20 @@ public class AdminController {
 		try {
 			this.playerService.signUpByAdmin(player);
 		} catch (WrongInformationException e) {
-			logger.error(e.getMessage());
+			logger.error("Mauvaise information", e);
 			response.setResponse("The information of sign-up are not valid !");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-			// return new ResponseEntity<>("The information of sign-up are not
-			// valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
-			logger.error(e.getMessage());
+			logger.error("Ce joueur existe déjà", e);
 			response.setResponse("The player already exists !");
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-			// return new ResponseEntity<>("The player already exist !",
-			// HttpStatus.BAD_REQUEST);
 		} catch (MessagingException e) {
-			logger.error(e.getMessage());
+			logger.error("Impossible d'envoyer le message", e);
 			response.setResponse("A error occurs when sending validation mail !");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-			// return new ResponseEntity<>("A error occurs when sending
-			// validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.setResponse("Player created !");
 		return ResponseEntity.status(HttpStatus.OK).body(response);
-		// return new ResponseEntity<>("", HttpStatus.OK);
 	}
 	
 	
@@ -263,13 +261,13 @@ public class AdminController {
 		try {
 			this.supplierService.signUpByAdmin(supplier);
 		} catch (WrongInformationException e) {
-			logger.error(e.getMessage());
+			logger.error("Mauvaise information", e);
 			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
-			logger.error(e.getMessage());
+			logger.error("Le joueur existe déjà", e);
 			return new ResponseEntity<>("The player already exist !", HttpStatus.CONFLICT);
 		} catch (MessagingException e) {
-			logger.error(e.getMessage());
+			logger.error("Impossible d'envoyer le mail", e);
 			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		 return new ResponseEntity<>("", HttpStatus.OK);

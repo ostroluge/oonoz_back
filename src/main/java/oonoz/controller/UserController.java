@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +29,6 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.SupplierService;
-import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
 
 
@@ -103,24 +101,20 @@ public class UserController {
 			response.setResponse("The information of sign-up are not valid !");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(response);
-			//			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
 			logger.error("This player already exist", e);
 			response.setResponse("The player already exists !");
 			return ResponseEntity.status(HttpStatus.CONFLICT)
 					.body(response);
-			//			return new ResponseEntity<>("The player already exist !", HttpStatus.BAD_REQUEST);
 		} catch (MessagingException e) {
 			logger.error("Impossible to send validation mail", e);
 			response.setResponse("A error occurs when sending validation mail !");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(response);
-			//			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.setResponse("Player created !");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(response);
-		//		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
 	/**
