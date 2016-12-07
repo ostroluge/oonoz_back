@@ -89,7 +89,7 @@ public class QCM {
 	/** The minimal score. */
 	@Column(name="MINIMAL_SCORE")
 	private int minimalScore;
-	
+
 	/** The category. */
 	@Column(unique = false, nullable = false,name="CATEGORY")
 	private String category;
@@ -138,24 +138,6 @@ public class QCM {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * Gets the theme.
-	 *
-	 * @return the theme
-	 */
-	public Theme getTheme() {
-		return theme;
-	}
-
-	/**
-	 * Sets the theme.
-	 *
-	 * @param theme the new theme
-	 */
-	public void setTheme(Theme theme) {
-		this.theme = theme;
 	}
 
 	/**
@@ -410,22 +392,40 @@ public class QCM {
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
+	
+	/**
+	 * Gets the theme.
+	 *
+	 * @return the theme
+	 */
+	public Theme getTheme() {
+		return theme;
+	}
 
 	/**
-	 * Checks if is complete.
+	 * Sets the theme.
 	 *
-	 * @return true, if is complete
+	 * @param theme the new theme
 	 */
-	public boolean isComplete() {
+	public void setTheme(Theme theme) {
+		this.theme = theme;
+	}
+
+	/**
+	 * Gets the is complete.
+	 *
+	 * @return the is complete
+	 */
+	public Boolean getIsComplete() {
 		return isComplete;
 	}
 
 	/**
-	 * Sets the complete.
+	 * Sets the checks if is complete.
 	 *
-	 * @param isComplete the new complete
+	 * @param isComplete the new checks if is complete
 	 */
-	public void setComplete(boolean isComplete) {
+	public void setIsComplete(Boolean isComplete) {
 		this.isComplete = isComplete;
 	}
 }

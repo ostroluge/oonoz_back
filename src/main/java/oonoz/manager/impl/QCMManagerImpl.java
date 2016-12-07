@@ -23,6 +23,7 @@ public class QCMManagerImpl implements QCMManager {
 	@Resource
 	private QCMRepository QCMRepository;
 	
+	/** The theme repository. */
 	@Resource
 	private ThemeRepository themeRepository;
 	
@@ -99,5 +100,46 @@ public class QCMManagerImpl implements QCMManager {
 		} else {
 			throw new QCMDoesNotExistException("The qcm does not exist");
 		}
+	}
+	
+
+	/**
+	 * Find supplier questions.
+	 *
+	 * @param idSupplier the id supplier
+	 * @return the list
+	 */
+	public List<QCM> findSupplierQuestions(long idSupplier) {
+		return QCMRepository.findByIdSupplier(idSupplier);
+	}
+
+	/**
+	 * Find supplier QCM by theme.
+	 *
+	 * @param theme the theme
+	 * @return the list
+	 */
+	public List<QCM> findSupplierQCMByTheme(String theme) {
+		return QCMRepository.findByTheme(theme);
+	}
+
+	/**
+	 * Récupère tous les QCM validés et terminés.
+	 * Fonction réservée à l'ADMIN
+	 *
+	 * @return the all validated QCM
+	 */
+	public List<QCM> getAllValidatedQCM(){
+		return QCMRepository.findByIsValidatedTrueAndIsCompleteTrue();
+	}
+	
+	/**
+	 * Récupère tous les QCM non validés mais terminés.
+	 * Fonction réservée à l'ADMIN
+	 *
+	 * @return the all QCM not validated
+	 */
+	public List<QCM> getAllNotValidatedQCM(){
+		return QCMRepository.findByIsValidatedFalseAndIsCompleteTrue();
 	}
 }

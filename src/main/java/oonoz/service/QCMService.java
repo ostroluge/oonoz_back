@@ -42,6 +42,7 @@ public class QCMService {
 	@Autowired
 	private CheckQCMInformation checkQCMInformation;
 	
+	/** The check question information. */
 	@Autowired
 	private CheckQuestionInformation checkQuestionInformation;
 
@@ -78,7 +79,7 @@ public class QCMService {
 	 * @return the question
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 * @throws TooManyQuestionsException the too many questions exception
-	 * @throws WrongInformationException 
+	 * @throws WrongInformationException the wrong information exception
 	 */
 	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException,
 	TooManyQuestionsException, WrongInformationException {
@@ -259,5 +260,28 @@ public class QCMService {
 	 */
 	public Question updateQuestion(long idQuestion, Question question) throws QuestionDoesNotExistException {
 		return questionManager.update(idQuestion, question);
+	}
+	
+	/**
+	 * Gets the supplier QCM.
+	 *
+	 * @param idSupplier the id supplier
+	 * @return the supplier QCM
+	 */
+	public List<QCM> getSupplierQCM(long idSupplier){
+		List<QCM> questionList = QCMManager.findSupplierQuestions(idSupplier);
+		return questionList;
+	}
+
+
+	/**
+	 * Search supplier QCM.
+	 *
+	 * @param theme the theme
+	 * @return the list
+	 */
+	public List<QCM> searchSupplierQCM(String theme) {
+		List<QCM> questionList = QCMManager.findSupplierQCMByTheme(theme);
+		return questionList;
 	}
 }
