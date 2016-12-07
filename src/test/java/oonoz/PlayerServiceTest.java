@@ -27,7 +27,6 @@ import oonoz.manager.impl.PlayerManagerImpl;
 import oonoz.service.PlayerService;
 import oonoz.util.MailService;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PlayerServiceTest.
  * 
@@ -49,6 +48,7 @@ public class PlayerServiceTest {
 	@Mock
 	private MailService mailService;
 
+	/** The player manager. */
 	@Mock
 	private PlayerManagerImpl playerManager;
 	

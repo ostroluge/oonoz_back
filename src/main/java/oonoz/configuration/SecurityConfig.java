@@ -41,18 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.DELETE, "/admin/deleteUser").permitAll()
 		.antMatchers(HttpMethod.GET, "/admin/changeStatusUser").permitAll()
 		.antMatchers(HttpMethod.POST, "/admin/filteredSearch").permitAll()
-		// .antMatchers(HttpMethod.GET,
-		// "/user/login").hasRole("PLAYER").and()
-		//		.authorizeRequests().anyRequest().authenticated().and().httpBasic();
-		//TODO 09/11/16 : permission management
 		.antMatchers(HttpMethod.GET, "/themes").permitAll()
 		.antMatchers(HttpMethod.POST, "/themes").permitAll()
 		.antMatchers(HttpMethod.DELETE, "/themes/{id}").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{id}").permitAll()
+		.antMatchers(HttpMethod.GET, "/themes/{id}").permitAll()
 		.antMatchers(HttpMethod.POST, "/themes/{id}/subthemes").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
 		.antMatchers(HttpMethod.DELETE, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
-		.antMatchers(HttpMethod.GET, "/themes/{id}").permitAll()
 		.antMatchers(HttpMethod.GET, "/themes/{idTheme}/subthemes/{idSubTheme}").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{idTheme}/subthemes/{idSubTheme}/validation").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{id}/validation").permitAll()

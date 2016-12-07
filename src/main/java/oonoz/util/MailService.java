@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import oonoz.domain.Player;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MailService.
  * 
@@ -49,6 +48,9 @@ public class MailService {
 	/** The props. */
 	private Properties props;
 
+	/**
+	 * Instantiates a new mail service.
+	 */
 	public MailService(){
 		
 	}

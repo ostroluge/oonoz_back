@@ -105,6 +105,14 @@ public class PlayerService {
 		}
 	}
 	
+	/**
+	 * Validation mail.
+	 *
+	 * @param mail the mail
+	 * @param hash the hash
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws WrongInformationException the wrong information exception
+	 */
 	/* Validate mail of the new signed-up player.
 	 *
 	 * @param mail the mail
@@ -130,9 +138,8 @@ public class PlayerService {
 	 *
 	 * @param player the player
 	 * @throws WrongInformationException the wrong information exception
-	 * @throws PlayerNotExistException 
+	 * @throws PlayerNotExistException the player not exist exception
 	 */
-	//TODO use spring security authentication principal
 
 	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
 		
@@ -153,6 +160,12 @@ public class PlayerService {
 		playerManager.update(player_);
 	}
 	
+	/**
+	 * Delete player.
+	 *
+	 * @param idPlayer the id player
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
 	public void deletePlayer(Long idPlayer) throws PlayerNotExistException{
 		Player player_=playerManager.getPlayer(idPlayer);
 		if(player_==null){
@@ -205,6 +218,13 @@ public class PlayerService {
 
 	}
 	
+	/**
+	 * Filtered search.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the page
+	 * @throws WrongInformationException the wrong information exception
+	 */
 	public Page<PlayerDto> filteredSearch(FilteredSearch filteredSearch) throws WrongInformationException{
 				
 		if(filteredSearch.getPageNumber()>=0 && filteredSearch.getPageSize()>=0){
@@ -215,10 +235,22 @@ public class PlayerService {
 		
 	}
 	
+	/**
+	 * Gets the player by id.
+	 *
+	 * @param idPlayer the id player
+	 * @return the player by id
+	 */
 	public Player getPlayerById(long idPlayer){
 		return playerManager.getPlayer(idPlayer);
 	}
 	
+	/**
+	 * Change status user.
+	 *
+	 * @param idPlayer the id player
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
 	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
 		playerManager.changeStatusUser(idPlayer);
 	}

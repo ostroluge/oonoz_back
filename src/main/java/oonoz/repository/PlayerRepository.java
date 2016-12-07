@@ -15,7 +15,6 @@ import org.springframework.data.repository.CrudRepository;
 import oonoz.domain.Player;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface PlayerRepository.
  * 
@@ -56,12 +55,19 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
     
     
     /**
-     * Find
-     * @param pageable
-     * @return
+     * Find.
+     *
+     * @param pageable the pageable
+     * @return the page
      */
     Page<Player> findByIsSupplierFalse(Pageable pageable);
     
+	/**
+	 * Update player to supplier.
+	 *
+	 * @param idPlayer the id player
+	 * @return the int
+	 */
 	@Transactional
 	@Modifying
     @Query(value="UPDATE player SET type_user='Supplier'  where id=?1",nativeQuery = true)
@@ -69,7 +75,13 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
  
     //Page<Player> findAll(Pageable pageable);
     
-	@Transactional
+	/**
+     * Create supplier row.
+     *
+     * @param idPlayer the id player
+     * @return the int
+     */
+    @Transactional
 	@Modifying
 	@Query(value="INSERT INTO supplier (id_player,is_valid,is_private_individual) VALUES (?1,false,true)",nativeQuery = true)
 	int createSupplierRow(long idPlayer);

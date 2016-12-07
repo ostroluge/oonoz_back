@@ -1,6 +1,5 @@
 package oonoz.dto.model;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ThemeDto.
  */
