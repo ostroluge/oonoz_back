@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.manager.QuestionManager;
 import oonoz.repository.QuestionRepository;

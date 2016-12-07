@@ -32,6 +32,7 @@ import oonoz.util.StringResponse;
 public class ThemeController {
 
 	/** The Constant logger. */
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ThemeController.class);
 
 	/** The theme service. */

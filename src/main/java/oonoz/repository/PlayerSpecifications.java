@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.Player;
-import oonoz.domain.Supplier;
 
 @Component
 public class PlayerSpecifications {

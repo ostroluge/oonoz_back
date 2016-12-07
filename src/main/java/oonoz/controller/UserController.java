@@ -1,7 +1,5 @@
 package oonoz.controller;
 
-
-
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +27,6 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.SupplierService;
-import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
 
 
@@ -73,6 +69,7 @@ public class UserController {
 
 		/* Getting session and then invalidating it */
 
+		@SuppressWarnings("unused")
 		HttpSession session = request.getSession(false);
 
 		/*if (request.isRequestedSessionIdValid() && session != null) {
