@@ -7,9 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.QCM;
-import oonoz.domain.Question;
+import oonoz.domain.Theme;
+import oonoz.exception.QCMDoesNotExistException;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
+import oonoz.repository.ThemeRepository;
 
 /**
  * The Class QCMManagerImpl.
@@ -20,6 +22,9 @@ public class QCMManagerImpl implements QCMManager {
 	/** The player repository. */
 	@Resource
 	private QCMRepository QCMRepository;
+	
+	@Resource
+	private ThemeRepository themeRepository;
 	
 	/**
 	 * Gets the all the qcm.
@@ -67,5 +72,32 @@ public class QCMManagerImpl implements QCMManager {
 	 */
 	public QCM save(QCM qcm) {
 		return QCMRepository.save(qcm);
+	}
+	
+	/**
+	 * Update the qcm.
+	 *
+	 * @param id the id
+	 * @param qcm the qcm
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	public QCM update(long id, QCM qcm) throws QCMDoesNotExistException {
+		
+		QCM existingQCM = QCMRepository.findOne(id);
+		if (existingQCM != null) {
+			qcm.setSubThemes(existingQCM.getSubThemes());
+			qcm.setQuestions(existingQCM.getQuestions());
+			qcm.setSupplier(existingQCM.getSupplier());
+			if (existingQCM.getIdTheme() == qcm.getIdTheme()) {
+				qcm.setTheme(existingQCM.getTheme());
+			} else {
+				Theme newTheme = themeRepository.findOne(qcm.getIdTheme());
+				qcm.setTheme(newTheme);
+			}
+			return QCMRepository.save(qcm);
+		} else {
+			throw new QCMDoesNotExistException("The qcm does not exist");
+		}
 	}
 }

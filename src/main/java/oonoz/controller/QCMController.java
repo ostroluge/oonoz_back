@@ -1,5 +1,6 @@
 package oonoz.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,14 @@ public class QCMController {
 	 * @return the all
 	 */
 	@RequestMapping(value="/qcms", method = RequestMethod.GET)
-	public ResponseEntity<List<QCM>> getAll() {
+	public ResponseEntity<List<QCMDto>> getAll() {
+		List<QCM> qcms = qcmService.findAll();
+		List<QCMDto> result = new ArrayList<>();
+		for (QCM qcm : qcms) {
+			result.add(qcmDtoConverter.convertToDto(qcm));
+		}
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(qcmService.findAll());
+				.body(result);
 	}
 
 	/**
@@ -163,7 +169,6 @@ public class QCMController {
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	@RequestMapping(value="/qcms/{id}", method = RequestMethod.GET)
-
 	public ResponseEntity<QCMDto> getQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getQCM(id);
 
@@ -211,12 +216,12 @@ public class QCMController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value="/qcms/{idQCM}/subthemes/{idSubTheme}", method = RequestMethod.POST)
-	public ResponseEntity<QCM> addSubTheme(@PathVariable("idQCM") long idQCM,
+	public ResponseEntity<QCMDto> addSubTheme(@PathVariable("idQCM") long idQCM,
 			@PathVariable("idSubTheme") long idSubTheme) {
 		try {
 			QCM result = qcmService.addSubTheme(idQCM, idSubTheme);
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(result);
+					.body(qcmDtoConverter.convertToDto(result));
 		} catch (QCMDoesNotExistException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
@@ -254,5 +259,31 @@ public class QCMController {
 					.body(null);
 		}
 
+	}
+	
+	/**
+	 * Edits the QCM.
+	 *
+	 * @param id the id
+	 * @param qcm the qcm
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<QCMDto> editQCM(@PathVariable("id") long id, @RequestBody QCMDto qcm) {
+		QCM qcmToUpdate = qcmDtoConverter.convertToEntity(qcm);
+		
+		if (qcmToUpdate != null) {
+			try {
+				QCM result = qcmService.updateQCM(id, qcmToUpdate);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(qcmDtoConverter.convertToDto(result));
+			} catch (QCMDoesNotExistException e) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
 	}
 }

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.domain.SubTheme;
+import oonoz.domain.Theme;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
+import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.QCMManagerImpl;
@@ -235,5 +237,17 @@ public class QCMService {
 		} else {
 			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
 		}
+	}
+	
+	/**
+	 * Update QCM.
+	 *
+	 * @param id the id
+	 * @param qcm the qcm
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException {
+		return QCMManager.update(id, qcm);
 	}
 }
