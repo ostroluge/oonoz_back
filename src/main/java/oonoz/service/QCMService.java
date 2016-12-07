@@ -248,4 +248,16 @@ public class QCMService {
 	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException {
 		return QCMManager.update(id, qcm);
 	}
+	
+	/**
+	 * Update question.
+	 *
+	 * @param idQuestion the id question
+	 * @param question the question
+	 * @return the question
+	 * @throws QuestionDoesNotExistException the question does not exist exception
+	 */
+	public Question updateQuestion(long idQuestion, Question question) throws QuestionDoesNotExistException {
+		return questionManager.update(idQuestion, question);
+	}
 }

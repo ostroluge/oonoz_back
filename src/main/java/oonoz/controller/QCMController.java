@@ -36,15 +36,15 @@ public class QCMController {
 	/** The qcm service. */
 	@Autowired
 	QCMService qcmService;
-	
+
 	/** The qcm dto converter. */
 	@Autowired
 	QCMDtoConverter qcmDtoConverter;
-	
+
 	/** The question dto converter. */
 	@Autowired
 	QuestionDtoConverter questionDtoConverter;
-	
+
 	/**
 	 * Gets the all.
 	 *
@@ -71,18 +71,18 @@ public class QCMController {
 	@RequestMapping(value="/qcms", method = RequestMethod.POST)
 	public ResponseEntity<QCM> postQCM(@RequestBody QCMDto qcmDto) throws WrongInformationException {
 		QCM qcmToPost = qcmDtoConverter.convertToEntity(qcmDto);
-		
+
 		QCM result = qcmService.postQCM(qcmToPost);
-		
+
 		if (result == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(null);
 		}
-		
+
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(result);
 	}
-	
+
 	/**
 	 * Post question.
 	 *
@@ -94,7 +94,7 @@ public class QCMController {
 	public ResponseEntity<Question> postQuestion(@PathVariable("idQCM") long idQCM,
 			@RequestBody QuestionDto questionDto) throws WrongInformationException {
 		Question questionToPost = questionDtoConverter.convertToEntity(questionDto);
-		
+
 		if (questionToPost != null) {
 			try {
 				Question result = qcmService.postQuestion(idQCM, questionToPost);
@@ -112,7 +112,7 @@ public class QCMController {
 					.body(null);
 		}
 	}
-	
+
 	/**
 	 * Delete QCM.
 	 *
@@ -122,7 +122,7 @@ public class QCMController {
 	@RequestMapping(value="/qcms/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<StringResponse> deleteQCM(@PathVariable long id) {
 		StringResponse response = new StringResponse();
-		
+
 		try {
 			qcmService.deleteQCM(id);
 		} catch (QCMDoesNotExistException e) {
@@ -130,12 +130,12 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(response);
 		}
-		
+
 		response.setResponse("Deletion successful");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(response);
 	}
-	
+
 	/**
 	 * Gets the question.
 	 *
@@ -148,9 +148,9 @@ public class QCMController {
 	@RequestMapping(value="/qcms/{idQCM}/questions/{idQuestion}", method = RequestMethod.GET)
 	public ResponseEntity<Question> getQuestion(@PathVariable("idQCM") long idQCM,
 			@PathVariable("idQuestion") long idQuestion) throws QCMDoesNotExistException, QuestionDoesNotExistException {
-		
+
 		Question question = qcmService.getQuestion(idQCM, idQuestion);
-		
+
 		if (question != null) {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(question);
@@ -158,9 +158,9 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Gets the qcm.
 	 *
@@ -180,7 +180,7 @@ public class QCMController {
 					.body(null);
 		}
 	}
-	
+
 	/**
 	 * Delete question.
 	 *
@@ -207,7 +207,7 @@ public class QCMController {
 					.body(null);
 		}		
 	}
-	
+
 	/**
 	 * Adds the sub theme.
 	 *
@@ -245,7 +245,7 @@ public class QCMController {
 	public ResponseEntity<StringResponse> deleteSubTheme(@PathVariable("idQCM") long idQCM,
 			@PathVariable("idSubTheme") long idSubTheme) {
 		StringResponse response = new StringResponse();
-		
+
 		try {
 			qcmService.deleteSubTheme(idQCM, idSubTheme);
 			response.setResponse("Deletion successful");
@@ -260,7 +260,7 @@ public class QCMController {
 		}
 
 	}
-	
+
 	/**
 	 * Edits the QCM.
 	 *
@@ -271,13 +271,41 @@ public class QCMController {
 	@RequestMapping(value="/qcms/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<QCMDto> editQCM(@PathVariable("id") long id, @RequestBody QCMDto qcm) {
 		QCM qcmToUpdate = qcmDtoConverter.convertToEntity(qcm);
-		
+
 		if (qcmToUpdate != null) {
 			try {
 				QCM result = qcmService.updateQCM(id, qcmToUpdate);
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(qcmDtoConverter.convertToDto(result));
 			} catch (QCMDoesNotExistException e) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+						.body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
+
+	/**
+	 * Edits the question.
+	 *
+	 * @param idQCM the id QCM
+	 * @param idQuestion the id question
+	 * @param question the question
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/questions/{idQuestion}", method = RequestMethod.PUT)
+	public ResponseEntity<Question> editQuestion(@PathVariable("idQCM") long idQCM,
+			@PathVariable("idQuestion") long idQuestion, @RequestBody QuestionDto question) {
+		Question questionToUpdate = questionDtoConverter.convertToEntity(question);
+
+		if (questionToUpdate != null) {
+			try {
+				Question result = qcmService.updateQuestion(idQuestion, questionToUpdate);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(result);
+			} catch (QuestionDoesNotExistException e) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}

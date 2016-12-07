@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.Question;
+import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.manager.QuestionManager;
 import oonoz.repository.QuestionRepository;
 
@@ -45,5 +46,23 @@ public class QuestionManagerImpl implements QuestionManager {
 	 */
 	public void deleteQuestion(long idQuestion) {
 		questionRepository.delete(idQuestion);
+	}
+	
+	/**
+	 * Update the question.
+	 *
+	 * @param id the id
+	 * @param question the question
+	 * @return the question
+	 * @throws QuestionDoesNotExistException the question does not exist exception
+	 */
+	public Question update(long id, Question question) throws QuestionDoesNotExistException {
+		Question existingQuestion = questionRepository.findOne(id);
+		if (existingQuestion != null) {
+			question.setId(existingQuestion.getId());
+			return questionRepository.save(question);
+		} else {
+			throw new QuestionDoesNotExistException("The question with id " + id + " does not exist");
+		}
 	}
 }
