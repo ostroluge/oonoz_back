@@ -305,6 +305,11 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
+	/**
+	 * Gets the not validated QCM.
+	 *
+	 * @return the not validated QCM
+	 */
 	@RequestMapping(value = "/getNotValidatedQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCM>> getNotValidatedQCM(){
 		List<QCM> listQCM = adminService.getAllNotValidatedQCM();
