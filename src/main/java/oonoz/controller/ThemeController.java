@@ -1,5 +1,7 @@
 package oonoz.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +150,25 @@ public class ThemeController {
 			}
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
+	
+	/**
+	 * Gets all sub theme by theme id.
+	 *
+	 * @param idTheme the id theme
+	 * @param idSubTheme the id sub theme
+	 * @return the sub theme by id
+	 */
+	@RequestMapping(value = "/themes/{idTheme}/subthemes", method = RequestMethod.GET)
+	public ResponseEntity<List<SubTheme>> getAllSubThemeByThemeId(@PathVariable("idTheme") long idTheme) {
+		List<SubTheme> subThemes = subThemeService.getAllSubThemesFromTheme(idTheme);
+		if (subThemes != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(subThemes);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
 	}
