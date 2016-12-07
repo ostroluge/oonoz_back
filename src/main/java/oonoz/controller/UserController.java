@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,16 +61,16 @@ public class UserController {
 
 	@Autowired
 	private QCMService qcmService;
-	
+
 	@Autowired
 	private SubThemeService themeService;
-	
+
 	@Autowired
 	private QCMService subThemeService;
-	
+
 	@Autowired
 	private CheckThemeInformation checkThemeInformation;
-	
+
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
@@ -85,11 +86,14 @@ public class UserController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ResponseEntity<String> login(HttpServletRequest request) {
+	public ResponseEntity<String> login(Authentication authentication,HttpServletRequest request) {
 
 		/* Getting session and then invalidating it */
 
-		HttpSession session = request.getSession(false);
+		//HttpSession session = request.getSession(false);
+//		Player player = playerService.getPlayerByUsername((((UserDetails) authentication.getPrincipal()).getUsername()));
+//		HttpSession session = request.getSession();
+//		session.setAttribute("USER", player);
 
 		/*
 		 * if (request.isRequestedSessionIdValid() && session != null) {
@@ -236,6 +240,8 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCM>> getSupplierQCM(Authentication authentication) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		String playerUsername = auth.getName();
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
 		List<QCM> QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
@@ -248,23 +254,24 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.POST)
-	public ResponseEntity<List<QCM>> searchSupplierQCM(Authentication authentication,@RequestParam Map<String, String> requestParams) {
+	public ResponseEntity<List<QCM>> searchSupplierQCM(Authentication authentication,
+			@RequestParam Map<String, String> requestParams) {
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
-		
+
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
 
-//		if(theme!=null && subTheme != null){
-//			
-//		}
-		
-//		if (QcmList != null) {
-//			return ResponseEntity.status(HttpStatus.OK).body(QcmList);
-//		} else {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//		}
-		 return null;
+		// if(theme!=null && subTheme != null){
+		//
+		// }
+
+		// if (QcmList != null) {
+		// return ResponseEntity.status(HttpStatus.OK).body(QcmList);
+		// } else {
+		// return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		// }
+		return null;
 	}
 
 }
