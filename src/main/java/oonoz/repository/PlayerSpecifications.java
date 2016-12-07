@@ -1,19 +1,32 @@
 package oonoz.repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.Player;
-import oonoz.domain.Supplier;
 
+/**
+ * The Class PlayerSpecifications.
+ * 
+ * Description :
+ */
 @Component
 public class PlayerSpecifications {
 
+	private PlayerSpecifications(){
+		throw new IllegalAccessError("Utility class");
+	}
+	
+	/**
+	 * Is supplier.
+	 *
+	 * @return the specification
+	 */
 	public static Specification<Player> isSupplier() {
 		return new Specification<Player>() {
 
@@ -25,6 +38,11 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	/**
+	 * Is player.
+	 *
+	 * @return the specification
+	 */
 	public static Specification<Player> isPlayer() {
 		return new Specification<Player>() {
 
@@ -36,6 +54,12 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	/**
+	 * Mail start with.
+	 *
+	 * @param searchString the search string
+	 * @return the specification
+	 */
 	public static Specification<Player> mailStartWith(String searchString) {
 		return new Specification<Player>() {
 
@@ -47,6 +71,12 @@ public class PlayerSpecifications {
 		};
 	}
 
+	/**
+	 * Username start with.
+	 *
+	 * @param searchString the search string
+	 * @return the specification
+	 */
 	public static Specification<Player> usernameStartWith(String searchString) {
 		return new Specification<Player>() {
 
@@ -58,6 +88,12 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	/**
+	 * Lastname start with.
+	 *
+	 * @param searchString the search string
+	 * @return the specification
+	 */
 	public static Specification<Player> lastnameStartWith(String searchString) {
 		return new Specification<Player>() {
 
@@ -69,6 +105,12 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	/**
+	 * Firstname start with.
+	 *
+	 * @param searchString the search string
+	 * @return the specification
+	 */
 	public static Specification<Player> firstnameStartWith(String searchString) {
 		return new Specification<Player>() {
 
@@ -82,6 +124,11 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	/**
+	 * Is active.
+	 *
+	 * @return the specification
+	 */
 	public static Specification<Player> isActive() {
 		return new Specification<Player>() {
 
@@ -93,6 +140,11 @@ public class PlayerSpecifications {
 		};
 	}
 	
+	/**
+	 * Is unactive.
+	 *
+	 * @return the specification
+	 */
 	public static Specification<Player> isUnactive() {
 		return new Specification<Player>() {
 
@@ -103,11 +155,5 @@ public class PlayerSpecifications {
 
 		};
 	}
-	
-	
-	
-	
-	
-	
 
 }

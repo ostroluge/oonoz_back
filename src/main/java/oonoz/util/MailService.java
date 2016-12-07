@@ -52,7 +52,7 @@ public class MailService {
 	 * Instantiates a new mail service.
 	 */
 	public MailService(){
-		
+		throw new IllegalAccessError("Utility class");
 	}
 	/**
 	 * Instantiates a new mail service.
@@ -84,7 +84,7 @@ public class MailService {
 		Session session = this.getSession();
 
 		String content = subscriptionMailContentFor(player);
-		Transport.send(generateMessageFrom(player.getMail(), session, title, content));
+		Transport.send(this.generateMessageFrom(player.getMail(), session, title, content));
 	}
 	
 	
@@ -99,7 +99,7 @@ public class MailService {
 		Session session =  this.getSession();
 
 		String content = generateNewPasswordMailContentFor(player);
-		Transport.send(generateMessageFrom(player.getMail(), session, title, content));
+		Transport.send(this.generateMessageFrom(player.getMail(), session, title, content));
 
 	}
 

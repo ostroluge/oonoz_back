@@ -33,7 +33,7 @@ public class ThemeController {
 
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(ThemeController.class);
-
+	
 	/** The theme service. */
 	@Autowired
 	ThemeService themeService;
@@ -116,6 +116,7 @@ public class ThemeController {
 		try {
 			themeService.removeTheme(id);
 		} catch (ThemeDoesNotExistException e) {
+			logger.error("Le thème n'existe pas", e);
 			response.setResponse("The theme does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(response);
@@ -129,6 +130,7 @@ public class ThemeController {
 	/**
 	 * Update theme.
 	 *
+	 * @param id the id
 	 * @param theme the theme
 	 * @return the updated theme
 	 */
@@ -142,6 +144,7 @@ public class ThemeController {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
 			} catch (ThemeDoesNotExistException e) {
+				logger.error("Le thème n'existe pas", e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -168,6 +171,7 @@ public class ThemeController {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
 			} catch (ThemeDoesNotExistException e) {
+				logger.error("Le thème n'existe pas", e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -216,6 +220,7 @@ public class ThemeController {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
 			} catch (SubThemeDoesNotExistException e) {
+				logger.error("Le sous-thème n'existe pas", e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -240,6 +245,7 @@ public class ThemeController {
 		try {
 			subThemeService.removeSubTheme(idSubTheme);
 		} catch (SubThemeDoesNotExistException e) {
+			logger.error("Le sous-thème n'existe pas", e);
 			response.setResponse("The subtheme does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(response);
@@ -263,6 +269,7 @@ public class ThemeController {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(result);
 		} catch (ThemeDoesNotExistException e) {
+			logger.error("Le thème n'existe pas", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
@@ -283,6 +290,7 @@ public class ThemeController {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(result);
 		} catch (SubThemeDoesNotExistException e) {
+			logger.error("Le sous-thème n'existe pas", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}

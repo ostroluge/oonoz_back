@@ -32,7 +32,6 @@ import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
-import oonoz.exception.WrongInformationException;
 import oonoz.manager.PlayerManager;
 import oonoz.repository.AuthoritiesRepository;
 import oonoz.repository.PlayerRepository;
@@ -52,14 +51,17 @@ public class PlayerManagerImpl  implements PlayerManager {
 	@Resource
 	private PlayerRepository playerRepository;
 	
+	/** The authorities repository. */
 	@Resource
 	private AuthoritiesRepository authoritiesRepository;
 
 
 		
+	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
 	
+	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
 
@@ -114,16 +116,21 @@ public class PlayerManagerImpl  implements PlayerManager {
 	}
 	
 	
+	/**
+	 * Find by id.
+	 *
+	 * @param id the id
+	 * @return the player
+	 */
 	public Player findById(long id){
 		return playerRepository.findOne(id);
 	}
 	
 	/**
 	 * Find all players. Results are split in several page.
-	 * @param pageNumber
-	 * @return
-	 * 		A page of playerDto
-	 * @throws WrongInformationException
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return 		A page of playerDto
 	 */
 	public Page<PlayerDto>findsPageable(FilteredSearch filteredSearch) {
 		
@@ -133,19 +140,19 @@ public class PlayerManagerImpl  implements PlayerManager {
 		Pageable pageable=new PageRequest(filteredSearch.getPageNumber(),filteredSearch.getPageSize(),Direction.ASC,"idPlayer");
 		
 		
-		if(filteredSearch.getUsernameSearch()!=null && !filteredSearch.getUsernameSearch().equals("")){			
+		if(filteredSearch.getUsernameSearch()!=null && !"".equals(filteredSearch.getUsernameSearch())){			
 			spec=where(usernameStartWith(filteredSearch.getUsernameSearch().toLowerCase()));
 		}
 		
-		if(filteredSearch.getLastnameSearch()!=null && !filteredSearch.getLastnameSearch().equals("")){			
+		if(filteredSearch.getLastnameSearch()!=null && !"".equals(filteredSearch.getLastnameSearch())){			
 			spec=where(spec).and(lastnameStartWith(filteredSearch.getLastnameSearch().toLowerCase()));
 		}
 		
-		if(filteredSearch.getFirstnameSearch()!=null && !filteredSearch.getFirstnameSearch().equals("")){			
+		if(filteredSearch.getFirstnameSearch()!=null && !"".equals(filteredSearch.getFirstnameSearch())){			
 			spec=where(spec).and(firstnameStartWith(filteredSearch.getFirstnameSearch().toLowerCase()));
 		}
 		
-		if(filteredSearch.getMailSearch()!=null && !filteredSearch.getMailSearch().equals("")){			
+		if(filteredSearch.getMailSearch()!=null && !"".equals(filteredSearch.getMailSearch())){			
 			spec=where(spec).and(mailStartWith(filteredSearch.getMailSearch().toLowerCase()));
 		}
 		
@@ -171,9 +178,11 @@ public class PlayerManagerImpl  implements PlayerManager {
 		
 		
 				
-		PlayerDto playerDto=null;
-    	List<PlayerDto> playersDto=new ArrayList<PlayerDto>();
+		
+    	List<PlayerDto> playersDto=new ArrayList<>();
 		for(Player player: playersPage.getContent()){
+			
+			PlayerDto playerDto=null;
 			if(player instanceof Supplier){
 				playerDto=supplierDtoConverter.convertToDto((Supplier)player);
 			}
@@ -189,14 +198,31 @@ public class PlayerManagerImpl  implements PlayerManager {
 		 
 	}
 	
+	/**
+	 * Gets the player.
+	 *
+	 * @param id the id
+	 * @return the player
+	 */
 	public Player getPlayer(long id){
 		return playerRepository.findOne(id);
 	}
 	
+	/**
+	 * Delete player.
+	 *
+	 * @param id the id
+	 */
 	public void deletePlayer(long id){
 		 playerRepository.delete(id);
 	}
 
+	/**
+	 * Change status user.
+	 *
+	 * @param idPlayer the id player
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
 	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
 		Player player=playerRepository.findOne(idPlayer);
 		if(player!=null){

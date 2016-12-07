@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -73,8 +72,6 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
     @Query(value="UPDATE player SET type_user='Supplier'  where id=?1",nativeQuery = true)
     int updatePlayerToSupplier(long idPlayer);
  
-    //Page<Player> findAll(Pageable pageable);
-    
 	/**
      * Create supplier row.
      *

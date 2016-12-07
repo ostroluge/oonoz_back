@@ -4,7 +4,6 @@ package oonoz.controller;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +48,7 @@ public class UserController {
 	@Autowired
 	private PlayerService playerService;
 
+	/** The supplier service. */
 	@Autowired
 	private SupplierService supplierService;
 
@@ -56,6 +56,7 @@ public class UserController {
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
 
+	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
 
@@ -69,15 +70,6 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<String> login(HttpServletRequest request) {
 
-		/* Getting session and then invalidating it */
-
-		HttpSession session = request.getSession(false);
-
-		/*if (request.isRequestedSessionIdValid() && session != null) {
-            session.invalidate();
-            return new ResponseEntity<>("", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);*/
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
@@ -170,8 +162,8 @@ public class UserController {
 	/**
 	 * Rest service receiving a email and a token.
 	 * If the token is right I will activate the account of the user matching the mail.
-	 * @param mail The email of the user to activate.
-	 * @param hash The token to verify the link.
+	 *
+	 * @param playerDto the player dto
 	 * @return A response containing a string with the answer.
 	 */
 	@RequestMapping(value = "/generatePassword", method = RequestMethod.POST)
