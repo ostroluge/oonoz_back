@@ -19,7 +19,6 @@ import oonoz.domain.Player;
 public class PlayerSpecifications {
 
 	private PlayerSpecifications(){
-		throw new IllegalAccessError("Utility class");
 	}
 	
 	/**

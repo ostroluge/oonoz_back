@@ -52,7 +52,6 @@ public class MailService {
 	 * Instantiates a new mail service.
 	 */
 	public MailService(){
-		throw new IllegalAccessError("Utility class");
 	}
 	/**
 	 * Instantiates a new mail service.
