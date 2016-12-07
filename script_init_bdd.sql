@@ -88,6 +88,7 @@ price float(2),
 icon TEXT,
 prize_name VARCHAR(50),
 prize_description VARCHAR(150),
+is_complete boolean not null,
 minimal_score integer,
 category VARCHAR(10) not null
 );
@@ -95,6 +96,7 @@ category VARCHAR(10) not null
 CREATE TABLE QUESTION (
 id BIGSERIAL PRIMARY KEY, 
 id_qcm BIGSERIAL references QCM(id) ON DELETE CASCADE,
+question_number integer not null,
 title VARCHAR(200) not null,
 media_type VARCHAR(10),
 media VARCHAR(100),
@@ -144,29 +146,29 @@ INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
 INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
 
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category,price,minimal_score) values (101, 1, 104, 'Ligue 1',
-'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif',0,0);
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category,price,minimal_score) values (102, 2, 105, 'Max et Léon',
-'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif',0,0);
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category,price,minimal_score) values (103, 3, 104, 'B2oba',
-'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif',0,0);
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (101, 1, 104, 'Ligue 1',
+'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif',0,0, TRUE);
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (102, 2, 105, 'Max et Léon',
+'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif',0,0, TRUE);
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (103, 3, 104, 'B2oba',
+'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif',0,0, TRUE);
 
-INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (101, 101,
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (101, 101,
  'Quelle équipe a remporté le championnat de France de L1 lors de la saison 1997-1998 ?', 'RC Lens', 'Olympique Lyonnais', 
- 'Olympique de Marseille', 'AS Monaco');
-INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (102, 101,
+ 'Olympique de Marseille', 'AS Monaco', 1);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (102, 101,
  'Quelle équipe a remporté le championnat de France de L1 lors de la saison 2015-2016 ?', 'Paris Saint Germain',
-  'Olympique Lyonnais', 'Olympique de Marseille', 'AS Monaco');
-INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (103, 102,
+  'Olympique Lyonnais', 'Olympique de Marseille', 'AS Monaco', 2);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (103, 102,
  'Pendant quelle guerre l action se déroule t elle ?', 'La seconde guerre mondiale',
-  'La première guerre mondiale', 'La guerre du Vietnam', 'La guerre froide');
-INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (104, 102,
+  'La première guerre mondiale', 'La guerre du Vietnam', 'La guerre froide', 1);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (104, 102,
  'De quelle ville les 2 personnages sont ils originaires ?', 'Macon',
-  'Paris', 'Marseille', 'Lyon');
-INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (105, 103,
- 'Quel département est cité lors de son célèbre slogan ?', '92', '93', '94', '62');
-INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3) values (106, 103,
- 'En quelle année le rapeur est-il né ?', '1976', '1986', '1982', '1978');
+  'Paris', 'Marseille', 'Lyon', 2);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (105, 103,
+ 'Quel département est cité lors de son célèbre slogan ?', '92', '93', '94', '62', 1);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (106, 103,
+ 'En quelle année le rappeur est-il né ?', '1976', '1986', '1982', '1978', 2);
 
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (1, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (4, 101);

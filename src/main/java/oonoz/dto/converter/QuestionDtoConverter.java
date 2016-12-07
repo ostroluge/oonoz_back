@@ -30,6 +30,7 @@ public class QuestionDtoConverter {
 		question.setProposition2(questionDto.getProposition2());
 		question.setProposition3(questionDto.getProposition3());
 		question.setTime(questionDto.getTime());
+		question.setQuestionNumber(questionDto.getQuestionNumber());
 		
 		return question;
 	}
@@ -53,6 +54,7 @@ public class QuestionDtoConverter {
 		questionDto.setProposition2(question.getProposition2());
 		questionDto.setProposition3(question.getProposition3());
 		questionDto.setTime(question.getTime());
+		questionDto.setQuestionNumber(question.getQuestionNumber());
 		
 		return questionDto;
 	}

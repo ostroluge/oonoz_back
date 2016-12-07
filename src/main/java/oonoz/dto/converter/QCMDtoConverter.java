@@ -34,6 +34,7 @@ public class QCMDtoConverter {
 		qcm.setMinimalScore(qcmDto.getMinimalScore());
 		qcm.setCategory(qcmDto.getCategory());
 		qcm.setQuestions(qcmDto.getQuestions());
+		qcm.setComplete(qcmDto.isComplete());
 
 		return qcm;
 	}
@@ -63,6 +64,7 @@ public class QCMDtoConverter {
 		qcmDto.setMinimalScore(qcm.getMinimalScore());
 		qcmDto.setCategory(qcm.getCategory());
 		qcmDto.setQuestions(qcm.getQuestions());
+		qcmDto.setComplete(qcm.isComplete());
 
 		return qcmDto;
 	}
