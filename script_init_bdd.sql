@@ -90,7 +90,6 @@ prize_name VARCHAR(50),
 prize_description VARCHAR(150),
 is_complete boolean not null,
 minimal_score integer,
-is_complete boolean not null,
 category VARCHAR(10) not null
 );
 
