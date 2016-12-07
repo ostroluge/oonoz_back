@@ -39,7 +39,7 @@ public class Theme {
 	private String iconUrl;
 
 	/** The sub themes. */
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ID_THEME", updatable = false)
 	private List<SubTheme> subThemes;
 	
