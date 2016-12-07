@@ -16,4 +16,7 @@ public interface QCMRepository extends CrudRepository<QCM, Long> {
 
 	List<QCM> findByTheme(String theme);
 	
+	List<QCM> findByIsValidatedTrueAndIsCompleteTrue();
+	
+	List<QCM> findByIsValidatedFalseAndIsCompleteTrue();
 }

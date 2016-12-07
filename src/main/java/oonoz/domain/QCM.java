@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class QCM.
  */
@@ -85,6 +86,10 @@ public class QCM {
 	@Column(name="MINIMAL_SCORE")
 	private int minimalScore;
 	
+	/** The is complete. */
+	@Column(name="IS_COMPLETE")
+	private Boolean isComplete;
+
 	/** The category. */
 	@Column(unique = false, nullable = false,name="CATEGORY")
 	private String category;
@@ -365,4 +370,41 @@ public class QCM {
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
+	
+	/**
+	 * Gets the theme.
+	 *
+	 * @return the theme
+	 */
+	public Theme getTheme() {
+		return theme;
+	}
+
+	/**
+	 * Sets the theme.
+	 *
+	 * @param theme the new theme
+	 */
+	public void setTheme(Theme theme) {
+		this.theme = theme;
+	}
+
+	/**
+	 * Gets the is complete.
+	 *
+	 * @return the is complete
+	 */
+	public Boolean getIsComplete() {
+		return isComplete;
+	}
+
+	/**
+	 * Sets the is complete.
+	 *
+	 * @param isComplete the new is complete
+	 */
+	public void setIsComplete(Boolean isComplete) {
+		this.isComplete = isComplete;
+	}
+
 }
