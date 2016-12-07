@@ -18,45 +18,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import oonoz.domain.Player;
+import oonoz.domain.QCM;
 import oonoz.domain.Supplier;
 import oonoz.dto.converter.PlayerDtoConverter;
 import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.SupplierDto;
-import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
+import oonoz.service.AdminService;
 import oonoz.service.PlayerService;
 import oonoz.service.SupplierService;
 import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class AdminController.
  */
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-	
+
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-	
+
+	/** The admin service. */
+	@Autowired
+	private AdminService adminService;
+
 	/** The player service. */
 	@Autowired
 	private PlayerService playerService;
-	
+
 	/** The supplier service. */
 	@Autowired
 	private SupplierService supplierService;
-	
+
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
-	
+
 	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
-	
+
 	/**
 	 * Filtered search.
 	 *
@@ -64,105 +71,112 @@ public class AdminController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/filteredSearch", method = RequestMethod.POST)
-    public ResponseEntity<Page<PlayerDto>> filteredSearch(@RequestBody FilteredSearch filteredSearch){
-    	  
+	public ResponseEntity<Page<PlayerDto>> filteredSearch(@RequestBody FilteredSearch filteredSearch){
+
 		try{
 			return new ResponseEntity<>(playerService.filteredSearch(filteredSearch), HttpStatus.OK);
 		}
 		catch(WrongInformationException e){
 			logger.error("The page number must be greater or equal than zero !",e);
-    		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-    	 
-    }
-    
-    /**
-     * Update user.
-     *
-     * @param playerDto the player dto
-     * @return the response entity
-     */
-    @RequestMapping(value = "/updatePlayer", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto){
-    	    	    	    	
-    	Player player=playerDtoConverter.convertToEntity(playerDto);
-    	try{
-    		playerService.updatePlayer(player);
-    	}
-    	catch(PlayerNotExistException e){
-    		logger.error("The player does not exist !",e);
-    		return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
-    	}
-    	catch(WrongInformationException e){
-    		logger.error("Information about player are not valid !",e);
-    		return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
-    	}
-    	return new ResponseEntity<>("", HttpStatus.OK);
-    }
-    
-    /**
-     * Update supplier.
-     *
-     * @param supplierDto the supplier dto
-     * @return the response entity
-     */
-    @RequestMapping(value = "/updateSupplier", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto){
-    	    	    	
-    	Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
-    	supplier.setIdPlayer(supplierDto.getIdPlayer());
-    	try{
-    		supplierService.updateSupplier(supplier);
-    	}
-    	catch(PlayerNotExistException e){
-    		logger.error("The supplier does not exist !",e);
-    		return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
-    	}
-    	catch(WrongInformationException e){
-    		logger.error("Information about supplier are not valid !",e);
-    		return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
-    	}
-    		
-    	 return new ResponseEntity<>("", HttpStatus.OK);
-    }
-    
-    /**
-     * Delete user.
-     *
-     * @param idPlayer the id player
-     * @return the response entity
-     * @throws PlayerNotExistException the player not exist exception
-     */
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
-    	
-    	try{
-    		playerService.deletePlayer(idPlayer);
-    	}
-    	catch(PlayerNotExistException e){
-    		logger.error("The user does not exist !",e);
-    		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
-    	}
-    	
-    	return new ResponseEntity<>("", HttpStatus.OK);
-    }
 
-    
-    @RequestMapping(value = "/changeStatusUser", method = RequestMethod.GET)
-    public ResponseEntity<String> changeStatusUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
-    	
-    	try{
-    		if(idPlayer!=null)
-    			playerService.changeStatusUser(idPlayer);
-    	}
-    	catch(PlayerNotExistException e){
-    		logger.error("The user does not exist !",e);
-    		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
-    	}
-    	
-    	return new ResponseEntity<>("", HttpStatus.OK);
-    }
-    
+	}
+
+	/**
+	 * Update user.
+	 *
+	 * @param playerDto the player dto
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/updatePlayer", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto){
+
+		Player player=playerDtoConverter.convertToEntity(playerDto);
+		try{
+			playerService.updatePlayer(player);
+		}
+		catch(PlayerNotExistException e){
+			logger.error("The player does not exist !",e);
+			return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
+		}
+		catch(WrongInformationException e){
+			logger.error("Information about player are not valid !",e);
+			return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+
+	/**
+	 * Update supplier.
+	 *
+	 * @param supplierDto the supplier dto
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/updateSupplier", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto){
+
+		Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
+		supplier.setIdPlayer(supplierDto.getIdPlayer());
+		try{
+			supplierService.updateSupplier(supplier);
+		}
+		catch(PlayerNotExistException e){
+			logger.error("The supplier does not exist !",e);
+			return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
+		}
+		catch(WrongInformationException e){
+			logger.error("Information about supplier are not valid !",e);
+			return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+
+	/**
+	 * Delete user.
+	 *
+	 * @param idPlayer the id player
+	 * @return the response entity
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
+
+		try{
+			playerService.deletePlayer(idPlayer);
+		}
+		catch(PlayerNotExistException e){
+			logger.error("The user does not exist !",e);
+			return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+
+
+	/**
+	 * Change status user.
+	 *
+	 * @param idPlayer the id player
+	 * @return the response entity
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
+	@RequestMapping(value = "/changeStatusUser", method = RequestMethod.GET)
+	public ResponseEntity<String> changeStatusUser(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
+
+		try{
+			if(idPlayer!=null)
+				playerService.changeStatusUser(idPlayer);
+		}
+		catch(PlayerNotExistException e){
+			logger.error("The user does not exist !",e);
+			return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+
 
 
 	/**
@@ -247,8 +261,8 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		// return new ResponseEntity<>("", HttpStatus.OK);
 	}
-	
-	
+
+
 	/**
 	 * create supplier account.
 	 *
@@ -257,8 +271,8 @@ public class AdminController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/createSupplierAccount", method = RequestMethod.POST)
-    public ResponseEntity<String> createSupplierAccount(@RequestBody SupplierDto supplierDto) {
-		
+	public ResponseEntity<String> createSupplierAccount(@RequestBody SupplierDto supplierDto) {
+
 		Supplier supplier = supplierDtoConverter.convertToEntity(supplierDto);
 		try {
 			this.supplierService.signUpByAdmin(supplier);
@@ -272,7 +286,38 @@ public class AdminController {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		 return new ResponseEntity<>("", HttpStatus.OK);
+		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
+	/**
+	 * Gets the validated QCM.
+	 *
+	 * @return the validated QCM
+	 */
+	@RequestMapping(value = "/getValidatedQCM", method = RequestMethod.GET)
+	public ResponseEntity<List<QCM>> getValidatedQCM(){
+		List<QCM> listQCM = adminService.getAllValidatedQCM();
+
+		if(!listQCM.isEmpty()){
+			return ResponseEntity.status(HttpStatus.OK).body(listQCM);
+		} 
+		logger.info("Aucun QCM trouvé");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
+	/**
+	 * Gets the not validated QCM.
+	 *
+	 * @return the not validated QCM
+	 */
+	@RequestMapping(value = "/getNotValidatedQCM", method = RequestMethod.GET)
+	public ResponseEntity<List<QCM>> getNotValidatedQCM(){
+		List<QCM> listQCM = adminService.getAllNotValidatedQCM();
+
+		if(!listQCM.isEmpty()){
+			return ResponseEntity.status(HttpStatus.OK).body(listQCM);
+		} 
+		logger.info("Aucun QCM trouvé");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
 }
