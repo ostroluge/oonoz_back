@@ -17,9 +17,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class QCM.
  */
@@ -96,6 +93,10 @@ public class QCM {
 	/** The category. */
 	@Column(unique = false, nullable = false,name="CATEGORY")
 	private String category;
+	
+	/** The is complete. */
+	@Column(unique = false, nullable = false, name="IS_COMPLETE")
+	private boolean isComplete;
 	
 	/** The questions. */
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -392,13 +393,39 @@ public class QCM {
 		this.questions = questions;
 	}
 
+	/**
+	 * Gets the supplier.
+	 *
+	 * @return the supplier
+	 */
 	public Supplier getSupplier() {
 		return supplier;
 	}
 
+	/**
+	 * Sets the supplier.
+	 *
+	 * @param supplier the new supplier
+	 */
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	
-	
+
+	/**
+	 * Checks if is complete.
+	 *
+	 * @return true, if is complete
+	 */
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	/**
+	 * Sets the complete.
+	 *
+	 * @param isComplete the new complete
+	 */
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
 }

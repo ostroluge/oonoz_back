@@ -53,6 +53,10 @@ public class Question {
 	@Column(unique = false, nullable = false,name="PROPOSITION3")
 	private String proposition3;
 	
+	/** The question number. */
+	@Column(unique = false, nullable = false, name="QUESTION_NUMBER")
+	private int questionNumber;
+	
 	/** The proposition 3. */
 	@Column(unique = false, nullable = true,name="TIME")
 	private Integer time;
@@ -235,5 +239,23 @@ public class Question {
 	 */
 	public void setTime(Integer time) {
 		this.time = time;
+	}
+
+	/**
+	 * Gets the question number.
+	 *
+	 * @return the question number
+	 */
+	public int getQuestionNumber() {
+		return questionNumber;
+	}
+
+	/**
+	 * Sets the question number.
+	 *
+	 * @param questionNumber the new question number
+	 */
+	public void setQuestionNumber(int questionNumber) {
+		this.questionNumber = questionNumber;
 	}
 }

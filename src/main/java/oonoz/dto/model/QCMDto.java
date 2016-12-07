@@ -4,7 +4,6 @@ import java.util.List;
 
 import oonoz.domain.Question;
 import oonoz.domain.SubTheme;
-import oonoz.domain.Theme;
 
 /**
  * The Class QCMDto.
@@ -23,6 +22,7 @@ public class QCMDto {
 	/** The id supplier. */
 	private long idSupplier;
 	
+	/** The supplier name. */
 	private String supplierName;
 	
 	/** The sub themes. */
@@ -60,6 +60,9 @@ public class QCMDto {
 	
 	/** The questions. */
 	private List<Question> questions;
+	
+	/** The is complete. */
+	private boolean isComplete;
 
 	/**
 	 * Gets the id.
@@ -333,21 +336,57 @@ public class QCMDto {
 		this.questions = questions;
 	}
 
+	/**
+	 * Gets the theme name.
+	 *
+	 * @return the theme name
+	 */
 	public String getThemeName() {
 		return themeName;
 	}
 
+	/**
+	 * Sets the theme name.
+	 *
+	 * @param themeName the new theme name
+	 */
 	public void setThemeName(String themeName) {
 		this.themeName = themeName;
 	}
 
+	/**
+	 * Gets the supplier name.
+	 *
+	 * @return the supplier name
+	 */
 	public String getSupplierName() {
 		return supplierName;
 	}
 
+	/**
+	 * Sets the supplier name.
+	 *
+	 * @param supplierName the new supplier name
+	 */
 	public void setSupplierName(String supplierName) {
 		this.supplierName = supplierName;
 	}
-	
-	
+
+	/**
+	 * Checks if is complete.
+	 *
+	 * @return true, if is complete
+	 */
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	/**
+	 * Sets the complete.
+	 *
+	 * @param isComplete the new complete
+	 */
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
 }

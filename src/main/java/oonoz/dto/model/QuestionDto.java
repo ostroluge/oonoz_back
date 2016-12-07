@@ -32,6 +32,9 @@ public class QuestionDto {
 	/** The proposition 3. */
 	private String proposition3;
 	
+	/** The question number. */
+	private int questionNumber;
+	
 	/** The time. */
 	private Integer time;
 
@@ -213,5 +216,23 @@ public class QuestionDto {
 	 */
 	public void setTime(Integer time) {
 		this.time = time;
+	}
+
+	/**
+	 * Gets the question number.
+	 *
+	 * @return the question number
+	 */
+	public int getQuestionNumber() {
+		return questionNumber;
+	}
+
+	/**
+	 * Sets the question number.
+	 *
+	 * @param questionNumber the new question number
+	 */
+	public void setQuestionNumber(int questionNumber) {
+		this.questionNumber = questionNumber;
 	}
 }
