@@ -38,10 +38,8 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
-import oonoz.service.SubThemeService;
 import oonoz.service.SupplierService;
 import oonoz.service.ThemeService;
-import oonoz.util.CheckThemeInformation;
 import oonoz.util.StringResponse;
 
 /**
@@ -61,27 +59,20 @@ public class UserController {
 	@Autowired
 	private PlayerService playerService;
 
+	/** The supplier service. */
 	@Autowired
 	private SupplierService supplierService;
 
+	/** The qcm service. */
 	@Autowired
 	private QCMService qcmService;
 
-//	@Autowired
-	
-	@Autowired
-	private ThemeService themeService;
-
-	@Autowired
-	private QCMService subThemeService;
-
-	@Autowired
-	private CheckThemeInformation checkThemeInformation;
 
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
 
+	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
 
@@ -96,8 +87,8 @@ public class UserController {
 	/**
 	 * Authenticate users.
 	 *
-	 * @param request
-	 *            the request
+	 * @param authentication the authentication
+	 * @param request            the request
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -220,11 +211,8 @@ public class UserController {
 	/**
 	 * Rest service receiving a email and a token. If the token is right I will
 	 * activate the account of the user matching the mail.
-	 * 
-	 * @param mail
-	 *            The email of the user to activate.
-	 * @param hash
-	 *            The token to verify the link.
+	 *
+	 * @param playerDto the player dto
 	 * @return A response containing a string with the answer.
 	 */
 	@RequestMapping(value = "/generatePassword", method = RequestMethod.POST)
@@ -250,10 +238,9 @@ public class UserController {
 	}
 
 	/**
-	 * List of Supplier QCM
+	 * List of Supplier QCM.
 	 *
-	 * @param request
-	 *            the request
+	 * @param authentication the authentication
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.GET)
@@ -272,6 +259,17 @@ public class UserController {
 
 	}
 
-	
 
+
+	/**
+	 * Gets the suppliers.
+	 *
+	 * @return the suppliers
+	 */
+	@RequestMapping(value="/suppliers", method = RequestMethod.GET)
+	public ResponseEntity<List<Supplier>> getSuppliers() {
+		List<Supplier> suppliers = supplierService.getSuppliers();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(suppliers);
+	}
 }

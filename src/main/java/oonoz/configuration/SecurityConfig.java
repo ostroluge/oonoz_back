@@ -63,8 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST,"/admin/createSupplierAccount").permitAll()
         .antMatchers(HttpMethod.POST,"/admin/createPlayerAccount").permitAll()
         .antMatchers(HttpMethod.GET,"/user/getSupplierQCM").permitAll()
-        .antMatchers(HttpMethod.GET,"/searchSupplierQCM").permitAll()
-		
+        .antMatchers(HttpMethod.GET,"/searchSupplierQCM").permitAll()      
+        .antMatchers(HttpMethod.GET, "/user/suppliers").permitAll()		
         .antMatchers(HttpMethod.GET, "/qcms").permitAll()
         .antMatchers(HttpMethod.POST, "/qcms").permitAll()
         .antMatchers(HttpMethod.POST, "/qcms/{idQCM}/questions").permitAll()

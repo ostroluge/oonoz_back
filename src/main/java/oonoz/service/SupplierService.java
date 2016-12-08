@@ -15,29 +15,32 @@ import oonoz.manager.impl.SupplierManagerImpl;
 import oonoz.util.CheckUserInformation;
 import oonoz.util.MailService;
 
+/**
+ * The Class SupplierService.
+ */
 @Service
 public class SupplierService {
 
+	/** The supplier manager. */
 	@Autowired
 	private SupplierManagerImpl supplierManager;
 
 
+	/** The mail service. */
 	@Autowired
 	private MailService mailService;
 
+	/** The check user information. */
 	@Autowired
 	private CheckUserInformation checkUserInformation;
 
 	/**
 	 * Sign-up a new supplier.
-	 * 
-	 * @param player
-	 *            Contains player's information
-	 * @throws WrongInformationException
-	 *             If one of the information about the player is wrong.
-	 * @throws PlayerAlreadyExistException
-	 *             If the player which is signing-up already exist.
-	 * @throws MessagingException
+	 *
+	 * @param supplier the supplier
+	 * @throws WrongInformationException             If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException             If the player which is signing-up already exist.
+	 * @throws MessagingException the messaging exception
 	 */
 	public void signUp(Supplier supplier)
 			throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
@@ -75,14 +78,11 @@ public class SupplierService {
 
 	/**
 	 * Sign-up a new supplier already active without mail.
-	 * 
-	 * @param player
-	 *            Contains player's information
-	 * @throws WrongInformationException
-	 *             If one of the information about the player is wrong.
-	 * @throws PlayerAlreadyExistException
-	 *             If the player which is signing-up already exist.
-	 * @throws MessagingException 
+	 *
+	 * @param supplier the supplier
+	 * @throws WrongInformationException             If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException             If the player which is signing-up already exist.
+	 * @throws MessagingException the messaging exception
 	 */
 	public void signUpByAdmin(Supplier supplier) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
@@ -120,11 +120,9 @@ public class SupplierService {
 	/**
 	 * Update supplier.
 	 *
-	 * @param player
-	 *            the player
-	 * @throws WrongInformationException
-	 *             the wrong information exception
-	 * @throws PlayerNotExistException
+	 * @param supplier the supplier
+	 * @throws WrongInformationException             the wrong information exception
+	 * @throws PlayerNotExistException the player not exist exception
 	 */
 	// TODO use spring security authentication principal
 	public void updateSupplier(Supplier supplier) throws WrongInformationException, PlayerNotExistException {
@@ -165,18 +163,40 @@ public class SupplierService {
 		}
 	}
 	
+	/**
+	 * Gets the supplier request.
+	 *
+	 * @return the supplier request
+	 */
 	public List<Supplier> getSupplierRequest(){
 		List<Supplier> supplierList = supplierManager.findNotValidSupplier();
 		return supplierList;
 	}
 	
+	/**
+	 * Refuse supplier request.
+	 *
+	 * @param idPlayer the id player
+	 */
 	public void refuseSupplierRequest(long idPlayer){
 		supplierManager.refuseSupplierRequest(idPlayer);
 	}
 
+	/**
+	 * Accept supplier request.
+	 *
+	 * @param idPlayer the id player
+	 */
 	public void acceptSupplierRequest(long idPlayer) {
 		supplierManager.acceptSupplierRequest(idPlayer);
-		
 	}
-
+	
+	/**
+	 * Gets the suppliers.
+	 *
+	 * @return the suppliers
+	 */
+	public List<Supplier> getSuppliers() {
+		return supplierManager.getSuppliers();
+	}
 }
