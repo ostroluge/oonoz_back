@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.domain.SubTheme;
+import oonoz.domain.Theme;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
@@ -280,8 +281,14 @@ public class QCMService {
 	 * @param theme the theme
 	 * @return the list
 	 */
-	public List<QCM> searchSupplierQCM(String theme) {
+	public List<QCM> searchSupplierQCM(Theme theme) {
 		List<QCM> questionList = QCMManager.findSupplierQCMByTheme(theme);
+		return questionList;
+	}
+	
+	
+	public List<QCM> searchSupplierQCM(long idSupplier,Theme theme) {
+		List<QCM> questionList = QCMManager.findSupplierQCMByThemeAndId(idSupplier,theme);
 		return questionList;
 	}
 }

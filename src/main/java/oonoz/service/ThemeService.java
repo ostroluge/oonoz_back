@@ -36,20 +36,28 @@ public class ThemeService {
 	/**
 	 * Find one theme.
 	 *
-	 * @param id the id
+	 * @param id
+	 *            the id
 	 * @return the theme
 	 */
 	public Theme findOne(long id) {
 		return themeManager.findOne(id);
 	}
-	
+
+	public Theme findByLabel(String label){
+		return themeManager.findByLabel(label);
+	}
+
 	/**
 	 * Post theme.
 	 *
-	 * @param theme the theme
+	 * @param theme
+	 *            the theme
 	 * @return the theme
-	 * @throws WrongInformationException the wrong information exception
-	 * @throws ThemeAlreadyExistException the theme already exist exception
+	 * @throws WrongInformationException
+	 *             the wrong information exception
+	 * @throws ThemeAlreadyExistException
+	 *             the theme already exist exception
 	 */
 	public Theme postTheme(Theme theme) throws WrongInformationException, ThemeAlreadyExistException {
 
@@ -62,8 +70,10 @@ public class ThemeService {
 	/**
 	 * Removes the theme.
 	 *
-	 * @param id the id
-	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
+	 * @param id
+	 *            the id
+	 * @throws ThemeDoesNotExistException
+	 *             the theme doesnt exist exception
 	 */
 	public void removeTheme(long id) throws ThemeDoesNotExistException {
 		Theme theme = themeManager.findOne(id);
@@ -75,9 +85,11 @@ public class ThemeService {
 	/**
 	 * Update theme.
 	 *
-	 * @param theme the theme
+	 * @param theme
+	 *            the theme
 	 * @return the theme
-	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
+	 * @throws ThemeDoesNotExistException
+	 *             the theme doesnt exist exception
 	 */
 	public Theme updateTheme(long id, Theme theme) throws ThemeDoesNotExistException {
 		return themeManager.update(id, theme);
@@ -86,9 +98,11 @@ public class ThemeService {
 	/**
 	 * Validate theme.
 	 *
-	 * @param id the id
+	 * @param id
+	 *            the id
 	 * @return the theme
-	 * @throws ThemeDoesNotExistException the theme does not exist exception
+	 * @throws ThemeDoesNotExistException
+	 *             the theme does not exist exception
 	 */
 	public Theme validateTheme(long id) throws ThemeDoesNotExistException {
 		return themeManager.validate(id);

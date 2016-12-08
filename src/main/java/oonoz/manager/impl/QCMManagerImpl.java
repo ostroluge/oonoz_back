@@ -119,8 +119,12 @@ public class QCMManagerImpl implements QCMManager {
 	 * @param theme the theme
 	 * @return the list
 	 */
-	public List<QCM> findSupplierQCMByTheme(String theme) {
+	public List<QCM> findSupplierQCMByTheme(Theme theme) {
 		return QCMRepository.findByTheme(theme);
+	}
+	
+	public List<QCM> findSupplierQCMByThemeAndId(long idSupplier,Theme theme){
+		return QCMRepository.findByIdSupplierAndTheme(idSupplier,theme);
 	}
 
 	/**

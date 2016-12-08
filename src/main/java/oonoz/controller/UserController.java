@@ -1,5 +1,6 @@
 package oonoz.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import oonoz.domain.Player;
 import oonoz.domain.QCM;
 import oonoz.domain.Supplier;
+import oonoz.domain.Theme;
 import oonoz.dto.converter.PlayerDtoConverter;
+import oonoz.dto.converter.QCMDtoConverter;
+import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
+import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotActiveException;
@@ -34,6 +39,7 @@ import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
 import oonoz.service.SupplierService;
+import oonoz.service.ThemeService;
 import oonoz.util.StringResponse;
 
 /**
@@ -61,6 +67,9 @@ public class UserController {
 	@Autowired
 	private QCMService qcmService;
 
+	@Autowired
+	private ThemeService themeService;
+
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
@@ -68,6 +77,14 @@ public class UserController {
 	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
+
+	/** The qcm dto converter. */
+	@Autowired
+	QCMDtoConverter qcmDtoConverter;
+
+	/** The question dto converter. */
+	@Autowired
+	QuestionDtoConverter questionDtoConverter;
 
 	/**
 	 * Authenticate users.
@@ -77,16 +94,17 @@ public class UserController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ResponseEntity<String> login(Authentication authentication,HttpServletRequest request) {
+	public ResponseEntity<String> login(Authentication authentication, HttpServletRequest request) {
 
 		/* Getting session and then invalidating it */
 
 		@SuppressWarnings("unused")
 		HttpSession session = request.getSession(false);
-		//HttpSession session = request.getSession(false);
-//		Player player = playerService.getPlayerByUsername((((UserDetails) authentication.getPrincipal()).getUsername()));
-//		HttpSession session = request.getSession();
-//		session.setAttribute("USER", player);
+		// HttpSession session = request.getSession(false);
+		// Player player = playerService.getPlayerByUsername((((UserDetails)
+		// authentication.getPrincipal()).getUsername()));
+		// HttpSession session = request.getSession();
+		// session.setAttribute("USER", player);
 
 		/*
 		 * if (request.isRequestedSessionIdValid() && session != null) {
@@ -229,8 +247,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCM>> getSupplierQCM(Authentication authentication) {
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		String playerUsername = auth.getName();
+		// Authentication auth =
+		// SecurityContextHolder.getContext().getAuthentication();
+		// String playerUsername = auth.getName();
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
 		List<QCM> QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
@@ -250,24 +269,27 @@ public class UserController {
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.POST)
-	public ResponseEntity<List<QCM>> searchSupplierQCM(Authentication authentication,
+	public ResponseEntity<List<QCMDto>> searchSupplierQCM(Authentication authentication,
 			@RequestParam Map<String, String> requestParams) {
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
-
+		
+		Theme myTheme = themeService.findByLabel(theme);
+		List<QCM> QcmList;
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
+		
+		if (theme != null){
+			QcmList = qcmService.searchSupplierQCM(p.getIdPlayer(),myTheme);
+		}else{
+		QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
+		}
+		List<QCMDto> result = new ArrayList<>();
+		for (QCM qcm : QcmList) {
+			result.add(qcmDtoConverter.convertToDto(qcm));
+		}
 
-		// if(theme!=null && subTheme != null){
-		//
-		// }
-
-		// if (QcmList != null) {
-		// return ResponseEntity.status(HttpStatus.OK).body(QcmList);
-		// } else {
-		// return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		// }
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
 	/**
