@@ -272,28 +272,6 @@ public class UserController {
 
 	}
 
-	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.POST)
-	public ResponseEntity<List<QCMDto>> searchSupplierQCM(Authentication authentication,
-			@RequestParam Map<String, String> requestParams) {
-		String theme = requestParams.get("theme");
-		String subTheme = requestParams.get("subTheme");
-		
-		Theme myTheme = themeService.findByLabel(theme);
-		List<QCM> QcmList;
-		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
-		Player p = playerService.getPlayerByUsername(playerUsername);
-		
-		if (theme != null){
-			QcmList = qcmService.searchSupplierQCM(p.getIdPlayer(),myTheme);
-		}else{
-		QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
-		}
-		List<QCMDto> result = new ArrayList<>();
-		for (QCM qcm : QcmList) {
-			result.add(qcmDtoConverter.convertToDto(qcm));
-		}
-
-		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}
+	
 
 }

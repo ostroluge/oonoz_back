@@ -39,8 +39,13 @@ public class ThemeManagerImpl implements ThemeManager {
 		return themeRepository.findOne(id);
 	}
 	
-	public Theme findByLabel(String label){
-		return themeRepository.findByLabel(label);
+	public Theme findByLabel(String label) throws ThemeDoesNotExistException{
+		
+		Theme theme=themeRepository.findByLabelLike(label);
+		if(theme==null){
+			throw new ThemeDoesNotExistException("The theme does not exist !");
+		}
+		return theme;
 	}
 	
 	

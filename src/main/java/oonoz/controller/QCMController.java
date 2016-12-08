@@ -2,16 +2,21 @@ package oonoz.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import oonoz.domain.Player;
 import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.dto.converter.QCMDtoConverter;
@@ -22,8 +27,10 @@ import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
+import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
+import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
 import oonoz.util.StringResponse;
 
@@ -36,6 +43,10 @@ public class QCMController {
 	/** The qcm service. */
 	@Autowired
 	QCMService qcmService;
+	
+	/** The player service. */
+	@Autowired
+	PlayerService playerService;
 
 	/** The qcm dto converter. */
 	@Autowired
@@ -313,5 +324,27 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(null);
 		}
+	}
+	
+	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.GET)
+	public ResponseEntity<List<QCMDto>> searchSupplierQCM(Authentication authentication,
+			@RequestParam Map<String, String> requestParams) throws ThemeDoesNotExistException, QCMDoesNotExistException {
+				
+		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
+		Player p = playerService.getPlayerByUsername(playerUsername);
+		//TODO verifie la nullite du player
+		List<QCM> QcmList=qcmService.searchSupplierQCM(requestParams.get("theme"), requestParams.get("subTheme"), p.getIdPlayer());
+		
+		/*if (theme != null){
+			QcmList = qcmService.searchSupplierQCM(p.getIdPlayer(),myTheme);
+		}else{
+		QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
+		}*/
+		List<QCMDto> result = new ArrayList<>();
+		for (QCM qcm : QcmList) {
+			result.add(qcmDtoConverter.convertToDto(qcm));
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 }

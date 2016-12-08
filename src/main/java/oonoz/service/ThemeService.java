@@ -1,8 +1,11 @@
 package oonoz.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import oonoz.domain.QCM;
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
 import oonoz.exception.ThemeDoesNotExistException;
@@ -19,6 +22,7 @@ public class ThemeService {
 	/** The theme manager. */
 	@Autowired
 	private ThemeManagerImpl themeManager;
+	
 
 	/** The check theme information. */
 	@Autowired
@@ -44,7 +48,7 @@ public class ThemeService {
 		return themeManager.findOne(id);
 	}
 
-	public Theme findByLabel(String label){
+	public Theme findByLabel(String label) throws ThemeDoesNotExistException{
 		return themeManager.findByLabel(label);
 	}
 
@@ -107,4 +111,8 @@ public class ThemeService {
 	public Theme validateTheme(long id) throws ThemeDoesNotExistException {
 		return themeManager.validate(id);
 	}
+	
+	
+	
+	
 }

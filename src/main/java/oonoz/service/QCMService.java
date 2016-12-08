@@ -13,11 +13,13 @@ import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
+import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.QCMManagerImpl;
 import oonoz.manager.impl.QuestionManagerImpl;
 import oonoz.manager.impl.SubThemeManagerImpl;
+import oonoz.manager.impl.ThemeManagerImpl;
 import oonoz.util.CheckQCMInformation;
 import oonoz.util.CheckQuestionInformation;
 
@@ -34,6 +36,10 @@ public class QCMService {
 	/** The question manager. */
 	@Autowired
 	private QuestionManagerImpl questionManager;
+	
+	/** The theme manager. */
+	@Autowired
+	private ThemeManagerImpl themeManager;
 
 	/** The sub theme manager. */
 	@Autowired
@@ -287,8 +293,14 @@ public class QCMService {
 	}
 	
 	
-	public List<QCM> searchSupplierQCM(long idSupplier,Theme theme) {
+	/*public List<QCM> searchSupplierQCM(long idSupplier,Theme theme) {
 		List<QCM> questionList = QCMManager.findSupplierQCMByThemeAndId(idSupplier,theme);
 		return questionList;
+	}*/
+	
+	public List<QCM>searchSupplierQCM(String themeLabel,String subThemeLabel,long idSupplier) throws ThemeDoesNotExistException, QCMDoesNotExistException{
+		Theme theme = themeManager.findByLabel(themeLabel);
+		return QCMManager.findByIdThemeAndIdSupplier(idSupplier,theme.getIdTheme());
+		
 	}
 }

@@ -123,8 +123,12 @@ public class QCMManagerImpl implements QCMManager {
 		return QCMRepository.findByTheme(theme);
 	}
 	
-	public List<QCM> findSupplierQCMByThemeAndId(long idSupplier,Theme theme){
-		return QCMRepository.findByIdSupplierAndTheme(idSupplier,theme);
+	public List<QCM> findByIdThemeAndIdSupplier(long idSupplier,long idTheme) throws QCMDoesNotExistException{
+		List<QCM> QCMlist=QCMRepository.findByIdSupplierAndIdTheme(idSupplier,idTheme);
+		if(QCMlist==null){
+			throw new QCMDoesNotExistException("They are no QCM associated with this supplier or theme !");
+		}
+		return QCMlist;
 	}
 
 	/**
