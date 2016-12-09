@@ -41,7 +41,7 @@ public class CheckQCMInformation {
 	 * @throws WrongInformationException the wrong information exception
 	 */
 	public void checkCategory(String category) throws WrongInformationException {
-		if (category == null || category.length() < 3 || category.length() > 10) {
+		if (category == null || category.length() < 3 || category.length() > 10 || (!category.equals("formatif") && !category.equals("sommatif"))) {
 			throw new WrongInformationException("The category of the QCM is not valid!");
 		}
 	}

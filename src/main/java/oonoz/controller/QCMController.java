@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import oonoz.dto.converter.QCMDtoConverter;
 import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QuestionDto;
+import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
@@ -55,6 +58,9 @@ public class QCMController {
 	/** The question dto converter. */
 	@Autowired
 	QuestionDtoConverter questionDtoConverter;
+	
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(QCMController.class);
 
 	/**
 	 * Gets the all.
@@ -80,16 +86,20 @@ public class QCMController {
 	 * @throws WrongInformationException the wrong information exception
 	 */
 	@RequestMapping(value="/qcms", method = RequestMethod.POST)
-	public ResponseEntity<QCM> postQCM(@RequestBody QCMDto qcmDto) throws WrongInformationException {
+	public ResponseEntity<QCM> postQCM(@RequestBody QCMDto qcmDto)  {
 		QCM qcmToPost = qcmDtoConverter.convertToEntity(qcmDto);
-
-		QCM result = qcmService.postQCM(qcmToPost);
-
-		if (result == null) {
+		QCM result=null;
+		try {
+			result = qcmService.postQCM(qcmToPost);
+		} catch (WrongInformationException e) {
+			logger.error("Wrong information", e);
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-					.body(null);
+					.body(null);			
+		}catch (QCMCreationException e) {
+			logger.error("Error creation", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);			
 		}
-
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(result);
 	}

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import oonoz.domain.QCM;
 import oonoz.domain.Theme;
+import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
@@ -51,8 +52,13 @@ public class QCMManagerImpl implements QCMManager {
 	 *
 	 * @param qcm the qcm
 	 * @return the qcm
+	 * @throws QCMCreationException 
 	 */
-	public QCM postQCM(QCM qcm) {
+	public QCM postQCM(QCM qcm) throws QCMCreationException {
+		qcm=QCMRepository.save(qcm);
+		if(qcm==null){
+			throw new QCMCreationException("Error during QCM creation !");
+		}
 		return QCMRepository.save(qcm);
 	}
 	

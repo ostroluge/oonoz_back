@@ -9,6 +9,7 @@ import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
+import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
@@ -68,13 +69,15 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
+	 * @throws QCMCreationException 
 	 */
-	public QCM postQCM(QCM qcm) throws WrongInformationException {
+	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException {
 
 		checkQCMInformation.checkName(qcm.getName());
 		checkQCMInformation.checkDescription(qcm.getDescription());
 		checkQCMInformation.checkCategory(qcm.getCategory());
-
+		qcm.setValidated(false);
+		qcm.setIsComplete(false);
 		return QCMManager.postQCM(qcm);
 	}
 
