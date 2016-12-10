@@ -113,7 +113,7 @@ public class QCMController {
 	 */
 	@RequestMapping(value="/qcms/{idQCM}/questions", method = RequestMethod.POST)
 	public ResponseEntity<Question> postQuestion(@PathVariable("idQCM") long idQCM,
-			@RequestBody QuestionDto questionDto) throws WrongInformationException {
+			@RequestBody QuestionDto questionDto) {
 		Question questionToPost = questionDtoConverter.convertToEntity(questionDto);
 
 		if (questionToPost != null) {
@@ -122,10 +122,16 @@ public class QCMController {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
 			} catch (QCMDoesNotExistException e) {
+				logger.error("The QCM does not exist !",e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			} catch (TooManyQuestionsException e) {
+				logger.error("They are too many questions in QCM!",e);
 				return ResponseEntity.status(HttpStatus.FORBIDDEN)
+						.body(null);
+			} catch (WrongInformationException e) {
+				logger.error("The QCM does not exist !",e);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(null);
 			} 
 		} else {
@@ -335,6 +341,33 @@ public class QCMController {
 					.body(null);
 		}
 	}
+	
+	/**
+	 * Gets the question by number.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	@RequestMapping(value="/qcms/{idQCM}/questions/questionNumber/{questionNumber}", method = RequestMethod.GET)
+	public ResponseEntity<QuestionDto> getQuestionByNumber(@PathVariable("idQCM") long idQCM,@PathVariable("questionNumber") int questionNumber) {
+		Question question;
+		try {
+			question = qcmService.getQuestionByNumber(idQCM,questionNumber);
+		} catch (QCMDoesNotExistException e) {
+			logger.error("The QCM does not exist !",e);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null);
+		}
+		/** The question has not yet been created **/
+		if(question==null){
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(questionDtoConverter.convertToDto(new Question()));
+		}
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(questionDtoConverter.convertToDto(question));
+	}
+	
 	
 	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCMDto>> searchSupplierQCM(Authentication authentication,

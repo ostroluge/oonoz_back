@@ -39,6 +39,10 @@ public class QuestionManagerImpl implements QuestionManager {
 		return questionRepository.findOne(idQuestion);
 	}
 	
+	public Question findByQuestionNumber(long idQCM,int questionNumber){
+		return questionRepository.findByQuestionNumber(idQCM, questionNumber);
+	}
+	
 	/**
 	 * Delete question.
 	 *

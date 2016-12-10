@@ -272,6 +272,11 @@ public class QCMService {
 		return questionManager.update(idQuestion, question);
 	}
 	
+	public Question getQuestionByNumber(long idQCM,int questionNumber) throws QCMDoesNotExistException{
+		QCM qcm=QCMManager.findOne(idQCM);
+		return questionManager.findByQuestionNumber(qcm.getId(),questionNumber);
+	}
+	
 	/**
 	 * Gets the supplier QCM.
 	 *

@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, "/qcms/{idQCM}/questions").permitAll()
         .antMatchers(HttpMethod.DELETE, "/qcms/{id}").permitAll()
         .antMatchers(HttpMethod.GET, "/qcms/{idQCM}/questions/{idQuestion}").permitAll()
+        .antMatchers(HttpMethod.GET, "/qcms/{id}/questions/questionNumber/{questionNumber}").permitAll()
         .antMatchers(HttpMethod.GET, "/qcms/{id}").permitAll()
         .antMatchers(HttpMethod.DELETE, "/qcms/{idQCM}/questions/{idQuestion}").permitAll()
         .antMatchers(HttpMethod.POST, "/qcms/{idQCM}/subthemes/{idSubTheme}").permitAll()

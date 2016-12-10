@@ -42,9 +42,14 @@ public class QCMManagerImpl implements QCMManager {
 	 *
 	 * @param id the id
 	 * @return the qcm
+	 * @throws QCMDoesNotExistException 
 	 */
-	public QCM findOne(long id) {
-		return QCMRepository.findOne(id);
+	public QCM findOne(long id) throws QCMDoesNotExistException {
+		QCM qcm=QCMRepository.findOne(id);
+		if(qcm==null){
+			throw new QCMDoesNotExistException("The QCM does not exist !");
+		}
+		return qcm;
 	}
 	
 	/**

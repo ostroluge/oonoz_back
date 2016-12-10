@@ -171,6 +171,6 @@ INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, pro
  'En quelle année le rappeur est-il né ?', '1976', '1986', '1982', '1978', 2);
 
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (1, 101);
-INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (4, 101);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (2, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (4, 102);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (5, 103);
