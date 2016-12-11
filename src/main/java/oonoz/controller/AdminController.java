@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,8 @@ import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
+import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMValidationException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.AdminService;
 import oonoz.service.PlayerService;
@@ -319,5 +322,23 @@ public class AdminController {
 		} 
 		logger.info("Aucun QCM trouvé");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	
+	/**
+	 * Validate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/validateQCM/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<String> validateQCM(@PathVariable("id") long idQCM){
+		try {
+			adminService.validateQCM(idQCM);
+		} catch (QCMDoesNotExistException | QCMValidationException e) {
+			logger.error("Impossible to validate this QCM", e);
+			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 }

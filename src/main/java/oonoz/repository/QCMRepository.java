@@ -24,4 +24,5 @@ public interface QCMRepository extends CrudRepository<QCM, Long> {
 	List<QCM> findByIsValidatedTrueAndIsCompleteTrue();
 	
 	List<QCM> findByIsValidatedFalseAndIsCompleteTrue();
+	
 }

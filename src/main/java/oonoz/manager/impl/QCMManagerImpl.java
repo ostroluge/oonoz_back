@@ -10,6 +10,7 @@ import oonoz.domain.QCM;
 import oonoz.domain.Theme;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMValidationException;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
 import oonoz.repository.ThemeRepository;
@@ -160,5 +161,27 @@ public class QCMManagerImpl implements QCMManager {
 	 */
 	public List<QCM> getAllNotValidatedQCM(){
 		return QCMRepository.findByIsValidatedFalseAndIsCompleteTrue();
+	}
+	
+	/**
+	 * Validate QCM.
+	 *
+	 * @param id the id
+	 * @throws QCMDoesNotExistException 
+	 * @throws QCMValidationException 
+	 */
+	public void validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
+		if(QCMRepository.exists(id)){
+			QCM qcmToValidate = QCMRepository.findOne(id);
+			
+			if(qcmToValidate.isValidated()){
+				throw new QCMValidationException("The qcm is already validated");
+			} else {
+				qcmToValidate.setValidated(Boolean.TRUE);
+				QCMRepository.save(qcmToValidate);
+			}
+		} else {
+			throw new QCMDoesNotExistException("The qcm does not exist");
+		}
 	}
 }
