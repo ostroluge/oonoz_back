@@ -376,13 +376,16 @@ public class QCMController {
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
 		//TODO verifie la nullite du player
-		List<QCM> QcmList=qcmService.searchSupplierQCM(requestParams.get("theme"), requestParams.get("subTheme"), p.getIdPlayer());
+		List<QCM> QcmList;
+		String theme = requestParams.get("theme");
+		String subTheme = requestParams.get("subTheme");
+//		List<QCM> QcmList=qcmService.searchSupplierQCM(, , p.getIdPlayer());
 		
-		/*if (theme != null){
-			QcmList = qcmService.searchSupplierQCM(p.getIdPlayer(),myTheme);
+		if (theme == null && subTheme == null){
+			QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
 		}else{
-		QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
-		}*/
+			QcmList=qcmService.searchSupplierQCM(theme,subTheme , p.getIdPlayer());
+		}
 		List<QCMDto> result = new ArrayList<>();
 		for (QCM qcm : QcmList) {
 			result.add(qcmDtoConverter.convertToDto(qcm));
