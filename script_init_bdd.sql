@@ -129,28 +129,28 @@ INSERT INTO AUTHORITIES (id_authorities,username,role) values (103,'Goubelf', 'R
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (104,'ElPadre','ROLE_SUPPLIER');
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (105,'Ching chong','ROLE_SUPPLIER');
 
-INSERT INTO THEME (id, label, description, is_valid) values (1, 'Sport', 'Theme sport', TRUE);
-INSERT INTO THEME (id, label, description, is_valid) values (2, 'Art', 'Theme art', FALSE);
-INSERT INTO THEME (id, label, description, is_valid) values (3, 'Musique', 'Theme musique', TRUE);
+INSERT INTO THEME (id, label, description, is_valid) values (101, 'Sport', 'Theme sport', TRUE);
+INSERT INTO THEME (id, label, description, is_valid) values (102, 'Art', 'Theme art', FALSE);
+INSERT INTO THEME (id, label, description, is_valid) values (103, 'Musique', 'Theme musique', TRUE);
 
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (1,1,'Football', 'Le ballon rond. What else ?', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (2,1,'Rugby', 'Un arrière goût de Ballabriga ici', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (3,2,'Peinture', 'Monet, monet, monet !', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (4,2,'Cinéma', 'Ici on trouvera forcément des quizz sur Scarlett !', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (101,101,'Football', 'Le ballon rond. What else ?', TRUE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (102,101,'Rugby', 'Un arrière goût de Ballabriga ici', FALSE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (103,102,'Peinture', 'Monet, monet, monet !', FALSE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (104,102,'Cinéma', 'Ici on trouvera forcément des quizz sur Scarlett !', FALSE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (105,103,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
+INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (106,103,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
 
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (101,1);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (102,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (101,101);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (102,102);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,103);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,102);
+INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,101);
 
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (101, 1, 104, 'Ligue 1',
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (101, 101, 104, 'Ligue 1',
 'Un questionnaire pour tous les fans de l élite du football français', TRUE, TRUE, 'sommatif',0,0, TRUE);
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (102, 2, 105, 'Max et Léon',
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (102, 102, 105, 'Max et Léon',
 'Un questionnaire pour tous les fans du Palma Show', TRUE, TRUE, 'sommatif',0,0, TRUE);
-INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (103, 3, 104, 'B2oba',
+INSERT INTO QCM (id, id_theme, id_supplier, name, description, is_validated, is_free, category, price, minimal_score, is_complete) values (103, 103, 104, 'B2oba',
 'Un questionnaire pour tous les fans de rap hardcore', TRUE, TRUE, 'sommatif',0,0, TRUE);
 
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (101, 101,
@@ -170,7 +170,7 @@ INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, pro
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (106, 103,
  'En quelle année le rappeur est-il né ?', '1976', '1986', '1982', '1978', 2);
 
-INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (1, 101);
-INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (2, 101);
-INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (4, 102);
-INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (5, 103);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (101, 101);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (102, 101);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (104, 102);
+INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (105, 103);
