@@ -34,6 +34,17 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
 	
 	
 	/**
+	 * Find by username or mail.
+	 *
+	 * @param username the username
+	 * @param mail the mail
+	 * @return the list
+	 */
+	Player findByUsername(String username);
+	
+	
+	
+	/**
 	 * Find by mail.
 	 *
 	 * @param mail the mail
