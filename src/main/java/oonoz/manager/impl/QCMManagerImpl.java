@@ -23,7 +23,7 @@ public class QCMManagerImpl implements QCMManager {
 	
 	/** The player repository. */
 	@Resource
-	private QCMRepository QCMRepository;
+	private QCMRepository qcmRepository;
 	
 	/** The theme repository. */
 	@Resource
@@ -35,7 +35,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @return all the qcm
 	 */
 	public List<QCM> getAllQCMs(){
-		return (List<QCM>) QCMRepository.findAll();
+		return (List<QCM>) qcmRepository.findAll();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @throws QCMDoesNotExistException 
 	 */
 	public QCM findOne(long id) throws QCMDoesNotExistException {
-		QCM qcm=QCMRepository.findOne(id);
+		QCM qcm=qcmRepository.findOne(id);
 		if(qcm==null){
 			throw new QCMDoesNotExistException("The QCM does not exist !");
 		}
@@ -61,11 +61,11 @@ public class QCMManagerImpl implements QCMManager {
 	 * @throws QCMCreationException 
 	 */
 	public QCM postQCM(QCM qcm) throws QCMCreationException {
-		qcm=QCMRepository.save(qcm);
-		if(qcm==null){
+		QCM newQcm=qcmRepository.save(qcm);
+		if(newQcm==null){
 			throw new QCMCreationException("Error during QCM creation !");
 		}
-		return QCMRepository.save(qcm);
+		return newQcm;
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @param id the id
 	 */
 	public void delete(long id) {
-		QCMRepository.delete(id);
+		qcmRepository.delete(id);
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @return the qcm
 	 */
 	public QCM save(QCM qcm) {
-		return QCMRepository.save(qcm);
+		return qcmRepository.save(qcm);
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class QCMManagerImpl implements QCMManager {
 	 */
 	public QCM update(long id, QCM qcm) throws QCMDoesNotExistException {
 		
-		QCM existingQCM = QCMRepository.findOne(id);
+		QCM existingQCM = qcmRepository.findOne(id);
 		if (existingQCM != null) {
 			qcm.setSubThemes(existingQCM.getSubThemes());
 			qcm.setQuestions(existingQCM.getQuestions());
@@ -108,7 +108,7 @@ public class QCMManagerImpl implements QCMManager {
 				Theme newTheme = themeRepository.findOne(qcm.getIdTheme());
 				qcm.setTheme(newTheme);
 			}
-			return QCMRepository.save(qcm);
+			return qcmRepository.save(qcm);
 		} else {
 			throw new QCMDoesNotExistException("The qcm does not exist");
 		}
@@ -122,7 +122,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @return the list
 	 */
 	public List<QCM> findSupplierQuestions(long idSupplier) {
-		return QCMRepository.findByIdSupplier(idSupplier);
+		return qcmRepository.findByIdSupplier(idSupplier);
 	}
 
 	/**
@@ -132,11 +132,11 @@ public class QCMManagerImpl implements QCMManager {
 	 * @return the list
 	 */
 	public List<QCM> findSupplierQCMByTheme(Theme theme) {
-		return QCMRepository.findByTheme(theme);
+		return qcmRepository.findByTheme(theme);
 	}
 	
 	public List<QCM> findByIdThemeAndIdSupplier(long idSupplier,long idTheme) throws QCMDoesNotExistException{
-		List<QCM> QCMlist=QCMRepository.findByIdSupplierAndIdTheme(idSupplier,idTheme);
+		List<QCM> QCMlist=qcmRepository.findByIdSupplierAndIdTheme(idSupplier,idTheme);
 		if(QCMlist==null){
 			throw new QCMDoesNotExistException("They are no QCM associated with this supplier or theme !");
 		}
@@ -150,7 +150,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @return the all validated QCM
 	 */
 	public List<QCM> getAllValidatedQCM(){
-		return QCMRepository.findByIsValidatedTrueAndIsCompleteTrue();
+		return qcmRepository.findByIsValidatedTrueAndIsCompleteTrue();
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @return the all QCM not validated
 	 */
 	public List<QCM> getAllNotValidatedQCM(){
-		return QCMRepository.findByIsValidatedFalseAndIsCompleteTrue();
+		return qcmRepository.findByIsValidatedFalseAndIsCompleteTrue();
 	}
 	
 	/**
@@ -171,14 +171,14 @@ public class QCMManagerImpl implements QCMManager {
 	 * @throws QCMValidationException 
 	 */
 	public void validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
-		if(QCMRepository.exists(id)){
-			QCM qcmToValidate = QCMRepository.findOne(id);
+		if(qcmRepository.exists(id)){
+			QCM qcmToValidate = qcmRepository.findOne(id);
 			
 			if(qcmToValidate.isValidated()){
 				throw new QCMValidationException("The qcm is already validated");
 			} else {
 				qcmToValidate.setValidated(Boolean.TRUE);
-				QCMRepository.save(qcmToValidate);
+				qcmRepository.save(qcmToValidate);
 			}
 		} else {
 			throw new QCMDoesNotExistException("The qcm does not exist");

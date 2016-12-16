@@ -1,5 +1,10 @@
 package oonoz.exception;
 
+/**
+ * The Class QCMValidationException.
+ * 
+ * Description :
+ */
 public class QCMValidationException extends Exception {
 	
 	/** The Constant serialVersionUID. */

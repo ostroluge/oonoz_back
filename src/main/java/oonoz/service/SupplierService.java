@@ -138,8 +138,7 @@ public class SupplierService {
 	 * @return the supplier request
 	 */
 	public List<Supplier> getSupplierRequest(){
-		List<Supplier> supplierList = supplierManager.findNotValidSupplier();
-		return supplierList;
+		return supplierManager.findNotValidSupplier();
 	}
 	
 	/**

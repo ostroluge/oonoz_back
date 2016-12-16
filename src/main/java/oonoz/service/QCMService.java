@@ -32,7 +32,7 @@ public class QCMService {
 
 	/** The QCM manager. */
 	@Autowired
-	private QCMManagerImpl QCMManager;
+	private QCMManagerImpl qcmManager;
 
 	/** The question manager. */
 	@Autowired
@@ -60,7 +60,7 @@ public class QCMService {
 	 * @return the iterable
 	 */
 	public List<QCM> findAll() {
-		return QCMManager.getAllQCMs();
+		return qcmManager.getAllQCMs();
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
-	 * @throws QCMCreationException 
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException {
 
@@ -78,7 +78,7 @@ public class QCMService {
 		checkQCMInformation.checkCategory(qcm.getCategory());
 		qcm.setValidated(false);
 		qcm.setIsComplete(false);
-		return QCMManager.postQCM(qcm);
+		return qcmManager.postQCM(qcm);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class QCMService {
 	 */
 	public Question postQuestion(long idQCM, Question question) throws QCMDoesNotExistException,
 	TooManyQuestionsException, WrongInformationException {
-		QCM qcm = QCMManager.findOne(idQCM);
+		QCM qcm = qcmManager.findOne(idQCM);
 
 		if (qcm != null) {
 			if (qcm.getQuestions().size() < 20) {
@@ -121,9 +121,9 @@ public class QCMService {
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public void deleteQCM(long id) throws QCMDoesNotExistException {
-		QCM qcm = QCMManager.findOne(id);
+		QCM qcm = qcmManager.findOne(id);
 		if (qcm != null) {
-			QCMManager.delete(id);
+			qcmManager.delete(id);
 		} else {
 			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
 		}
@@ -139,7 +139,7 @@ public class QCMService {
 	 */
 	public void deleteQuestion(long idQCM, long idQuestion) throws QCMDoesNotExistException,
 	QuestionDoesNotExistException {
-		QCM qcm = QCMManager.findOne(idQCM);
+		QCM qcm = qcmManager.findOne(idQCM);
 		if (qcm != null) {
 			Question question = questionManager.getQuestion(idQuestion);
 			if (question != null) {
@@ -163,7 +163,7 @@ public class QCMService {
 	 */
 	public Question getQuestion(long idQCM, long idQuestion) throws QCMDoesNotExistException, 
 	QuestionDoesNotExistException {
-		QCM qcm = QCMManager.findOne(idQCM);
+		QCM qcm = qcmManager.findOne(idQCM);
 		if (qcm != null) {
 			Question question = questionManager.getQuestion(idQuestion);
 			if (question != null) {
@@ -184,7 +184,7 @@ public class QCMService {
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public QCM getQCM(long id) throws QCMDoesNotExistException {
-		QCM qcm = QCMManager.findOne(id);
+		QCM qcm = qcmManager.findOne(id);
 		if (qcm != null) {
 			return qcm;
 		} else {
@@ -204,13 +204,13 @@ public class QCMService {
 	 */
 	public QCM addSubTheme(long idQCM, long idSubTheme) throws QCMDoesNotExistException,
 	SubThemeDoesNotExistException, SubThemeAlreadyAddedException {
-		QCM qcm = QCMManager.findOne(idQCM);
+		QCM qcm = qcmManager.findOne(idQCM);
 		if (qcm != null) {
 			SubTheme subtheme = subThemeManager.findOne(idSubTheme);
 			if (subtheme != null) {
 				if (!qcm.getSubThemes().contains(subtheme)) {
 					qcm.getSubThemes().add(subtheme);
-					return QCMManager.save(qcm);
+					return qcmManager.save(qcm);
 				} else {
 					throw new SubThemeAlreadyAddedException("The subtheme is already linked to the qcm");
 				}
@@ -232,13 +232,13 @@ public class QCMService {
 	 */
 	public void deleteSubTheme(long idQCM, long idSubTheme) throws QCMDoesNotExistException,
 	SubThemeDoesNotExistException {
-		QCM qcm = QCMManager.findOne(idQCM);
+		QCM qcm = qcmManager.findOne(idQCM);
 		if (qcm != null) {
 			SubTheme subtheme = subThemeManager.findOne(idSubTheme);
 			if (subtheme != null) {
 				if (qcm.getSubThemes().contains(subtheme)) {
 					qcm.getSubThemes().remove(subtheme);
-					QCMManager.save(qcm);
+					qcmManager.save(qcm);
 				}
 			} else {
 				throw new SubThemeDoesNotExistException("The subtheme with id " + idSubTheme + " does not exist");
@@ -257,7 +257,7 @@ public class QCMService {
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException {
-		return QCMManager.update(id, qcm);
+		return qcmManager.update(id, qcm);
 	}
 	
 	/**
@@ -272,8 +272,16 @@ public class QCMService {
 		return questionManager.update(idQuestion, question);
 	}
 	
+	/**
+	 * Gets the question by number.
+	 *
+	 * @param idQCM the id QCM
+	 * @param questionNumber the question number
+	 * @return the question by number
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
 	public Question getQuestionByNumber(long idQCM,int questionNumber) throws QCMDoesNotExistException{
-		QCM qcm=QCMManager.findOne(idQCM);
+		QCM qcm=qcmManager.findOne(idQCM);
 		return questionManager.findByQuestionNumber(qcm.getId(),questionNumber);
 	}
 	
@@ -284,8 +292,7 @@ public class QCMService {
 	 * @return the supplier QCM
 	 */
 	public List<QCM> getSupplierQCM(long idSupplier){
-		List<QCM> questionList = QCMManager.findSupplierQuestions(idSupplier);
-		return questionList;
+		return qcmManager.findSupplierQuestions(idSupplier);
 	}
 
 
@@ -296,19 +303,22 @@ public class QCMService {
 	 * @return the list
 	 */
 	public List<QCM> searchSupplierQCM(Theme theme) {
-		List<QCM> questionList = QCMManager.findSupplierQCMByTheme(theme);
-		return questionList;
+		return qcmManager.findSupplierQCMByTheme(theme);
 	}
 	
-	
-	/*public List<QCM> searchSupplierQCM(long idSupplier,Theme theme) {
-		List<QCM> questionList = QCMManager.findSupplierQCMByThemeAndId(idSupplier,theme);
-		return questionList;
-	}*/
-	
+	/**
+	 * Search supplier QCM.
+	 *
+	 * @param themeLabel the theme label
+	 * @param subThemeLabel the sub theme label
+	 * @param idSupplier the id supplier
+	 * @return the list
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
 	public List<QCM>searchSupplierQCM(String themeLabel,String subThemeLabel,long idSupplier) throws ThemeDoesNotExistException, QCMDoesNotExistException{
 		Theme theme = themeManager.findByLabel(themeLabel);
-		return QCMManager.findByIdThemeAndIdSupplier(idSupplier,theme.getIdTheme());
+		return qcmManager.findByIdThemeAndIdSupplier(idSupplier,theme.getIdTheme());
 		
 	}
 }

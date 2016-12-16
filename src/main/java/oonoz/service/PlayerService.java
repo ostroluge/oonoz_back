@@ -148,15 +148,15 @@ public class PlayerService {
 		checkUserInformation.checkLastName(player.getLastName());
 		checkUserInformation.checkFirstName(player.getFirstName());
 		checkUserInformation.checkBirthDate(player.getBirthDate());
-		Player player_=playerManager.findByMail(player.getMail());
-		player_.setUsername(player.getUsername());
-		player_.setLastName(player.getLastName());
-		player_.setFirstName(player.getFirstName());
-		player_.setMail(player.getMail());
-		player_.setBirthDate(player.getBirthDate());
-		player_.setIsActive(player.getIsActive());
-		player_.setIsSupplier(false);
-		playerManager.update(player_);
+		Player playerToUpdate=playerManager.findByMail(player.getMail());
+		playerToUpdate.setUsername(player.getUsername());
+		playerToUpdate.setLastName(player.getLastName());
+		playerToUpdate.setFirstName(player.getFirstName());
+		playerToUpdate.setMail(player.getMail());
+		playerToUpdate.setBirthDate(player.getBirthDate());
+		playerToUpdate.setIsActive(player.getIsActive());
+		playerToUpdate.setIsSupplier(false);
+		playerManager.update(playerToUpdate);
 	}
 	
 	/**
@@ -166,11 +166,11 @@ public class PlayerService {
 	 * @throws PlayerNotExistException the player not exist exception
 	 */
 	public void deletePlayer(Long idPlayer) throws PlayerNotExistException{
-		Player player_=playerManager.getPlayer(idPlayer);
-		if(player_==null){
+		Player playerToDelete=playerManager.getPlayer(idPlayer);
+		if(playerToDelete==null){
 			throw new PlayerNotExistException("The player does not exist !");
 		}
-		playerManager.deletePlayer(player_.getIdPlayer());
+		playerManager.deletePlayer(playerToDelete.getIdPlayer());
 		
 	}
 

@@ -13,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SubTheme.
  */
@@ -50,15 +49,15 @@ public class SubTheme {
 	/** The list of qcm. */
 	@OneToMany(fetch=FetchType.LAZY)
     @JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_SUB_THEME"),inverseJoinColumns = @JoinColumn(name = "ID_QCM"))
-	private List<QCM> QCMs;
+	private List<QCM> listQCMs;
 	
 	/**
 	 * Gets the list of qcm.
 	 *
 	 * @return the list of qcm
 	 */
-	public List<QCM> getQCMs() {
-		return QCMs;
+	public List<QCM> getListQCMs() {
+		return listQCMs;
 	}
 
 	/**
@@ -66,8 +65,8 @@ public class SubTheme {
 	 *
 	 * @param qCMs the new list of qcm
 	 */
-	public void setQCMs(List<QCM> qCMs) {
-		QCMs = qCMs;
+	public void setListQCMs(List<QCM> qCMs) {
+		listQCMs = qCMs;
 	}
 
 	/**

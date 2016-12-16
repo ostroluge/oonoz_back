@@ -224,9 +224,9 @@ public class UserController {
 	public ResponseEntity<List<QCM>> getSupplierQCM(Authentication authentication) {
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
-		List<QCM> QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
-		if (QcmList != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(QcmList);
+		List<QCM> qcmList = qcmService.getSupplierQCM(p.getIdPlayer());
+		if (qcmList != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(qcmList);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}

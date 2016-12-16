@@ -1,37 +1,28 @@
 package oonoz.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import oonoz.domain.Player;
-import oonoz.domain.QCM;
 import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
 import oonoz.dto.converter.SubThemeDtoConverter;
 import oonoz.dto.converter.ThemeDtoConverter;
-import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.SubThemeDto;
 import oonoz.dto.model.ThemeDto;
 import oonoz.exception.SubThemeDoesNotExistException;
 import oonoz.exception.ThemeAlreadyExistException;
 import oonoz.exception.ThemeDoesNotExistException;
 import oonoz.exception.WrongInformationException;
-import oonoz.service.PlayerService;
 import oonoz.service.SubThemeService;
 import oonoz.service.ThemeService;
 import oonoz.util.StringResponse;
@@ -43,7 +34,6 @@ import oonoz.util.StringResponse;
 public class ThemeController {
 
 	/** The Constant logger. */
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ThemeController.class);
 	
 	/** The theme service. */
@@ -329,7 +319,5 @@ public class ThemeController {
 		}
 		
 	}
-	
-	
 	
 }

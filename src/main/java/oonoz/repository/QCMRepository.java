@@ -13,14 +13,43 @@ import oonoz.domain.Theme;
 public interface QCMRepository extends CrudRepository<QCM, Long> {
 
 	
+	/**
+	 * Find by id supplier.
+	 *
+	 * @param idSupplier the id supplier
+	 * @return the list
+	 */
 	List<QCM> findByIdSupplier(long idSupplier);
 
+	/**
+	 * Find by theme.
+	 *
+	 * @param theme the theme
+	 * @return the list
+	 */
 	List<QCM> findByTheme(Theme theme);
 	
+	/**
+	 * Find by id supplier and id theme.
+	 *
+	 * @param idSupplier the id supplier
+	 * @param idTheme the id theme
+	 * @return the list
+	 */
 	List<QCM> findByIdSupplierAndIdTheme(long idSupplier,long idTheme);
 	
+	/**
+	 * Find by is validated true and is complete true.
+	 *
+	 * @return the list
+	 */
 	List<QCM> findByIsValidatedTrueAndIsCompleteTrue();
 	
+	/**
+	 * Find by is validated false and is complete true.
+	 *
+	 * @return the list
+	 */
 	List<QCM> findByIsValidatedFalseAndIsCompleteTrue();
 	
 }

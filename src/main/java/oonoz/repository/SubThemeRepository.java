@@ -12,6 +12,12 @@ import oonoz.domain.SubTheme;
 public interface SubThemeRepository extends CrudRepository<SubTheme, Long>{
 	
 	
+	/**
+	 * Find by id theme.
+	 *
+	 * @param idTheme the id theme
+	 * @return the list
+	 */
 	List<SubTheme> findByIdTheme(long idTheme);
 
 }

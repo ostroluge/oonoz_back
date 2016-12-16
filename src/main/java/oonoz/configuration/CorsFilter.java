@@ -45,15 +45,16 @@ public class CorsFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response=(HttpServletResponse) resp;
         HttpServletRequest request=(HttpServletRequest) req;
+        String accessControlAllowHeaders = "Access-Control-Allow-Headers";
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
         response.setHeader("Access-Control-Allow-Credentials","true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Authorization");
-        response.addHeader("Access-Control-Allow-Headers", "Accept");
-        response.addHeader("Access-Control-Allow-Headers","Origin");
-        response.addHeader("Access-Control-Allow-Headers","X-Requested-With");
-        response.addHeader("Access-Control-Allow-Headers","Content-Type");
+        response.setHeader(accessControlAllowHeaders, "Authorization");
+        response.addHeader(accessControlAllowHeaders, "Accept");
+        response.addHeader(accessControlAllowHeaders,"Origin");
+        response.addHeader(accessControlAllowHeaders,"X-Requested-With");
+        response.addHeader(accessControlAllowHeaders,"Content-Type");
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);

@@ -39,6 +39,13 @@ public class ThemeManagerImpl implements ThemeManager {
 		return themeRepository.findOne(id);
 	}
 	
+	/**
+	 * Find by label.
+	 *
+	 * @param label the label
+	 * @return the theme
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
+	 */
 	public Theme findByLabel(String label) throws ThemeDoesNotExistException{
 		
 		Theme theme=themeRepository.findByLabelLike(label);
@@ -53,6 +60,8 @@ public class ThemeManagerImpl implements ThemeManager {
 	 * Creates the theme.
 	 *
 	 * @param theme the theme
+	 * @return the theme
+	 * @throws ThemeAlreadyExistException the theme already exist exception
 	 */
 	public Theme create(Theme theme) throws ThemeAlreadyExistException {
 		
@@ -68,7 +77,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	/**
 	 * Removes the theme.
 	 *
-	 * @param id the id
+	 * @param theme the theme
 	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
 	 */
 	public void remove(Theme theme) throws ThemeDoesNotExistException {
@@ -84,6 +93,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	/**
 	 * Update theme.
 	 *
+	 * @param id the id
 	 * @param theme the theme
 	 * @return the theme
 	 * @throws ThemeDoesNotExistException the theme doesnt exist exception

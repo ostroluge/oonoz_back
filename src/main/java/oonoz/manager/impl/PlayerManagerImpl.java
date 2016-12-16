@@ -76,11 +76,11 @@ public class PlayerManagerImpl  implements PlayerManager {
 		List<Player> players = playerRepository.findByUsernameOrMail(player.getUsername(), player.getMail());
 		if (players.isEmpty()) {
 
-			player=playerRepository.save(player);
+			Player newPlayer=playerRepository.save(player);
 			Authorities authorities = new Authorities();
-			authorities.setIdAuthorities(player.getIdPlayer());
+			authorities.setIdAuthorities(newPlayer.getIdPlayer());
 			authorities.setRole("ROLE_PLAYER");
-			authorities.setUsername(player.getUsername());
+			authorities.setUsername(newPlayer.getUsername());
 			
 			authoritiesRepository.save(authorities);
 
@@ -173,28 +173,23 @@ public class PlayerManagerImpl  implements PlayerManager {
 		}
 		
 		
-		
 		Page<Player> playersPage =playerRepository.findAll(spec, pageable);
 		
-		
-				
-		
     	List<PlayerDto> playersDto=new ArrayList<>();
+		PlayerDto playerDto;
+
 		for(Player player: playersPage.getContent()){
 			
-			PlayerDto playerDto=null;
 			if(player instanceof Supplier){
 				playerDto=supplierDtoConverter.convertToDto((Supplier)player);
 			}
 			else{
-    		playerDto=playerDtoConverter.convertToDto(player);    		
+				playerDto=playerDtoConverter.convertToDto(player);    		
 			}
 			playersDto.add(playerDto);
     	}
-		
-    	Page<PlayerDto> playersDtoPage= new PageImpl<>(playersDto,pageable,playersPage.getTotalElements());
     	
-    	return playersDtoPage;
+    	return new PageImpl<>(playersDto,pageable,playersPage.getTotalElements());
 		 
 	}
 	
@@ -211,12 +206,18 @@ public class PlayerManagerImpl  implements PlayerManager {
 	/**
 	 * Delete player.
 	 *
-	 * @param id the id
+	 * @param username the username
+	 * @return the player by username
 	 */
 	public Player getPlayerByUsername(String username){
 		return playerRepository.findByUsername(username);
 	}
 
+	/**
+	 * Delete player.
+	 *
+	 * @param id the id
+	 */
 	public void deletePlayer(long id){
 		 playerRepository.delete(id);
 	}

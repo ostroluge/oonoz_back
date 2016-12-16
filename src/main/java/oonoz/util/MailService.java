@@ -52,6 +52,7 @@ public class MailService {
 	 * Instantiates a new mail service.
 	 */
 	public MailService(){
+		//Nested comment for SonarQube
 	}
 	/**
 	 * Instantiates a new mail service.

@@ -29,6 +29,12 @@ public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
 	List<Supplier> findByUsernameOrMail(String username,String mail);
 	
+	/**
+	 * Delete supplier by id.
+	 *
+	 * @param idPlayer the id player
+	 * @return the int
+	 */
 	@Transactional
 	@Modifying
 	@Query(value="delete from supplier where id_supplier=?1 ",nativeQuery = true)
@@ -38,33 +44,34 @@ public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
 
 	/**
-	 * Find supplier's request
-	 * 
+	 * Find supplier's request.
+	 *
 	 * @return list of supplier
 	 */
 	List<Supplier> findByIsValidFalse();
 
 	/**
-	 * Delete supplier by siret
-	 * 
-	 * @param username
-	 * @return
+	 * Delete supplier by siret.
+	 *
+	 * @param site the site
+	 * @return the long
 	 */
 	@Transactional
 	Long deleteBySiretNumber(String site);
 
 	/**
-	 * Delete supplier by username
-	 * 
-	 * @param username
-	 * @return
+	 * Delete supplier by username.
+	 *
+	 * @param username the username
+	 * @return the long
 	 */
 	@Transactional
 	Long deleteByUsername(String username);
 
 	/**
-	 * Delete supplier by idPlayer
-	 * @param idPlayer
+	 * Delete supplier by idPlayer.
+	 *
+	 * @param idPlayer the id player
 	 */
 	@Transactional
 	@Modifying

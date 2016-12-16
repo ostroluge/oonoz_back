@@ -2,9 +2,6 @@ package oonoz.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -25,21 +22,11 @@ import org.hibernate.validator.constraints.Length;
 public class Supplier extends Player{
 	
 	
+	/**
+	 * Instantiates a new supplier.
+	 */
 	public Supplier(){
-		
-	}
-	
-	public Supplier(Player player){
-		this.idPlayer=player.idPlayer;
-		this.firstName=player.firstName;
-		this.lastName=player.lastName;
-		this.birthDate=player.birthDate;
-		this.mail=player.mail;
-		this.username=player.username;
-		this.password=player.password;
-		this.isActive=player.isActive;
-		this.isSupplier=player.isSupplier;
-		this.authorities=player.authorities;
+		//Nested comment for SonarQube
 	}
 	
 	/** True if the supplier has validated his sign-up. */
@@ -66,6 +53,24 @@ public class Supplier extends Player{
 	@Length(max = 14, message = "The field must be less than 14 characters")
 	private String siretNumber;
 
+	/**
+	 * Instantiates a new supplier.
+	 *
+	 * @param player the player
+	 */
+	public Supplier(Player player){
+		this.idPlayer=player.idPlayer;
+		this.firstName=player.firstName;
+		this.lastName=player.lastName;
+		this.birthDate=player.birthDate;
+		this.mail=player.mail;
+		this.username=player.username;
+		this.password=player.password;
+		this.isActive=player.isActive;
+		this.isSupplier=player.isSupplier;
+		this.authorities=player.authorities;
+	}
+	
 	/**
 	 * Gets the checks if is valid.
 	 *

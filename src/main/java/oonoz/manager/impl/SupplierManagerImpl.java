@@ -39,11 +39,11 @@ public class SupplierManagerImpl implements SupplierManager {
 		List<Supplier> suppliers = supplierRepository.findByUsernameOrMail(supplier.getUsername(), supplier.getMail());
 		if (suppliers.isEmpty()) {
 
-			supplier = supplierRepository.save(supplier);
+			Supplier newSupplier = supplierRepository.save(supplier);
 			Authorities authorities = new Authorities();
-			authorities.setIdAuthorities(supplier.getIdPlayer());
+			authorities.setIdAuthorities(newSupplier.getIdPlayer());
 			authorities.setRole("ROLE_SUPPLIER");
-			authorities.setUsername(supplier.getUsername());
+			authorities.setUsername(newSupplier.getUsername());
 
 			authoritiesRepository.save(authorities);
 		} else {

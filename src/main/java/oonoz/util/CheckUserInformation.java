@@ -26,10 +26,10 @@ import oonoz.exception.WrongInformationException;
 public class CheckUserInformation {
 	
 	/** The Constant REGEXPASSWD. */
-	public final static String REGEXMDP = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
+	public static final String REGEXMDP = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
 	
 	/** The Constant REGEXMAIL. */
-	protected final static String REGEXMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	protected static final String REGEXMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(CheckUserInformation.class);
@@ -222,8 +222,7 @@ public class CheckUserInformation {
 		try {
 			messageDigest = MessageDigest.getInstance("SHA-256");
 			byte[] hash=messageDigest.digest(password.getBytes("UTF-8"));			
-			String hashPassword=DatatypeConverter.printHexBinary(hash).toLowerCase();
-			return hashPassword;
+			return DatatypeConverter.printHexBinary(hash).toLowerCase();
 			
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			logger.error("Error during encoding password", e);
