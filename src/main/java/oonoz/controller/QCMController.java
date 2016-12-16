@@ -153,6 +153,7 @@ public class QCMController {
 		try {
 			qcmService.deleteQCM(id);
 		} catch (QCMDoesNotExistException e) {
+			logger.error("The QCM does not exist", e);
 			response.setResponse("The QCM does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(response);
@@ -225,10 +226,12 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(response);
 		} catch (QCMDoesNotExistException e) {
+			logger.error("The QCM does not exist", e);
 			response.setResponse("The QCM does not exist");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		} catch (QuestionDoesNotExistException e) {
+			logger.error("The question does not exist", e);
 			response.setResponse("The question does not exist");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
@@ -250,12 +253,15 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(qcmDtoConverter.convertToDto(result));
 		} catch (QCMDoesNotExistException e) {
+			logger.error("The QCM does not exist", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		} catch (SubThemeDoesNotExistException e) {
+			logger.error("The SubTheme does not exist", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		} catch (SubThemeAlreadyAddedException e) {
+			logger.error("The subtheme is already added", e);
 			return ResponseEntity.status(HttpStatus.CONFLICT)
 					.body(null);
 		}
@@ -279,9 +285,11 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(response);
 		} catch (QCMDoesNotExistException e) {
+			logger.error("The QCM does not exist", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		} catch (SubThemeDoesNotExistException e) {
+			logger.error("The SubTheme does not exist", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
@@ -305,6 +313,7 @@ public class QCMController {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(qcmDtoConverter.convertToDto(result));
 			} catch (QCMDoesNotExistException e) {
+				logger.error("The QCM does not exist", e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -333,6 +342,7 @@ public class QCMController {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(result);
 			} catch (QuestionDoesNotExistException e) {
+				logger.error("The question does not exist", e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -379,7 +389,6 @@ public class QCMController {
 		List<QCM> QcmList;
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
-//		List<QCM> QcmList=qcmService.searchSupplierQCM(, , p.getIdPlayer());
 		
 		if (theme == null && subTheme == null){
 			QcmList = qcmService.getSupplierQCM(p.getIdPlayer());

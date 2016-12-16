@@ -33,7 +33,9 @@ public class CorsFilter implements Filter {
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
      */
     @Override
-    public void init(FilterConfig arg0) throws ServletException {}
+    public void init(FilterConfig arg0) throws ServletException {
+    	//Nested comment for SonarQube
+    }
 
     /* (non-Javadoc)
      * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
@@ -66,6 +68,8 @@ public class CorsFilter implements Filter {
      * @see javax.servlet.Filter#destroy()
      */
     @Override
-    public void destroy() {}
+    public void destroy() {
+    	//Nested comment for SonarQube
+    }
 
 }

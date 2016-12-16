@@ -222,9 +222,6 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCM>> getSupplierQCM(Authentication authentication) {
-		// Authentication auth =
-		// SecurityContextHolder.getContext().getAuthentication();
-		// String playerUsername = auth.getName();
 		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
 		Player p = playerService.getPlayerByUsername(playerUsername);
 		List<QCM> QcmList = qcmService.getSupplierQCM(p.getIdPlayer());
