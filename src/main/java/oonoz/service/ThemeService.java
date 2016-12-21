@@ -36,6 +36,15 @@ public class ThemeService {
 	public Iterable<Theme> findAll() {
 		return themeManager.findAll();
 	}
+	
+	/**
+	 * Find only validated themes
+	 * @return
+	 */
+	public List<Theme> findValidated(){
+		return themeManager.findValidated();
+	}
+	
 
 	/**
 	 * Find one theme.

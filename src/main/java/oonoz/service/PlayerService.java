@@ -218,7 +218,7 @@ public class PlayerService {
 		return playerManager.getPlayer(idPlayer);
 	}
 	
-	public Player getPlayerByUsername(String username){
+	public Player getPlayerByUsername(String username) throws PlayerNotExistException{
 		return playerManager.getPlayerByUsername(username);
 	}
 	

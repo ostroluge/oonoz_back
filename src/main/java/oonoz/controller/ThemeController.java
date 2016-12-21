@@ -77,6 +77,20 @@ public class ThemeController {
 	}
 	
 	/**
+	 * Get all validated themes.
+	 *
+	 * @return all validated themes
+	 */
+	@RequestMapping(value="/validatedThemes", method = RequestMethod.GET)
+	public ResponseEntity<List<Theme>> getAllValidatedThemes() {
+		List<Theme> themes = themeService.findValidated();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(themes);
+	}
+	
+	
+	
+	/**
 	 * Gets the theme by id.
 	 *
 	 * @param id the id

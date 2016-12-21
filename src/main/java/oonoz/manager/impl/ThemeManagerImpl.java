@@ -1,5 +1,7 @@
 package oonoz.manager.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -28,7 +30,16 @@ public class ThemeManagerImpl implements ThemeManager {
 	public Iterable<Theme> findAll() {
 		return themeRepository.findAll();
 	}
-
+	
+	/**
+	 * Find only validated themes
+	 * @return
+	 */
+	public List<Theme> findValidated(){
+		return themeRepository.findByIsValidatedTrue();
+	}
+	
+	
 	/**
 	 * Find one theme.
 	 *

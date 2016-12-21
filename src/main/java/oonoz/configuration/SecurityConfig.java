@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//		.authorizeRequests().anyRequest().authenticated().and().httpBasic();
 		//TODO 09/11/16 : permission management
 		.antMatchers(HttpMethod.GET, "/themes").permitAll()
+		.antMatchers(HttpMethod.GET, "/validatedThemes").permitAll()
 		.antMatchers(HttpMethod.POST, "/themes").permitAll()
 		.antMatchers(HttpMethod.DELETE, "/themes/{id}").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{id}").permitAll()

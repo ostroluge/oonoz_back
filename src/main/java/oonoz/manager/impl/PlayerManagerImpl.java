@@ -193,7 +193,11 @@ public class PlayerManagerImpl  implements PlayerManager {
 		return playerRepository.findOne(id);
 	}
 	
-	public Player getPlayerByUsername(String username){
+	public Player getPlayerByUsername(String username) throws PlayerNotExistException{
+		Player player=playerRepository.findByUsername(username);
+		if(player==null){
+			throw new PlayerNotExistException("The player does not exist !");
+		}
 		return playerRepository.findByUsername(username);
 	}
 	
