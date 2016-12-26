@@ -184,4 +184,13 @@ public class QCMManagerImpl implements QCMManager {
 			throw new QCMDoesNotExistException("The qcm does not exist");
 		}
 	}
+	
+	public boolean qcmExist(String qcmName){
+		
+		QCM qcm=QCMRepository.findByName(qcmName);
+		if(qcm!=null){
+			return true;
+		}
+		return false;
+	}
 }

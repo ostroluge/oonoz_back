@@ -9,6 +9,7 @@ import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
+import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
@@ -70,10 +71,12 @@ public class QCMService {
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws QCMCreationException 
+	 * @throws QCMAlreadyExistException 
 	 */
-	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException {
+	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException {
 
 		checkQCMInformation.checkName(qcm.getName());
+		qcmExist(qcm.getName());
 		checkQCMInformation.checkDescription(qcm.getDescription());
 		checkQCMInformation.checkCategory(qcm.getCategory());
 		qcm.setValidated(false);
@@ -310,5 +313,18 @@ public class QCMService {
 		Theme theme = themeManager.findByLabel(themeLabel);
 		return QCMManager.findByIdThemeAndIdSupplier(idSupplier,theme.getIdTheme());
 		
+	}
+	
+	/**
+	 * Check if qcm name is not already used.
+	 * @param qcmName
+	 * @return
+	 * @throws QCMCreationException 
+	 */
+	private Boolean qcmExist(String qcmName) throws QCMAlreadyExistException{
+		if(QCMManager.qcmExist(qcmName)){
+			throw new QCMAlreadyExistException("The QCM name already exist !");
+		}
+		return false;
 	}
 }

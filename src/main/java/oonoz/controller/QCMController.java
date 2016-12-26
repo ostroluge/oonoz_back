@@ -27,6 +27,7 @@ import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QuestionDto;
 import oonoz.exception.PlayerNotExistException;
+import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QuestionDoesNotExistException;
@@ -93,17 +94,21 @@ public class QCMController {
 
 		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
 		qcmDto.setIdSupplier(supplier.getIdPlayer());
+		
 
 		QCM qcmToPost = qcmDtoConverter.convertToEntity(qcmDto);
 		QCM result = null;
 		try {
-			result = qcmService.postQCM(qcmToPost);
+			result=qcmService.postQCM(qcmToPost);
 		} catch (WrongInformationException e) {
 			logger.error("Wrong information", e);
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 		} catch (QCMCreationException e) {
 			logger.error("Error creation", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		} catch (QCMAlreadyExistException e) {
+			logger.error("Error creation", e);
+			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(null);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
