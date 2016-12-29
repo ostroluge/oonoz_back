@@ -52,8 +52,9 @@ public class ThemeService {
 	 * @param id
 	 *            the id
 	 * @return the theme
+	 * @throws ThemeDoesNotExistException 
 	 */
-	public Theme findOne(long id) {
+	public Theme findOne(long id) throws ThemeDoesNotExistException {
 		return themeManager.findOne(id);
 	}
 

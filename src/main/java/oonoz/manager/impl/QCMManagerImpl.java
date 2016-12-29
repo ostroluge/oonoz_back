@@ -3,10 +3,9 @@ package oonoz.manager.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Component;
-
 import oonoz.domain.QCM;
+import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
@@ -59,8 +58,11 @@ public class QCMManagerImpl implements QCMManager {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMCreationException 
+	 * @throws QCMValidationException 
 	 */
 	public QCM postQCM(QCM qcm) throws QCMCreationException {
+		qcmExist(qcm.getName());
+		checkThemeSubThemeAssociation(qcm.getTheme(),qcm.getSubThemes());
 		qcm=QCMRepository.save(qcm);
 		if(qcm==null){
 			throw new QCMCreationException("Error during QCM creation !");
@@ -94,12 +96,13 @@ public class QCMManagerImpl implements QCMManager {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMCreationException 
+	 * @throws QCMValidationException 
 	 */
-	public QCM update(long id, QCM qcm) throws QCMDoesNotExistException {
+	public QCM update(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException {
 		
 		QCM existingQCM = QCMRepository.findOne(id);
 		if (existingQCM != null) {
-			qcm.setSubThemes(existingQCM.getSubThemes());
 			qcm.setQuestions(existingQCM.getQuestions());
 			qcm.setSupplier(existingQCM.getSupplier());
 			if (existingQCM.getIdTheme() == qcm.getIdTheme()) {
@@ -107,7 +110,9 @@ public class QCMManagerImpl implements QCMManager {
 			} else {
 				Theme newTheme = themeRepository.findOne(qcm.getIdTheme());
 				qcm.setTheme(newTheme);
+				
 			}
+			checkThemeSubThemeAssociation(qcm.getTheme(),qcm.getSubThemes());
 			return QCMRepository.save(qcm);
 		} else {
 			throw new QCMDoesNotExistException("The qcm does not exist");
@@ -185,6 +190,13 @@ public class QCMManagerImpl implements QCMManager {
 		}
 	}
 	
+	/**
+	 * Check if QCM name already exist.
+	 * @param qcmName
+	 * @return
+	 * 		true, if exist
+	 * 		false, if not
+	 */
 	public boolean qcmExist(String qcmName){
 		
 		QCM qcm=QCMRepository.findByName(qcmName);
@@ -192,5 +204,29 @@ public class QCMManagerImpl implements QCMManager {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Check if sub-themes are own by the theme.
+	 * @param theme
+	 * @param subthemes
+	 * @return
+	 * @throws QCMValidationException 
+	 */
+	private void checkThemeSubThemeAssociation(Theme theme,List<SubTheme> subthemes) throws QCMCreationException{
+		boolean isContained=false;
+		if(theme!=null && subthemes!=null){
+			for(SubTheme st:subthemes){
+				for(SubTheme stt:theme.getSubThemes()){
+					if(stt.getId()==st.getId())
+						isContained=true;						
+				}
+				if(!isContained){
+					throw new QCMCreationException("Subthemes are not own by this Theme");
+				}
+				isContained=false;
+			}		
+		}
+		
 	}
 }

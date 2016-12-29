@@ -30,6 +30,7 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMValidationException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
@@ -103,7 +104,7 @@ public class QCMController {
 		} catch (WrongInformationException e) {
 			logger.error("Wrong information", e);
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
-		} catch (QCMCreationException e) {
+		} catch (QCMCreationException | ThemeDoesNotExistException e) {
 			logger.error("Error creation", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		} catch (QCMAlreadyExistException e) {
@@ -208,7 +209,7 @@ public class QCMController {
 	@RequestMapping(value = "/qcms/{id}", method = RequestMethod.GET)
 	public ResponseEntity<QCMDto> getQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getQCM(id);
-
+		//TODO only supplier can get the QCM
 		if (qcm != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(qcm));
 		} else {
@@ -300,16 +301,21 @@ public class QCMController {
 	 * @param qcm
 	 *            the qcm
 	 * @return the response entity
+	 * @throws WrongInformationException 
 	 */
 	@RequestMapping(value = "/qcms/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<QCMDto> editQCM(@PathVariable("id") long id, @RequestBody QCMDto qcm) {
+	public ResponseEntity<QCMDto> editQCM(Authentication authentication,@PathVariable("id") long id, @RequestBody QCMDto qcm) throws WrongInformationException {
+		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
+		qcm.setIdSupplier(supplier.getIdPlayer());
 		QCM qcmToUpdate = qcmDtoConverter.convertToEntity(qcm);
+		
 
 		if (qcmToUpdate != null) {
 			try {
 				QCM result = qcmService.updateQCM(id, qcmToUpdate);
 				return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(result));
-			} catch (QCMDoesNotExistException e) {
+			} catch (QCMDoesNotExistException | QCMCreationException e) {
+				logger.error("Error in QCM update",e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 			}
 		} else {

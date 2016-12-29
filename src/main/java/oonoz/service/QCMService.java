@@ -12,6 +12,7 @@ import oonoz.domain.Theme;
 import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMValidationException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
@@ -72,13 +73,14 @@ public class QCMService {
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws QCMCreationException 
 	 * @throws QCMAlreadyExistException 
+	 * @throws ThemeDoesNotExistException 
 	 */
-	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException {
-
+	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException, ThemeDoesNotExistException {
+		
 		checkQCMInformation.checkName(qcm.getName());
-		qcmExist(qcm.getName());
 		checkQCMInformation.checkDescription(qcm.getDescription());
 		checkQCMInformation.checkCategory(qcm.getCategory());
+		themeManager.findOne(qcm.getIdTheme());
 		qcm.setValidated(false);
 		qcm.setIsComplete(false);
 		return QCMManager.postQCM(qcm);
@@ -258,8 +260,14 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMValidationException 
+	 * @throws QCMCreationException 
+	 * @throws WrongInformationException 
 	 */
-	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException {
+	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException, WrongInformationException {
+		checkQCMInformation.checkName(qcm.getName());
+		checkQCMInformation.checkDescription(qcm.getDescription());
+		checkQCMInformation.checkCategory(qcm.getCategory());
 		return QCMManager.update(id, qcm);
 	}
 	

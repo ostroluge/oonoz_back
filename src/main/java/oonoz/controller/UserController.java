@@ -1,8 +1,6 @@
 package oonoz.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import oonoz.domain.Player;
 import oonoz.domain.QCM;
 import oonoz.domain.Supplier;
-import oonoz.domain.Theme;
 import oonoz.dto.converter.PlayerDtoConverter;
 import oonoz.dto.converter.QCMDtoConverter;
 import oonoz.dto.converter.QuestionDtoConverter;
 import oonoz.dto.converter.SupplierDtoConverter;
 import oonoz.dto.model.PlayerDto;
-import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.SupplierDto;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotActiveException;
@@ -39,7 +35,6 @@ import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
 import oonoz.service.SupplierService;
-import oonoz.service.ThemeService;
 import oonoz.util.StringResponse;
 
 /**

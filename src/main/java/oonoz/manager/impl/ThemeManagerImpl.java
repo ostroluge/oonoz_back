@@ -45,9 +45,14 @@ public class ThemeManagerImpl implements ThemeManager {
 	 *
 	 * @param id the id
 	 * @return the theme
+	 * @throws ThemeDoesNotExistException 
 	 */
-	public Theme findOne(long id) {
-		return themeRepository.findOne(id);
+	public Theme findOne(long id) throws ThemeDoesNotExistException {
+		Theme theme=themeRepository.findOne(id);
+		if(theme==null){
+			throw new ThemeDoesNotExistException("The theme does not exist !");
+		}
+		return theme;		
 	}
 	
 	public Theme findByLabel(String label) throws ThemeDoesNotExistException{
