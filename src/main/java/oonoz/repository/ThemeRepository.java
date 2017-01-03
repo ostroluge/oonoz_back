@@ -2,6 +2,8 @@ package oonoz.repository;
 
 
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import oonoz.domain.Theme;
@@ -18,4 +20,10 @@ public interface ThemeRepository extends CrudRepository<Theme, Long> {
 	 * @return the theme
 	 */
 	Theme findByLabelLike(String label);
+	
+	/**
+	 * Get only validated themes
+	 * @return
+	 */
+	List<Theme> findByIsValidatedTrue();
 }

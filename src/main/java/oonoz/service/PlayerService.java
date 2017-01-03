@@ -244,13 +244,14 @@ public class PlayerService {
 		return playerManager.getPlayer(idPlayer);
 	}
 	
+
 	/**
 	 * Change status user.
 	 *
 	 * @param idPlayer the id player
 	 * @throws PlayerNotExistException the player not exist exception
 	 */
-	public Player getPlayerByUsername(String username){
+	public Player getPlayerByUsername(String username) throws PlayerNotExistException{
 		return playerManager.getPlayerByUsername(username);
 	}
 

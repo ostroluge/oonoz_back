@@ -52,4 +52,6 @@ public interface QCMRepository extends CrudRepository<QCM, Long> {
 	 */
 	List<QCM> findByIsValidatedFalseAndIsCompleteTrue();
 	
+	QCM findByName(String name);
+	
 }

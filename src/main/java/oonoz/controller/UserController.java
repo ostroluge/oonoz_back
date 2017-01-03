@@ -222,8 +222,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/getSupplierQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCM>> getSupplierQCM(Authentication authentication) {
-		String playerUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
-		Player p = playerService.getPlayerByUsername(playerUsername);
+		Player p = getUserFromAuthentication(authentication);
 		List<QCM> qcmList = qcmService.getSupplierQCM(p.getIdPlayer());
 		if (qcmList != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(qcmList);
@@ -232,8 +231,6 @@ public class UserController {
 		}
 
 	}
-
-
 
 	/**
 	 * Gets the suppliers.
@@ -245,5 +242,22 @@ public class UserController {
 		List<Supplier> suppliers = supplierService.getSuppliers();
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(suppliers);
+	}
+	
+	/**
+	 * Get player from Authentication
+	 * 
+	 * @param authentication
+	 * @return
+	 * @throws PlayerNotExistException
+	 */
+	public Player getUserFromAuthentication(Authentication authentication) {
+		try {
+			return playerService.getPlayerByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+		} catch (PlayerNotExistException e) {
+			logger.error("Player does not exist !", e);
+			return null;
+		}
+
 	}
 }

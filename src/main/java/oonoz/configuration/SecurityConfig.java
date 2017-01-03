@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/admin/changeStatusUser").permitAll()
 		.antMatchers(HttpMethod.POST, "/admin/filteredSearch").permitAll()
 		.antMatchers(HttpMethod.GET, "/themes").permitAll()
+		.antMatchers(HttpMethod.GET, "/validatedThemes").permitAll()
 		.antMatchers(HttpMethod.POST, "/themes").permitAll()
 		.antMatchers(HttpMethod.DELETE, "/themes/{id}").permitAll()
 		.antMatchers(HttpMethod.PUT, "/themes/{id}").permitAll()

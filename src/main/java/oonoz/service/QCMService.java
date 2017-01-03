@@ -9,8 +9,10 @@ import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
+import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMValidationException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
@@ -69,13 +71,20 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
+<<<<<<< HEAD
 	 * @throws QCMCreationException the QCM creation exception
+=======
+	 * @throws QCMCreationException 
+	 * @throws QCMAlreadyExistException 
+	 * @throws ThemeDoesNotExistException 
+>>>>>>> feature/QCMManagement
 	 */
-	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException {
-
+	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException, ThemeDoesNotExistException {
+		
 		checkQCMInformation.checkName(qcm.getName());
 		checkQCMInformation.checkDescription(qcm.getDescription());
 		checkQCMInformation.checkCategory(qcm.getCategory());
+		themeManager.findOne(qcm.getIdTheme());
 		qcm.setValidated(false);
 		qcm.setIsComplete(false);
 		return qcmManager.postQCM(qcm);
@@ -255,8 +264,15 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMValidationException 
+	 * @throws QCMCreationException 
+	 * @throws WrongInformationException 
 	 */
-	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException {
+
+	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException, WrongInformationException {
+		checkQCMInformation.checkName(qcm.getName());
+		checkQCMInformation.checkDescription(qcm.getDescription());
+		checkQCMInformation.checkCategory(qcm.getCategory());
 		return qcmManager.update(id, qcm);
 	}
 	
@@ -320,5 +336,18 @@ public class QCMService {
 		Theme theme = themeManager.findByLabel(themeLabel);
 		return qcmManager.findByIdThemeAndIdSupplier(idSupplier,theme.getIdTheme());
 		
+	}
+	
+	/**
+	 * Check if qcm name is not already used.
+	 * @param qcmName
+	 * @return
+	 * @throws QCMCreationException 
+	 */
+	private Boolean qcmExist(String qcmName) throws QCMAlreadyExistException{
+		if(qcmManager.qcmExist(qcmName)){
+			throw new QCMAlreadyExistException("The QCM name already exist !");
+		}
+		return false;
 	}
 }

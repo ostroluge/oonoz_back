@@ -1,7 +1,6 @@
 package oonoz.util;
 
 import org.springframework.stereotype.Component;
-
 import oonoz.exception.WrongInformationException;
 
 /**
@@ -45,4 +44,6 @@ public class CheckQCMInformation {
 			throw new WrongInformationException("The category of the QCM is not valid!");
 		}
 	}
+	
+	
 }
