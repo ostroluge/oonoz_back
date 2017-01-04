@@ -75,8 +75,6 @@ id_player BIGSERIAL references player(id) ON DELETE CASCADE,
 id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
-<<<<<<< HEAD
-=======
 CREATE TABLE QCM (
 id BIGSERIAL PRIMARY KEY,
 id_theme SERIAL references theme(id) ON DELETE CASCADE,
@@ -113,17 +111,11 @@ id_sub_theme SERIAL references sub_theme(id) ON DELETE CASCADE,
 id_qcm BIGSERIAL references qcm(id) ON DELETE CASCADE
 );
 
-
->>>>>>> feature/QCMManagement
 INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (101,'Julien', 'Flamen', 'flamen.julien@ragmail.com', '1994-01-23', TRUE, 'Jilief','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player'); 
 INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (102,'Thomas', 'Ostrowski', 'ostro.thomas@gmail.pl', '1994-01-23', TRUE, 'Ostroluge','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
 INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (103,'Floriane', 'Goubel', 'goubel.floriane@fastandfurious.com', '1994-01-01', TRUE, 'Goubelf','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',FALSE,'Player');
 INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (104,'Vincent', 'Margerin', 'margerin.vincent@papamail.com', '1934-01-01', TRUE, 'ElPadre','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
 INSERT INTO player (id, firstname, lastname, mail, birthdate, is_active, username, password, is_supplier, type_user) values (105,'Jeremy', 'Thach', 'thach.jeremy@dmail.ch', '1984-01-01', TRUE, 'Ching chong','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',TRUE,'Supplier');
-<<<<<<< HEAD
-=======
-
->>>>>>> feature/QCMManagement
 
 INSERT INTO supplier (id_player, is_valid, is_private_individual) values (104, TRUE, TRUE);
 INSERT INTO supplier (id_player, is_valid, is_private_individual, company_name, company_address, siret_number) values (105, FALSE, FALSE, 'Au pavillon des délices', '12 rue Victor Yugo, 75005 Chinatown','12345678912355');
@@ -134,24 +126,6 @@ INSERT INTO AUTHORITIES (id_authorities,username,role) values (103,'Goubelf', 'R
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (104,'ElPadre','ROLE_SUPPLIER');
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (105,'Ching chong','ROLE_SUPPLIER');
 
-<<<<<<< HEAD
-INSERT INTO THEME (id, label, description, is_valid) values (1, 'Sport', 'Theme sport', TRUE);
-INSERT INTO THEME (id, label, description, is_valid) values (2, 'Art', 'Theme art', FALSE);
-INSERT INTO THEME (id, label, description, is_valid) values (3, 'Musique', 'Theme musique', TRUE);
-
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (1,1,'Football', 'Le ballon rond. What else ?', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (2,1,'Rugby', 'Un arrière goût de Ballabriga ici', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (3,2,'Peinture', 'Monet, monet, monet !', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (4,2,'Cinéma', 'Ici on trouvera forcément des quizz sur Scarlett !', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
-
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (101,1);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (102,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
-=======
 INSERT INTO THEME (id, label, description, is_valid) values (101, 'Sport', 'Theme sport', TRUE);
 INSERT INTO THEME (id, label, description, is_valid) values (102, 'Art', 'Theme art', FALSE);
 INSERT INTO THEME (id, label, description, is_valid) values (103, 'Musique', 'Theme musique', TRUE);
@@ -197,4 +171,3 @@ INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (101, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (102, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (104, 102);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (105, 103);
->>>>>>> feature/QCMManagement
