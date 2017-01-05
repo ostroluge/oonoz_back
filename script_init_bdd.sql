@@ -129,6 +129,7 @@ INSERT INTO AUTHORITIES (id_authorities,username,role) values (103,'Goubelf', 'R
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (104,'ElPadre','ROLE_SUPPLIER');
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (105,'Ching chong','ROLE_SUPPLIER');
 
+
 INSERT INTO THEME (id, label, description, is_valid) values (1, 'Sport', 'Theme sport', TRUE);
 INSERT INTO THEME (id, label, description, is_valid) values (2, 'Art', 'Theme art', FALSE);
 INSERT INTO THEME (id, label, description, is_valid) values (3, 'Musique', 'Theme musique', TRUE);
