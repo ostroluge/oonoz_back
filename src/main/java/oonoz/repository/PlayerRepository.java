@@ -78,7 +78,7 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
 	 * @param idPlayer the id player
 	 * @return the int
 	 */
-	@Transactional
+	//@Transactional
 	@Modifying
     @Query(value="UPDATE player SET type_user='Supplier'  where id=?1",nativeQuery = true)
     int updatePlayerToSupplier(long idPlayer);
@@ -89,7 +89,7 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
      * @param idPlayer the id player
      * @return the int
      */
-    @Transactional
+    //@Transactional
 	@Modifying
 	@Query(value="INSERT INTO supplier (id_player,is_valid,is_private_individual) VALUES (?1,false,true)",nativeQuery = true)
 	int createSupplierRow(long idPlayer);

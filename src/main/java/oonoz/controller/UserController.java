@@ -251,7 +251,7 @@ public class UserController {
 	 * @return
 	 * @throws PlayerNotExistException
 	 */
-	public Player getUserFromAuthentication(Authentication authentication) {
+	private Player getUserFromAuthentication(Authentication authentication) {
 		try {
 			return playerService.getPlayerByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
 		} catch (PlayerNotExistException e) {

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,70 +38,71 @@ import oonoz.repository.AuthoritiesRepository;
 import oonoz.repository.PlayerRepository;
 import oonoz.util.FilteredSearch;
 
-
 /**
  * The Class PlayerManagerImpl.
  * 
- * Description :
- * 		Manage the different technical operations about Player entity.
+ * Description : Manage the different technical operations about Player entity.
  */
 @Component(value = "playerManager")
-public class PlayerManagerImpl  implements PlayerManager {
+public class PlayerManagerImpl implements PlayerManager {
 
 	/** The player repository. */
 	@Resource
 	private PlayerRepository playerRepository;
-	
+
 	/** The authorities repository. */
 	@Resource
 	private AuthoritiesRepository authoritiesRepository;
 
-
-		
 	/** The player dto converter. */
 	@Autowired
 	private PlayerDtoConverter playerDtoConverter;
-	
+
 	/** The supplier dto converter. */
 	@Autowired
 	private SupplierDtoConverter supplierDtoConverter;
 
 	/**
-	 * Check if the player does not already exist, then add the player to the database.
+	 * Check if the player does not already exist, then add the player to the
+	 * database.
 	 *
-	 * @param player the player
-	 * @throws PlayerAlreadyExistException if the player already exists.
+	 * @param player
+	 *            the player
+	 * @throws PlayerAlreadyExistException
+	 *             if the player already exists.
 	 */
 	public void create(Player player) throws PlayerAlreadyExistException {
-		
+
 		List<Player> players = playerRepository.findByUsernameOrMail(player.getUsername(), player.getMail());
 		if (players.isEmpty()) {
 
-			Player newPlayer=playerRepository.save(player);
+			Player newPlayer = playerRepository.save(player);
 			Authorities authorities = new Authorities();
 			authorities.setIdAuthorities(newPlayer.getIdPlayer());
 			authorities.setRole("ROLE_PLAYER");
 			authorities.setUsername(newPlayer.getUsername());
-			
+
 			authoritiesRepository.save(authorities);
 
 		} else
-			throw new PlayerAlreadyExistException("The username or mail of " +player.getUsername()+ " already exist !");
+			throw new PlayerAlreadyExistException(
+					"The username or mail of " + player.getUsername() + " already exist !");
 	}
-
 
 	/**
 	 * Find a player by his mail.
 	 *
-	 * @param mail the mail
+	 * @param mail
+	 *            the mail
 	 * @return the player
-	 * @throws PlayerNotExistException if the player does not exist.
+	 * @throws PlayerNotExistException
+	 *             if the player does not exist.
 	 */
-	public Player findByMail(String mail) throws PlayerNotExistException{
+	public Player findByMail(String mail) throws PlayerNotExistException {
 
-		Player player= playerRepository.findByMail(mail);
-		if(player==null){
-			throw new PlayerNotExistException("The player with the mail "+mail+" does not exist !");
+		Player player = playerRepository.findByMail(mail);
+		if (player == null) {
+			throw new PlayerNotExistException("The player with the mail " + mail + " does not exist !");
 		}
 
 		return player;
@@ -109,110 +111,110 @@ public class PlayerManagerImpl  implements PlayerManager {
 	/**
 	 * Update.
 	 *
-	 * @param player the player
+	 * @param player
+	 *            the player
 	 */
-	public void update(Player player){		
+	public void update(Player player) {
 		playerRepository.save(player);
 	}
-	
-	
+
 	/**
 	 * Find by id.
 	 *
-	 * @param id the id
+	 * @param id
+	 *            the id
 	 * @return the player
 	 */
-	public Player findById(long id){
+	public Player findById(long id) {
 		return playerRepository.findOne(id);
 	}
-	
+
 	/**
 	 * Find all players. Results are split in several page.
 	 *
-	 * @param filteredSearch the filtered search
-	 * @return 		A page of playerDto
+	 * @param filteredSearch
+	 *            the filtered search
+	 * @return A page of playerDto
 	 */
-	public Page<PlayerDto>findsPageable(FilteredSearch filteredSearch) {
-		
-		Specification<Player> spec=null;
-		
-		
-		Pageable pageable=new PageRequest(filteredSearch.getPageNumber(),filteredSearch.getPageSize(),Direction.ASC,"idPlayer");
-		
-		
-		if(filteredSearch.getUsernameSearch()!=null && !"".equals(filteredSearch.getUsernameSearch())){			
-			spec=where(usernameStartWith(filteredSearch.getUsernameSearch().toLowerCase()));
+	public Page<PlayerDto> findsPageable(FilteredSearch filteredSearch) {
+
+		Specification<Player> spec = null;
+
+		Pageable pageable = new PageRequest(filteredSearch.getPageNumber(), filteredSearch.getPageSize(), Direction.ASC,
+				"idPlayer");
+
+		if (filteredSearch.getUsernameSearch() != null && !"".equals(filteredSearch.getUsernameSearch())) {
+			spec = where(usernameStartWith(filteredSearch.getUsernameSearch().toLowerCase()));
 		}
-		
-		if(filteredSearch.getLastnameSearch()!=null && !"".equals(filteredSearch.getLastnameSearch())){			
-			spec=where(spec).and(lastnameStartWith(filteredSearch.getLastnameSearch().toLowerCase()));
+
+		if (filteredSearch.getLastnameSearch() != null && !"".equals(filteredSearch.getLastnameSearch())) {
+			spec = where(spec).and(lastnameStartWith(filteredSearch.getLastnameSearch().toLowerCase()));
 		}
-		
-		if(filteredSearch.getFirstnameSearch()!=null && !"".equals(filteredSearch.getFirstnameSearch())){			
-			spec=where(spec).and(firstnameStartWith(filteredSearch.getFirstnameSearch().toLowerCase()));
+
+		if (filteredSearch.getFirstnameSearch() != null && !"".equals(filteredSearch.getFirstnameSearch())) {
+			spec = where(spec).and(firstnameStartWith(filteredSearch.getFirstnameSearch().toLowerCase()));
 		}
-		
-		if(filteredSearch.getMailSearch()!=null && !"".equals(filteredSearch.getMailSearch())){			
-			spec=where(spec).and(mailStartWith(filteredSearch.getMailSearch().toLowerCase()));
+
+		if (filteredSearch.getMailSearch() != null && !"".equals(filteredSearch.getMailSearch())) {
+			spec = where(spec).and(mailStartWith(filteredSearch.getMailSearch().toLowerCase()));
 		}
-		
-		if(filteredSearch.isPlayerStatus()){			
-			spec=where(spec).and(isPlayer());
+
+		if (filteredSearch.isPlayerStatus()) {
+			spec = where(spec).and(isPlayer());
 		}
-		
-		if(filteredSearch.isSupplierStatus()){			
-			spec=where(spec).and(isSupplier());
+
+		if (filteredSearch.isSupplierStatus()) {
+			spec = where(spec).and(isSupplier());
 		}
-		
-		if(filteredSearch.isUserActive()){
-			spec=where(spec).and(isActive());
+
+		if (filteredSearch.isUserActive()) {
+			spec = where(spec).and(isActive());
 		}
-		
-		if(filteredSearch.isUserInactive()){
-			spec=where(spec).and(isUnactive());
+
+		if (filteredSearch.isUserInactive()) {
+			spec = where(spec).and(isUnactive());
 		}
-		
-		
-		Page<Player> playersPage =playerRepository.findAll(spec, pageable);
-		
-    	List<PlayerDto> playersDto=new ArrayList<>();
+
+		Page<Player> playersPage = playerRepository.findAll(spec, pageable);
+
+		List<PlayerDto> playersDto = new ArrayList<>();
 		PlayerDto playerDto;
 
-		for(Player player: playersPage.getContent()){
-			
-			if(player instanceof Supplier){
-				playerDto=supplierDtoConverter.convertToDto((Supplier)player);
-			}
-			else{
-				playerDto=playerDtoConverter.convertToDto(player);    		
+		for (Player player : playersPage.getContent()) {
+
+			if (player instanceof Supplier) {
+				playerDto = supplierDtoConverter.convertToDto((Supplier) player);
+			} else {
+				playerDto = playerDtoConverter.convertToDto(player);
 			}
 			playersDto.add(playerDto);
-    	}
-    	
-    	return new PageImpl<>(playersDto,pageable,playersPage.getTotalElements());
-		 
+		}
+
+		return new PageImpl<>(playersDto, pageable, playersPage.getTotalElements());
+
 	}
-	
+
 	/**
 	 * Gets the player.
 	 *
-	 * @param id the id
+	 * @param id
+	 *            the id
 	 * @return the player
 	 */
-	public Player getPlayer(long id){
+	public Player getPlayer(long id) {
 		return playerRepository.findOne(id);
 	}
-	
 
 	/**
 	 * Delete player.
 	 *
-	 * @param username the username
+	 * @param username
+	 *            the username
 	 * @return the player by username
 	 */
-	public Player getPlayerByUsername(String username) throws PlayerNotExistException{
-		Player player=playerRepository.findByUsername(username);
-		if(player==null){
+	public Player getPlayerByUsername(String username) throws PlayerNotExistException {
+		Player player = playerRepository.findByUsername(username);
+		if (player == null) {
 			throw new PlayerNotExistException("The player does not exist !");
 		}
 
@@ -222,38 +224,39 @@ public class PlayerManagerImpl  implements PlayerManager {
 	/**
 	 * Delete player.
 	 *
-	 * @param id the id
+	 * @param id
+	 *            the id
 	 */
-	public void deletePlayer(long id){
-		 playerRepository.delete(id);
+	public void deletePlayer(long id) {
+		playerRepository.delete(id);
 	}
 
 	/**
 	 * Change status user.
 	 *
-	 * @param idPlayer the id player
-	 * @throws PlayerNotExistException the player not exist exception
+	 * @param idPlayer
+	 *            the id player
+	 * @throws PlayerNotExistException
+	 *             the player not exist exception
 	 */
-	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
-		Player player=playerRepository.findOne(idPlayer);
-		if(player!=null){
-			if(!player.getIsSupplier() && !(player instanceof Supplier)){
+	@Transactional
+	public void changeStatusUser(long idPlayer) throws PlayerNotExistException {
+		Player player = playerRepository.findOne(idPlayer);
+		if (player != null) {
+			if (!player.getIsSupplier() && !(player instanceof Supplier)) {
 				playerRepository.updatePlayerToSupplier(idPlayer);
 				playerRepository.createSupplierRow(idPlayer);
 				player.setIsSupplier(true);
-			}
-			else if(player.getIsSupplier()){
-				player.setIsSupplier(false);	
-			}
-			else{
+			} else if (player.getIsSupplier()) {
+				player.setIsSupplier(false);
+			} else {
 				player.setIsSupplier(true);
 			}
 			playerRepository.save(player);
-		}
-		else{
+
+		} else {
 			throw new PlayerNotExistException("The player does not exist !");
 		}
 	}
-	
-	
+
 }

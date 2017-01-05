@@ -1,4 +1,4 @@
-package oonoz;
+package oonoz.test.service;
 
 import java.text.ParseException;
 
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import oonoz.OonozApplication;
 import oonoz.domain.Theme;
 import oonoz.exception.ThemeAlreadyExistException;
 import oonoz.exception.WrongInformationException;

@@ -107,7 +107,7 @@ public class CheckUserInformation {
 	 * I check that the user birth date is valid.
 	 *
 	 * @param birthDate the birth date
-	 * @throws WrongInformationException             raised if the information is not valid.
+	 * @throws WrongInformationException raised if the information is not valid.
 	 */
 	public void checkBirthDate(Date birthDate) throws WrongInformationException {
 

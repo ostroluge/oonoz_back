@@ -56,7 +56,6 @@ public class PlayerService {
 	 * @throws MessagingException the messaging exception
 	 */
 	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
-
 		checkUserInformation.checkUsername(player.getUsername());
 		checkUserInformation.checkPassword(player.getPassword());
 		checkUserInformation.checkMail(player.getMail());
