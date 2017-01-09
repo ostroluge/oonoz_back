@@ -1,11 +1,12 @@
 package oonoz.test.manager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,6 @@ import oonoz.domain.Supplier;
 import oonoz.exception.PlayerAlreadyExistException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.manager.impl.PlayerManagerImpl;
-import oonoz.manager.impl.SupplierManagerImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OonozApplication.class)
@@ -31,18 +31,13 @@ public class PlayerManagerTest {
 	@Autowired
 	private PlayerManagerImpl playerManager;
 	
-	/** The player manager. */
-	@Autowired
-	private SupplierManagerImpl supplierManager;
 
 	/**
 	 * Test if the manager throw a PlayerAlreadyExistException when create a
 	 * Player which has a existing username.
 	 *
-	 * @throws PlayerAlreadyExistException
-	 *             the player already exist exception
-	 * @throws ParseException
-	 *             the parse exception
+	 * @throws ParseException             the parse exception
+	 * @throws PlayerAlreadyExistException             the player already exist exception
 	 */
 	@Test(expected = PlayerAlreadyExistException.class)
 	public void createPlayerWithExistingUsername() throws ParseException, PlayerAlreadyExistException {
@@ -64,6 +59,47 @@ public class PlayerManagerTest {
 		// [-- VERIFICATION --]
 		// Must throw PlayerAlreadyExistException
 		
+	}
+	
+	/**
+	 * Test a player creation.
+	 *
+	 * @throws ParseException             the parse exception
+	 * @throws PlayerAlreadyExistException             the player already exist exception
+	 * @throws PlayerNotExistException                 the player not exist exception
+	 */
+	@Test
+	public void createPlayer() throws PlayerAlreadyExistException, ParseException, PlayerNotExistException {
+		// [-- INITIALISATION --]
+		Player player = new Player();
+		player.setMail("goodguy@gmail.com");
+		player.setUsername("gguy");
+		player.setFirstName("good");
+		player.setLastName("guy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		player.setBirthDate(sdf.parse("2017-01-05"));
+		player.setPassword("Password59");
+		player.setIsActive(false);
+		player.setIsSupplier(false);
+
+		// [-- APPEL DU SERVICE --]
+		playerManager.create(player);
+		Player newPlayer=playerManager.findByMail("goodguy@gmail.com");
+		// [-- VERIFICATION --]
+		assertNotNull(newPlayer);		
+	}
+	
+	@Test
+	public void updatePlayer() throws PlayerNotExistException{
+		// [-- INITIALISATION --]
+		Player player= playerManager.getPlayerByUsername("Jilief");
+		player.setLastName("Melanchon");
+		// [-- APPEL DU SERVICE --]
+		playerManager.update(player);
+		
+		// [-- VERIFICATION --]
+		player= playerManager.getPlayerByUsername("Jilief");
+		assertTrue(player.getLastName().equals("Melanchon"));
 	}
 	
 	/**

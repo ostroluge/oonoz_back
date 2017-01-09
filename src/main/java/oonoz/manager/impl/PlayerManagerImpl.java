@@ -124,9 +124,16 @@ public class PlayerManagerImpl implements PlayerManager {
 	 * @param id
 	 *            the id
 	 * @return the player
+	 * @throws PlayerNotExistException 
 	 */
-	public Player findById(long id) {
-		return playerRepository.findOne(id);
+	public Player findById(long id) throws PlayerNotExistException {
+		
+		Player player=playerRepository.findOne(id);
+		
+		if(player!=null)
+			return player;
+		
+		throw new PlayerNotExistException("The player does not exist !");
 	}
 
 	/**

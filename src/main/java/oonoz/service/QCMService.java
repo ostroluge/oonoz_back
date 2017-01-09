@@ -71,19 +71,24 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
-<<<<<<< HEAD
 	 * @throws QCMCreationException the QCM creation exception
-=======
-	 * @throws QCMCreationException 
 	 * @throws QCMAlreadyExistException 
 	 * @throws ThemeDoesNotExistException 
->>>>>>> feature/QCMManagement
 	 */
 	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException, ThemeDoesNotExistException {
 		
 		checkQCMInformation.checkName(qcm.getName());
 		checkQCMInformation.checkDescription(qcm.getDescription());
 		checkQCMInformation.checkCategory(qcm.getCategory());
+		checkQCMInformation.checkIdTheme(qcm.getIdTheme());
+		checkQCMInformation.checkMinimalScore(qcm.getMinimalScore());
+		if(!qcm.isFree()){
+			checkQCMInformation.checkPrice(qcm.getPrice());
+		}
+		if(qcm.getPrizeName()!=null){
+			checkQCMInformation.checkPrizeName(qcm.getPrizeName());
+			checkQCMInformation.checkPrizeDescription(qcm.getPrizeDescription());
+		} 
 		themeManager.findOne(qcm.getIdTheme());
 		qcm.setValidated(false);
 		qcm.setIsComplete(false);
