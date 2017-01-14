@@ -1,6 +1,7 @@
 package oonoz.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,10 +33,12 @@ import oonoz.exception.QCMValidationException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.AdminService;
 import oonoz.service.PlayerService;
+import oonoz.service.QCMService;
 import oonoz.service.SupplierService;
 import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class AdminController.
  */
@@ -50,6 +53,10 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
+	/** The qcm service. */
+	@Autowired
+	private QCMService qcmService;
+	
 	/** The player service. */
 	@Autowired
 	private PlayerService playerService;
@@ -318,12 +325,33 @@ public class AdminController {
 	 * @param idQCM the id QCM
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/validateQCM/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<String> validateQCM(@PathVariable("id") long idQCM){
+	@RequestMapping(value = "/validateQCM", method = RequestMethod.PUT)
+	public ResponseEntity<String> validateQCM(@RequestParam Map<String, String> requestParams){
+	
+		String idQCM = requestParams.get("idQCM");
 		try {
-			adminService.validateQCM(idQCM);
+			adminService.validateQCM(Long.parseLong(idQCM));
 		} catch (QCMDoesNotExistException | QCMValidationException e) {
 			logger.error("Impossible to validate this QCM", e);
+			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+	
+	/**
+	 * Delete QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/deleteQCM", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteQCM(@RequestParam Map<String, String> requestParams){
+		String idQCM = requestParams.get("idQCM");
+		try{
+			qcmService.deleteQCM(Long.parseLong(idQCM));
+		} catch (QCMDoesNotExistException e) {
+			logger.error("Impossible to delete this QCM", e);
 			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 		}
 		
