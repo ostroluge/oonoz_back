@@ -89,7 +89,7 @@ public class QCMService {
 			checkQCMInformation.checkPrizeName(qcm.getPrizeName());
 			checkQCMInformation.checkPrizeDescription(qcm.getPrizeDescription());
 		} 
-		themeManager.findOne(qcm.getIdTheme());
+		//themeManager.findOne(qcm.getIdTheme());
 		qcm.setValidated(false);
 		qcm.setIsComplete(false);
 		return qcmManager.postQCM(qcm);
