@@ -45,6 +45,12 @@ public class SubThemeService {
 		return subThemeManager.findByIdTheme(idTheme);
 	}
 	
+	/**
+	 */
+	public List<SubTheme> getSubThemesByLabel(String label) throws ThemeDoesNotExistException{
+		return subThemeManager.findByLabelIgnoreCaseStartingWith(label);
+	}
+	
 	
 	/**
 	 * Post sub theme.

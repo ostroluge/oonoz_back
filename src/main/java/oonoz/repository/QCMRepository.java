@@ -2,6 +2,7 @@ package oonoz.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import oonoz.domain.QCM;
@@ -37,6 +38,7 @@ public interface QCMRepository extends CrudRepository<QCM, Long> {
 	 * @return the list
 	 */
 	List<QCM> findByIdSupplierAndIdTheme(long idSupplier,long idTheme);
+	
 	
 	/**
 	 * Find by is validated true and is complete true.

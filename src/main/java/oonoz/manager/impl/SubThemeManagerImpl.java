@@ -35,6 +35,11 @@ public class SubThemeManagerImpl implements SubThemeManager {
 	public List<SubTheme> findByIdTheme(long idTheme){
 		return subThemeRepository.findByIdTheme(idTheme);
 	}
+	
+	
+	public List<SubTheme> findByLabelIgnoreCaseStartingWith(String label){
+		return subThemeRepository.findByLabelIgnoreCaseStartingWith(label);
+	}
 	 
 	/**
 	 * Creates the subtheme.

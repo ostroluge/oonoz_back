@@ -64,7 +64,7 @@ public class ThemeService {
 	 * @return the theme
 	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 */
-	public Theme findByLabel(String label) throws ThemeDoesNotExistException{
+	public List<Theme> findByLabel(String label) throws ThemeDoesNotExistException{
 		return themeManager.findByLabel(label);
 	}
 

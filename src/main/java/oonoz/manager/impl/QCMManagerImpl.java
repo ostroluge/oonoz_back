@@ -143,13 +143,17 @@ public class QCMManagerImpl implements QCMManager {
 		return qcmRepository.findByTheme(theme);
 	}
 	
+	
+	
 	public List<QCM> findByIdThemeAndIdSupplier(long idSupplier,long idTheme) throws QCMDoesNotExistException{
-		List<QCM> QCMlist=qcmRepository.findByIdSupplierAndIdTheme(idSupplier,idTheme);
+		List<QCM> QCMlist=qcmRepository.findByIdSupplierAndIdTheme(idTheme,idSupplier);
 		if(QCMlist==null){
 			throw new QCMDoesNotExistException("They are no QCM associated with this supplier or theme !");
 		}
 		return QCMlist;
 	}
+	
+	
 
 	/**
 	 * Récupère tous les QCM validés et terminés.

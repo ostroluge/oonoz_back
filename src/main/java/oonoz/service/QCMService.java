@@ -1,5 +1,6 @@
 package oonoz.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -318,8 +319,21 @@ public class QCMService {
 	 * @param theme the theme
 	 * @return the list
 	 */
-	public List<QCM> searchSupplierQCM(Theme theme) {
-		return qcmManager.findSupplierQCMByTheme(theme);
+	public List<QCM> searchSupplierQCMBySubTheme(String subTheme, long idSupplier) {
+		
+		List<SubTheme> subThemes = subThemeManager.findByLabelIgnoreCaseStartingWith(subTheme);
+		List<QCM> qcmList = getSupplierQCM(idSupplier);
+		List<QCM> result = new ArrayList<QCM>();
+		
+		for (QCM q : qcmList){
+			for (SubTheme sb : subThemes){
+				if (q.getIdTheme() == sb.getIdTheme()){
+					result.add(q);
+				}
+			}
+		}
+		return result;
+		
 	}
 	
 	/**
@@ -332,9 +346,18 @@ public class QCMService {
 	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
-	public List<QCM>searchSupplierQCM(String themeLabel,String subThemeLabel,long idSupplier) throws ThemeDoesNotExistException, QCMDoesNotExistException{
-		Theme theme = themeManager.findByLabel(themeLabel);
-		return qcmManager.findByIdThemeAndIdSupplier(idSupplier,theme.getIdTheme());
+	public List<QCM>searchSupplierQCMByTheme(String themeLabel,long idSupplier) throws ThemeDoesNotExistException, QCMDoesNotExistException{
+		
+		List<Theme>  themes = themeManager.findByLabel(themeLabel);
+		List<QCM> listQCM = new ArrayList<QCM>();
+		
+		if (themes.size() != 0){
+			for (Theme t : themes ){
+				listQCM.addAll(qcmManager.findByIdThemeAndIdSupplier(t.getIdTheme(),idSupplier));
+			}
+		}
+		
+		return listQCM;
 		
 	}
 	
