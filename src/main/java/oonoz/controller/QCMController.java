@@ -404,8 +404,8 @@ public class QCMController {
 		List<QCM> QcmList = new ArrayList<QCM>();
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
-		
-		 if (theme == null || theme.equals("")  && subTheme == null || subTheme.equals("") ) {
+
+		if ((theme == null || theme.equals(""))  && (subTheme == null || subTheme.equals("")) ) {
 			QcmList = qcmService.getSupplierQCM(supplier.getIdPlayer());
 		} else if (theme != null && subTheme == null || subTheme.equals("") ){
 			QcmList = qcmService.searchSupplierQCMByTheme(theme, supplier.getIdPlayer());
