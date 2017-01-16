@@ -51,4 +51,5 @@ public class AdminService {
 	public void validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
 		qcmManager.validateQCM(id);
 	}
+
 }

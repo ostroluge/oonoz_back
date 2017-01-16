@@ -59,6 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST,"/admin/acceptSupplierRequest").permitAll()
 		.antMatchers(HttpMethod.POST,"/admin/createSupplierAccount").permitAll()
         .antMatchers(HttpMethod.POST,"/admin/createPlayerAccount").permitAll()
+        .antMatchers(HttpMethod.GET, "/admin/getNotValidatedQCM").permitAll()
+        .antMatchers(HttpMethod.GET, "/admin/getValidatedQCM").permitAll()
+        .antMatchers(HttpMethod.PUT,"/admin/validateQCM").permitAll()
+        .antMatchers(HttpMethod.DELETE, "/admin/deleteQCM").permitAll()
         .antMatchers(HttpMethod.GET,"/user/getSupplierQCM").permitAll()
         .antMatchers(HttpMethod.GET,"/searchSupplierQCM").permitAll()      
         .antMatchers(HttpMethod.GET, "/user/suppliers").permitAll()		
@@ -74,8 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.DELETE, "/qcms/{idQCM}/subthemes/{idSubTheme}").permitAll()
         .antMatchers(HttpMethod.PUT, "/qcms/{id}").permitAll()
         .antMatchers(HttpMethod.PUT, "/qcms/{idQCM}/questions/{idQuestion}").permitAll()
-        
-		.antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
+
+        .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		.authorizeRequests()
 		.anyRequest().authenticated().and()
 		.httpBasic();

@@ -130,23 +130,6 @@ INSERT INTO AUTHORITIES (id_authorities,username,role) values (104,'ElPadre','RO
 INSERT INTO AUTHORITIES (id_authorities,username,role) values (105,'Ching chong','ROLE_SUPPLIER');
 
 
-INSERT INTO THEME (id, label, description, is_valid) values (1, 'Sport', 'Theme sport', TRUE);
-INSERT INTO THEME (id, label, description, is_valid) values (2, 'Art', 'Theme art', FALSE);
-INSERT INTO THEME (id, label, description, is_valid) values (3, 'Musique', 'Theme musique', TRUE);
-
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (1,1,'Football', 'Le ballon rond. What else ?', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (2,1,'Rugby', 'Un arrière goût de Ballabriga ici', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (3,2,'Peinture', 'Monet, monet, monet !', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (4,2,'Cinéma', 'Ici on trouvera forcément des quizz sur Scarlett !', FALSE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (5,3,'Rap', 'Mes baskets sentent la schnek, trop de putes à mes pieds', TRUE);
-INSERT INTO SUB_THEME(id, id_theme, label, description, is_valid) values (6,3,'Jazz', 'De nombreux quizz issus du célèbre site Youjazz', FALSE);
-
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (101,1);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (102,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (103,3);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (104,2);
-INSERT INTO PLAYER_THEME (id_player, id_theme) values (105,1);
-
 INSERT INTO THEME (id, label, description, is_valid) values (101, 'Sport', 'Theme sport', TRUE);
 INSERT INTO THEME (id, label, description, is_valid) values (102, 'Art', 'Theme art', FALSE);
 INSERT INTO THEME (id, label, description, is_valid) values (103, 'Musique', 'Theme musique', TRUE);

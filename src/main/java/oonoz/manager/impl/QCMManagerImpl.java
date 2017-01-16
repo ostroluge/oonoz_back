@@ -3,7 +3,9 @@ package oonoz.manager.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
+
 import oonoz.domain.QCM;
 import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
@@ -12,6 +14,7 @@ import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QCMValidationException;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
+import oonoz.repository.SupplierRepository;
 import oonoz.repository.ThemeRepository;
 
 /**
@@ -27,6 +30,10 @@ public class QCMManagerImpl implements QCMManager {
 	/** The theme repository. */
 	@Resource
 	private ThemeRepository themeRepository;
+	
+	/** The supplier repository. */
+	@Resource
+	private SupplierRepository supplierRepository;
 	
 	/**
 	 * Gets the all the qcm.
@@ -63,13 +70,16 @@ public class QCMManagerImpl implements QCMManager {
 	public QCM postQCM(QCM qcm) throws QCMCreationException {
 
 		qcmExist(qcm.getName());
-		checkThemeSubThemeAssociation(qcm.getTheme(),qcm.getSubThemes());
-		qcm=qcmRepository.save(qcm);
-		if(qcm==null){
-
-			throw new QCMCreationException("Error during QCM creation !");
+		if(themeRepository.exists(qcm.getIdTheme()) && supplierRepository.exists(qcm.getIdSupplier())){
+			checkThemeSubThemeAssociation(qcm.getTheme(),qcm.getSubThemes());
+			qcm=qcmRepository.save(qcm);
+			if(qcm==null){
+	
+				throw new QCMCreationException("Error during QCM creation !");
+			}
+			return qcm;
 		}
-		return qcm;
+		throw new QCMCreationException("The QCM theme or supplier does not exist !");
 	}
 	
 	/**
