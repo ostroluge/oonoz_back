@@ -25,6 +25,7 @@ import oonoz.manager.impl.SubThemeManagerImpl;
 import oonoz.manager.impl.ThemeManagerImpl;
 import oonoz.util.CheckQCMInformation;
 import oonoz.util.CheckQuestionInformation;
+import oonoz.util.QCMFilteredSearch;
 
 /**
  * The Class QCMService.
@@ -343,6 +344,13 @@ public class QCMService {
 		
 	}
 	
+	public List<QCM>filteredSearch(QCMFilteredSearch filteredSearch){
+		//TODO check QCMFilteredSearch
+		return qcmManager.findsWithFilter(filteredSearch);
+	}
+	
+	
+	
 	/**
 	 * Check if qcm name is not already used.
 	 * @param qcmName
@@ -355,4 +363,5 @@ public class QCMService {
 		}
 		return false;
 	}
+	
 }

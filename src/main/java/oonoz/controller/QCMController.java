@@ -38,6 +38,7 @@ import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
+import oonoz.util.QCMFilteredSearch;
 import oonoz.util.StringResponse;
 
 /**
@@ -404,7 +405,7 @@ public class QCMController {
 		List<QCM> QcmList;
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
-		
+
 		if (theme == null && subTheme == null) {
 			QcmList = qcmService.getSupplierQCM(supplier.getIdPlayer());
 		} else {
@@ -416,6 +417,25 @@ public class QCMController {
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+
+	/**
+	 * Filtered search.
+	 *
+	 * @param filteredSearch
+	 *            the filtered search
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/qcms/filteredSearch", method = RequestMethod.POST)
+	public ResponseEntity<List<QCMDto>> filteredSearch(@RequestBody QCMFilteredSearch filteredSearch) {
+
+		List<QCM> qcmList=qcmService.filteredSearch(filteredSearch);
+		List<QCMDto> result= new ArrayList<>();
+		for (QCM qcm : qcmList) {
+			result.add(qcmDtoConverter.convertToDto(qcm));
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+
 	}
 
 	/**

@@ -2,15 +2,17 @@ package oonoz.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
+import oonoz.domain.Player;
 import oonoz.domain.QCM;
 import oonoz.domain.Theme;
 
 /**
  * The Interface QCMRepository.
  */
-public interface QCMRepository extends CrudRepository<QCM, Long> {
+public interface QCMRepository extends CrudRepository<QCM, Long>,JpaSpecificationExecutor<QCM> {
 
 	
 	/**

@@ -1,9 +1,17 @@
 package oonoz.manager.impl;
 
+import static oonoz.repository.QCMSpecifications.isFree;
+import static oonoz.repository.QCMSpecifications.isValidated;
+import static oonoz.repository.QCMSpecifications.labelStartWith;
+import static oonoz.repository.QCMSpecifications.withCategory;
+import static oonoz.repository.QCMSpecifications.withTheme;
+import static org.springframework.data.jpa.domain.Specifications.where;
+
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.QCM;
@@ -16,6 +24,7 @@ import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
 import oonoz.repository.SupplierRepository;
 import oonoz.repository.ThemeRepository;
+import oonoz.util.QCMFilteredSearch;
 
 /**
  * The Class QCMManagerImpl.
@@ -217,6 +226,28 @@ public class QCMManagerImpl implements QCMManager {
 			return true;
 		}
 		return false;
+	}
+	
+	public List<QCM> findsWithFilter(QCMFilteredSearch filteredSearch){
+		
+		Specification<QCM> spec = null;
+		
+		if (filteredSearch.getLabelSearch() != null && !"".equals(filteredSearch.getLabelSearch())) {
+			spec = where(labelStartWith(filteredSearch.getLabelSearch().toLowerCase()));
+		}
+		if (filteredSearch.isFree() != null && filteredSearch.isFree()) {
+			spec = where(isFree());
+		}
+		if (filteredSearch.getCategory() != null && !"".equals(filteredSearch.getCategory())) {
+			spec = where(withCategory(filteredSearch.getCategory()));
+		}
+		if (filteredSearch.getIdTheme()!=null && filteredSearch.getIdTheme() != 0 ) {
+			spec = where(withTheme(filteredSearch.getIdTheme()));
+		}
+		
+		/**Only validated QCM**/
+		where(spec).and(isValidated());
+		return qcmRepository.findAll(spec);
 	}
 	
 	/**
