@@ -1,5 +1,6 @@
 package oonoz.manager.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -62,9 +63,9 @@ public class ThemeManagerImpl implements ThemeManager {
 	 * @return the theme
 	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 */
-	public Theme findByLabel(String label) throws ThemeDoesNotExistException{
+	public List<Theme> findByLabel(String label) throws ThemeDoesNotExistException{
 		
-		Theme theme=themeRepository.findByLabelLike(label);
+		List<Theme> theme= themeRepository.findByLabelIgnoreCaseStartingWith(label);
 		if(theme==null){
 			throw new ThemeDoesNotExistException("The theme does not exist !");
 		}

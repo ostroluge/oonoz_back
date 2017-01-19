@@ -19,7 +19,7 @@ public interface ThemeRepository extends CrudRepository<Theme, Long> {
 	 * @param label the label
 	 * @return the theme
 	 */
-	Theme findByLabelLike(String label);
+	List <Theme> findByLabelIgnoreCaseStartingWith(String label);
 	
 	/**
 	 * Get only validated themes

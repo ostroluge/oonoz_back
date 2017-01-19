@@ -401,15 +401,18 @@ public class QCMController {
 
 		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
 
-		// TODO verifie la nullite du player
-		List<QCM> QcmList;
+		List<QCM> QcmList = new ArrayList<QCM>();
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
 
-		if (theme == null && subTheme == null) {
+
+		if ((theme == null || theme.equals(""))  && (subTheme == null || subTheme.equals("")) ) {
+
 			QcmList = qcmService.getSupplierQCM(supplier.getIdPlayer());
-		} else {
-			QcmList = qcmService.searchSupplierQCM(theme, subTheme, supplier.getIdPlayer());
+		} else if (theme != null && subTheme == null || subTheme.equals("") ){
+			QcmList = qcmService.searchSupplierQCMByTheme(theme, supplier.getIdPlayer());
+		}else if (subTheme != null){
+			QcmList = qcmService.searchSupplierQCMBySubTheme(subTheme, supplier.getIdPlayer());
 		}
 		List<QCMDto> result = new ArrayList<>();
 		for (QCM qcm : QcmList) {
