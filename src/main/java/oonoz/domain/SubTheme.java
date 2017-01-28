@@ -185,4 +185,12 @@ public class SubTheme {
 		return "SubTheme [id=" + id + ", idTheme=" + idTheme + ", label=" + label + ", description=" + description
 				+ ", iconUrl=" + iconUrl + "]";
 	}
+	
+	@Override
+    public boolean equals(Object object)
+    {
+        Long idSubTheme= (Long)object;
+
+       return idSubTheme==this.getId();
+    }
 }

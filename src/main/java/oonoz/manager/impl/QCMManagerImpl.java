@@ -5,7 +5,10 @@ import static oonoz.repository.QCMSpecifications.isValidated;
 import static oonoz.repository.QCMSpecifications.labelStartWith;
 import static oonoz.repository.QCMSpecifications.withCategory;
 import static oonoz.repository.QCMSpecifications.withTheme;
+import static oonoz.repository.QCMSpecifications.withSubTheme;
+import static oonoz.repository.QCMSpecifications.withPriceLessOrEqualTo;
 import static org.springframework.data.jpa.domain.Specifications.where;
+import static oonoz.repository.QCMSpecifications.hasGift;
 
 import java.util.List;
 
@@ -240,17 +243,27 @@ public class QCMManagerImpl implements QCMManager {
 			spec = where(labelStartWith(filteredSearch.getLabelSearch().toLowerCase()));
 		}
 		if (filteredSearch.isFree() != null && filteredSearch.isFree()) {
-			spec = where(isFree());
+			spec = where(spec).and(isFree());
 		}
 		if (filteredSearch.getCategory() != null && !"".equals(filteredSearch.getCategory())) {
-			spec = where(withCategory(filteredSearch.getCategory()));
+			spec = where(spec).and(withCategory(filteredSearch.getCategory()));
 		}
 		if (filteredSearch.getIdTheme()!=null && filteredSearch.getIdTheme() != 0 ) {
-			spec = where(withTheme(filteredSearch.getIdTheme()));
+			spec = where(spec).and(withTheme(filteredSearch.getIdTheme()));
+		}
+		
+		if (filteredSearch.getIdSubTheme()!=null && filteredSearch.getIdSubTheme() != 0 ) {
+			spec = where(spec).and(withSubTheme(filteredSearch.getIdSubTheme()));
+		}
+		if (filteredSearch.getMaxPrice()!=null && filteredSearch.getMaxPrice()> 0 ) {
+			spec = where(spec).and(withPriceLessOrEqualTo(filteredSearch.getMaxPrice()));
+		}
+		if (filteredSearch.isHasGift()!=null && filteredSearch.isHasGift() ) {
+			spec = where(spec).and(hasGift());
 		}
 		
 		/**Only validated QCM**/
-		where(spec).and(isValidated());
+		spec=where(spec).and(isValidated());
 		return qcmRepository.findAll(spec);
 	}
 	

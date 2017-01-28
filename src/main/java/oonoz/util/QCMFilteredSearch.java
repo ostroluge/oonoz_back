@@ -2,7 +2,6 @@ package oonoz.util;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class QCMFilteredSearch.
  * 
@@ -16,8 +15,8 @@ public class QCMFilteredSearch {
 	/** The id theme. */
 	private Long idTheme;
 	
-	/** The subthemes. */
-	private List<Integer> subthemes;
+	/** The id subtheme. */
+	private Long idSubTheme;
 	
 	/** The is free. */
 	private Boolean isFree;
@@ -106,22 +105,12 @@ public class QCMFilteredSearch {
 		this.idTheme = idTheme;
 	}
 
-	/**
-	 * Gets the subthemes.
-	 *
-	 * @return the subthemes
-	 */
-	public List<Integer> getSubthemes() {
-		return subthemes;
+	public Long getIdSubTheme() {
+		return idSubTheme;
 	}
 
-	/**
-	 * Sets the subthemes.
-	 *
-	 * @param subthemes the new subthemes
-	 */
-	public void setSubthemes(List<Integer> subthemes) {
-		this.subthemes = subthemes;
+	public void setIdSubTheme(Long idSubTheme) {
+		this.idSubTheme = idSubTheme;
 	}
 
 	/**
