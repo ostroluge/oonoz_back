@@ -79,8 +79,7 @@ public class QCMServiceTest {
 		// [-- VERIFICATION --]
 		final ArgumentCaptor<QCM> argument = ArgumentCaptor.forClass(QCM.class);
 		Mockito.verify(this.qcmManager, Mockito.times(1)).postQCM(argument.capture());
-		final ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
-		Mockito.verify(this.themeManager, Mockito.times(1)).findOne(argument2.capture());
+		
 	}
 
 	/**
@@ -118,8 +117,7 @@ public class QCMServiceTest {
 		// [-- VERIFICATION --]
 		final ArgumentCaptor<QCM> argument = ArgumentCaptor.forClass(QCM.class);
 		Mockito.verify(this.qcmManager, Mockito.times(1)).postQCM(argument.capture());
-		final ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
-		Mockito.verify(this.themeManager, Mockito.times(1)).findOne(argument2.capture());
+		
 
 	}
 
