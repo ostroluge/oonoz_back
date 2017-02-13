@@ -207,6 +207,17 @@ public class QCMService {
 			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
 		}
 	}
+	
+	/**
+	 * Gets the qcm.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	public QCM getValidatedQCM(long id) throws QCMDoesNotExistException {
+		return qcmManager.findByIdAndIsValidatedTrueAndIsCompleteTrue(id);		
+	}
 
 	/**
 	 * Adds the sub theme.

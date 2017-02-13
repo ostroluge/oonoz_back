@@ -175,7 +175,18 @@ public class QCMManagerImpl implements QCMManager {
 		return QCMlist;
 	}
 	
-	
+	/**
+	 * Find QCM by id and validated true and is complete true.
+	 *
+	 * @return the qcm
+	 */
+	public QCM findByIdAndIsValidatedTrueAndIsCompleteTrue(long idQCM) throws QCMDoesNotExistException{
+		QCM qcm=qcmRepository.findByIdAndIsValidatedTrueAndIsCompleteTrue(idQCM);
+		if(qcm==null){
+			throw new QCMDoesNotExistException("The QCM does not exist or not validated !");
+		}
+		return qcm;
+	}
 
 	/**
 	 * Récupère tous les QCM validés et terminés.
