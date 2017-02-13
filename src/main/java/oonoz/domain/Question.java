@@ -58,7 +58,7 @@ public class Question {
 	private int questionNumber;
 	
 	/** The proposition 3. */
-	@Column(unique = false, nullable = true,name="TIME")
+	@Column(unique = false, nullable = true,name="DURATION")
 	private Integer time;
 
 	/**
