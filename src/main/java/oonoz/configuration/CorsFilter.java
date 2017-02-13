@@ -29,18 +29,23 @@ import java.io.IOException;
 public class CorsFilter implements Filter {
 
   
+    /* (non-Javadoc)
+     * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+     */
     @Override
     public void init(FilterConfig arg0) throws ServletException {}
 
+    /* (non-Javadoc)
+     * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
+     */
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp,
                          FilterChain chain) throws IOException, ServletException {
-        // TODO Auto-generated method stub
         HttpServletResponse response=(HttpServletResponse) resp;
         HttpServletRequest request=(HttpServletRequest) req;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Authorization");
         response.addHeader("Access-Control-Allow-Headers", "Accept");
@@ -54,10 +59,12 @@ public class CorsFilter implements Filter {
             chain.doFilter(request, response);
         }
 
-        //chain.doFilter(request, response);
     }
 
     
+    /* (non-Javadoc)
+     * @see javax.servlet.Filter#destroy()
+     */
     @Override
     public void destroy() {}
 

@@ -1,17 +1,27 @@
 package oonoz.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import java.security.SecureRandom;
+
+import javax.mail.MessagingException;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import oonoz.domain.Player;
+import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
+import oonoz.exception.PlayerNotActiveException;
+import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.manager.impl.PlayerManagerImpl;
-
+import oonoz.util.CheckUserInformation;
+import oonoz.util.FilteredSearch;
+import oonoz.util.MailService;
 
 /**
  * The Class PlayerService.
@@ -22,150 +32,228 @@ import oonoz.manager.impl.PlayerManagerImpl;
 @Service
 public class PlayerService {
 
-	
+
+	/** The player manager. */
 	@Autowired
 	private PlayerManagerImpl playerManager;
-
-	/** The Constant REGEXPASSWORD. */
-	protected final static String REGEXPASSWORD = "^(?=.*[0-9#\\$~<>\\|&-/])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,40}$";
 	
-	/** The Constant REGEXMAIL. */
-	protected final static String REGEXMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	/** The mail service. */
+	@Autowired
+	private MailService mailService;
+
+	/** The check user information. */
+	@Autowired
+	private CheckUserInformation checkUserInformation;
+
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(PlayerService.class);
 
 	/**
 	 * Sign-up a new player.
-	 * 
-	 * @param player
-	 *            Contains player's information
-	 * @throws WrongInformationException
-	 *             If one of the information about the player is wrong.
-	 * @throws PlayerAlreadyExistException
-	 *             If the player which is signing-up already exist.
+	 *
+	 * @param player Contains player's information
+	 * @throws WrongInformationException  If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException  If the player which is signing-up already exist.
+	 * @throws MessagingException the messaging exception
 	 */
-	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException {
+	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
 
-		checkUsername(player.getUsername());
-		checkPassword(player.getPassword());
-		checkMail(player.getMail());
-		checkLastName(player.getLastName());
-		checkFirstName(player.getFirstName());
-		checkBirthDate(player.getBirthDate());
+		checkUserInformation.checkUsername(player.getUsername());
+		checkUserInformation.checkPassword(player.getPassword());
+		checkUserInformation.checkMail(player.getMail());
+		checkUserInformation.checkLastName(player.getLastName());
+		checkUserInformation.checkFirstName(player.getFirstName());
+		checkUserInformation.checkBirthDate(player.getBirthDate());
 		player.setIsActive(false);
-
-		playerManager.create(player);
-	}
-
-	/**
-	 * I check that the user pseudo is valid.
-	 *
-	 * @param pseudo
-	 *            The pseudo of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkUsername(String pseudo) throws WrongInformationException {
-		if (pseudo == null || pseudo.length() < 4 || pseudo.length() > 20) {
-			throw new WrongInformationException("The pseudo is invalid !");
+		player.setIsSupplier(false);
+		String hashPassword=checkUserInformation.hashPassword(player.getPassword());
+		if(hashPassword!=null){
+			player.setPassword(hashPassword);
+			playerManager.create(player);
+			mailService.sendValidationMail(player);
+		}
+		else{
+			throw new WrongInformationException("Password invalid");
 		}
 	}
 
 	/**
-	 * I check that the user password is valid.
+	 * Sign-up a new player already active without mail.
 	 *
-	 * @param password
-	 *            The password of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
+	 * @param player Contains player's information
+	 * @throws WrongInformationException  If one of the information about the player is wrong.
+	 * @throws PlayerAlreadyExistException  If the player which is signing-up already exist.
+	 * @throws MessagingException the messaging exception
 	 */
-	private void checkPassword(String password) throws WrongInformationException {
-		if (password == null || !password.matches(PlayerService.REGEXPASSWORD)) {
-			throw new WrongInformationException("The password is invalid !");
+	public void signUpByAdmin(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
+
+		checkUserInformation.checkUsername(player.getUsername());
+		checkUserInformation.checkPassword(player.getPassword());
+		checkUserInformation.checkMail(player.getMail());
+		checkUserInformation.checkLastName(player.getLastName());
+		checkUserInformation.checkFirstName(player.getFirstName());
+		checkUserInformation.checkBirthDate(player.getBirthDate());
+		player.setIsActive(true);
+		player.setIsSupplier(false);
+		String hashPassword=checkUserInformation.hashPassword(player.getPassword());
+		if(hashPassword!=null){
+			player.setPassword(hashPassword);
+			playerManager.create(player);
 		}
-	}
-
-	/**
-	 * I check that the user mail is valid.
-	 *
-	 * @param mail
-	 *            The mail of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkMail(String mail) throws WrongInformationException {
-		if (mail == null || !mail.matches(PlayerService.REGEXMAIL)) {
-			throw new WrongInformationException("The mail is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user name is valid.
-	 *
-	 * @param name
-	 *            The name of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkLastName(String name) throws WrongInformationException {
-		if (name == null || name.length() < 3 || name.length() > 40) {
-			throw new WrongInformationException("The lastname is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user first name is valid.
-	 *
-	 * @param firstName
-	 *            The first name of the user.
-	 * @throws WrongInformationException
-	 *             raised if the information is not valid.
-	 */
-	private void checkFirstName(String firstName) throws WrongInformationException {
-		if (firstName == null || firstName.length() < 3 || firstName.length() > 40) {
-			throw new WrongInformationException("The firstname is invalid !");
-		}
-	}
-
-	/**
-	 * I check that the user birth date is valid.
-	 *
-	 * @param birthDate the birth date
-	 * @throws WrongInformationException             raised if the information is not valid.
-	 */
-	private void checkBirthDate(Date birthDate) throws WrongInformationException {
-
-		if (birthDate == null) {
-			throw new WrongInformationException("The birthDate  is invalid !");
+		else{
+			throw new WrongInformationException("Password invalid");
 		}
 	}
 	
 	/**
-	 * I check that the user birth date is valid.
+	 * Validation mail.
 	 *
-	 * @param isActive the is active
-	 * @throws WrongInformationException             raised if the information is not valid.
+	 * @param mail the mail
+	 * @param hash the hash
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws WrongInformationException the wrong information exception
 	 */
-	private void checkIsActive(boolean isActive) throws WrongInformationException {
+	/* Validate mail of the new signed-up player.
+	 *
+	 * @param mail the mail
+	 * @param hash the hash
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws WrongInformationException the wrong information exception
+	 */
+	public void validationMail(String mail,String hash) throws PlayerNotExistException, WrongInformationException{
 
-		if (isActive) {
-			throw new WrongInformationException("A new player can not be active on sign-up !");
+		if (mail.hashCode() == Integer.valueOf(hash)) {
+			Player player=playerManager.findByMail(mail);
+			player.setIsActive(true);
+			playerManager.update(player);
 		}
+		else{
+			throw new WrongInformationException("The key and the mail does not correspond !");
+		}
+
 	}
 
 	/**
-	 * I check if the date format is correct.
+	 * Update player.
 	 *
-	 * @param date the date
-	 * @return 		true if the format is correct, false if not.
+	 * @param player the player
+	 * @throws WrongInformationException the wrong information exception
+	 * @throws PlayerNotExistException the player not exist exception
 	 */
-	private boolean isValidDate(String date) {
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			format.parse(date);
-			return true;
-		} catch (ParseException e) {
-			return false;
+	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
+		
+		checkUserInformation.checkUsername(player.getUsername());
+		//checkUserInformation.checkPassword(player.getPassword());
+		checkUserInformation.checkMail(player.getMail());
+		checkUserInformation.checkLastName(player.getLastName());
+		checkUserInformation.checkFirstName(player.getFirstName());
+		checkUserInformation.checkBirthDate(player.getBirthDate());
+		Player player_=playerManager.findByMail(player.getMail());
+		player_.setUsername(player.getUsername());
+		player_.setLastName(player.getLastName());
+		player_.setFirstName(player.getFirstName());
+		player_.setMail(player.getMail());
+		player_.setBirthDate(player.getBirthDate());
+		player_.setIsActive(player.getIsActive());
+		player_.setIsSupplier(false);
+		playerManager.update(player_);
+	}
+	
+	/**
+	 * Delete player.
+	 *
+	 * @param idPlayer the id player
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
+	public void deletePlayer(Long idPlayer) throws PlayerNotExistException{
+		Player player_=playerManager.getPlayer(idPlayer);
+		if(player_==null){
+			throw new PlayerNotExistException("The player does not exist !");
 		}
+		playerManager.deletePlayer(player_.getIdPlayer());
+		
 	}
 
+
+	/**
+	 * Generate password.
+	 *
+	 * @param mail the mail
+	 * @throws WrongInformationException the wrong information exception
+	 * @throws PlayerNotExistException the player not exist exception
+	 * @throws MessagingException the messaging exception
+	 * @throws PlayerNotActiveException the player not active exception
+	 */
+	public void generatePassword(String mail) throws WrongInformationException, PlayerNotExistException, MessagingException, PlayerNotActiveException{
+
+		checkUserInformation.checkMail(mail);
+		Player player=playerManager.findByMail(mail);
+		checkUserInformation.checkIsActive(player.getIsActive());
+		String password=generateNewPassword();
+		String hashPassword=checkUserInformation.hashPassword(password);
+		player.setPassword(hashPassword);
+		playerManager.update(player);
+		player.setPassword(password);
+		mailService.sendNewGeneratePasswordMail(player);	
+	}
+
+	/**
+	 * Generation a new password with CheckUserInformation.REGEXPASSWORD constraints
+	 * @return
+	 * 		the new generated password.
+	 */
+	private String generateNewPassword(){
+
+		String password = RandomStringUtils.random(9, 0, 0, true, true, null, new SecureRandom());
+
+		try{
+			checkUserInformation.checkPassword(password);
+			return password;
+		}
+		catch(WrongInformationException e){
+			logger.error("Regenerate a new Password", e);
+			return generateNewPassword();
+		}
+
+	}
+	
+	/**
+	 * Filtered search.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the page
+	 * @throws WrongInformationException the wrong information exception
+	 */
+	public Page<PlayerDto> filteredSearch(FilteredSearch filteredSearch) throws WrongInformationException{
+				
+		if(filteredSearch.getPageNumber()>=0 && filteredSearch.getPageSize()>=0){
+			return playerManager.findsPageable(filteredSearch);
+		}
+		
+		throw new WrongInformationException("The page number must be greater or equal than zero !");
+		
+	}
+	
+	/**
+	 * Gets the player by id.
+	 *
+	 * @param idPlayer the id player
+	 * @return the player by id
+	 */
+	public Player getPlayerById(long idPlayer){
+		return playerManager.getPlayer(idPlayer);
+	}
+	
+	/**
+	 * Change status user.
+	 *
+	 * @param idPlayer the id player
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
+	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
+		playerManager.changeStatusUser(idPlayer);
+	}
+	
+	
 }

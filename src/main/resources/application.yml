@@ -1,0 +1,18 @@
+spring:
+  datasource: 
+    driver-class-name: "@datasource.driver@"
+    url: "@datasource.url@"
+    username: "@datasource.username@"
+    password: "@datasource.password@"
+server:
+  port: "@server.port@"
+  host: "@server.host@"
+oonoz:
+  mail:
+    username: oonozpepit@gmail.com
+    password: oonozpassword
+    host: smtp.gmail.com
+    port: 587
+    sender: oonozpepit@gmail.com
+    tls_enable: true
+    auth: true

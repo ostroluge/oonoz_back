@@ -2,13 +2,17 @@ package oonoz.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Supplier.
  * 
@@ -17,8 +21,27 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name="SUPPLIER")
 @PrimaryKeyJoinColumn(name="ID_PLAYER")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Supplier extends Player{
-
+	
+	
+	public Supplier(){
+		
+	}
+	
+	public Supplier(Player player){
+		this.idPlayer=player.idPlayer;
+		this.firstName=player.firstName;
+		this.lastName=player.lastName;
+		this.birthDate=player.birthDate;
+		this.mail=player.mail;
+		this.username=player.username;
+		this.password=player.password;
+		this.isActive=player.isActive;
+		this.isSupplier=player.isSupplier;
+		this.authorities=player.authorities;
+	}
+	
 	/** True if the supplier has validated his sign-up. */
 	@Column(unique = false, nullable = false,name="IS_VALID")
 	private Boolean isValid;

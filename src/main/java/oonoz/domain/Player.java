@@ -2,17 +2,24 @@ package oonoz.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-// 
+
 /**
  * The Class Player.
  * 
@@ -22,6 +29,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="PLAYER")
 @Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name = "type_user", discriminatorType = DiscriminatorType.STRING)
 public class Player {
 
 	
@@ -29,54 +37,67 @@ public class Player {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long idPlayer;
+	protected long idPlayer;
 	
 	
 	/** The first name. */
 	@Column(unique = false, nullable = false,name="FIRSTNAME")
-	private String firstName;
+	protected String firstName;
 	
 	/** The last name. */
 	@Column(unique = false, nullable = false,name="LASTNAME")
-	private String lastName;
+	protected String lastName;
 	
 	/** The mail. */
 	@Column(unique = true, nullable = false,name="MAIL")
-	private String mail;
+	protected String mail;
 	
 	/** The username. */
 	@Column(unique=true, nullable = false, name="USERNAME")
-	private String username;
+	protected String username;
 	
 	/** The password. */
 	@Column(unique=false, nullable = false, name="PASSWORD")
-	private String password;
+	protected String password;
 	
+
 	/** The birth date. */
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd",timezone="CET")
 	@Column(unique = false, nullable = false,name="BIRTHDATE")
-	private Date birthDate;
+	protected Date birthDate;
 	
 	/** The is active. */
 	@Column(unique = false, nullable = false, name="IS_ACTIVE")
-	private Boolean isActive;
+	protected Boolean isActive;
 	
-	/**
-	 * Sets the id.
-	 *
-	 * @param idPlayer the new id
-	 */
-	public void setId(long idPlayer){
-		this.idPlayer = idPlayer;
-	}
+	@Column(unique = false, nullable = false, name="IS_SUPPLIER")
+	protected Boolean isSupplier;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	protected Authorities authorities;
+	
+	
 	
 	/**
 	 * Gets the id.
 	 *
 	 * @return the id
 	 */
-	public long getId(){
-		return this.idPlayer;
+	public long getIdPlayer() {
+		return idPlayer;
 	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param idPlayer the new id
+	 */
+	public void setIdPlayer(long idPlayer) {
+		this.idPlayer = idPlayer;
+	}
+
+	
 
 	/**
 	 * Sets the first name.
@@ -186,21 +207,31 @@ public class Player {
 		return this.birthDate;
 	}
 	
-	/**
-	 * Sets the checks if is active.
-	 *
-	 * @param isActive the new checks if is active
-	 */
-	public void setIsActive(Boolean isActive){
+	
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	
-	/**
-	 * Checks if is active.
-	 *
-	 * @return the boolean
-	 */
-	public Boolean isActive(){
-		return this.isActive;
+
+	public Boolean getIsSupplier() {
+		return isSupplier;
 	}
+
+	public void setIsSupplier(Boolean isSupplier) {
+		this.isSupplier = isSupplier;
+	}
+
+	public Authorities getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Authorities authorities) {
+		this.authorities = authorities;
+	}
+	
+	
 }
