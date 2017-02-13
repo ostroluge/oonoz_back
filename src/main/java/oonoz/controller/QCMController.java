@@ -38,6 +38,7 @@ import oonoz.exception.TooManyQuestionsException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMService;
+import oonoz.util.QCMXmlObject;
 import oonoz.util.StringResponse;
 
 /**
@@ -433,6 +434,16 @@ public class QCMController {
 			return null;
 		}
 
+	}
+	
+	@RequestMapping(value = "/uploadQCM", method= RequestMethod.POST, 
+			consumes="text/xml",
+			produces="application/json")
+	public ResponseEntity<StringResponse> uploadQCM(@RequestBody QCMXmlObject qcm) {
+		StringResponse response = new StringResponse();
+		response.setResponse("Test OK");
+		System.out.println(qcm.toString());
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 }

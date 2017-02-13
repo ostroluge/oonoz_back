@@ -78,6 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.DELETE, "/qcms/{idQCM}/subthemes/{idSubTheme}").permitAll()
         .antMatchers(HttpMethod.PUT, "/qcms/{id}").permitAll()
         .antMatchers(HttpMethod.PUT, "/qcms/{idQCM}/questions/{idQuestion}").permitAll()
+        .antMatchers(HttpMethod.POST, "/uploadQCM").permitAll()
 
         .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("PLAYER").and()		        
 		.authorizeRequests()
