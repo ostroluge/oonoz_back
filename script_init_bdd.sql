@@ -1,4 +1,5 @@
-﻿DROP TABLE SUB_THEME_QCM;
+﻿DROP TABLE PLAY_QCM;
+DROP TABLE SUB_THEME_QCM;
 DROP TABLE QUESTION;
 DROP TABLE QCM;
 DROP TABLE SUPPLIER;
@@ -104,12 +105,42 @@ answer VARCHAR(50) not null,
 proposition1 VARCHAR(50) not null,
 proposition2 VARCHAR(50) not null,
 proposition3 VARCHAR(50) not null,
-time integer
+duration integer
 );
 
 CREATE TABLE SUB_THEME_QCM (
 id_sub_theme SERIAL references sub_theme(id) ON DELETE CASCADE,
 id_qcm BIGSERIAL references qcm(id) ON DELETE CASCADE
+);
+
+CREATE TABLE PLAY_QCM (
+id BIGSERIAL PRIMARY KEY,
+id_qcm BIGSERIAL references QCM(id) ON DELETE CASCADE,
+id_player BIGSERIAL references PLAYER(id) ON DELETE CASCADE,
+question1 boolean,
+question2 boolean,
+question3 boolean,
+question4 boolean,
+question5 boolean,
+question6 boolean,
+question7 boolean,
+question8 boolean,
+question9 boolean,
+question10 boolean,
+question11 boolean,
+question12 boolean,
+question13 boolean,
+question14 boolean,
+question15 boolean,
+question16 boolean,
+question17 boolean,
+question18 boolean,
+question19 boolean,
+question20 boolean,
+score integer,
+note integer,
+comment VARCHAR(100),
+finished boolean not null
 );
 
 
@@ -175,3 +206,7 @@ INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (101, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (102, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (104, 102);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (105, 103);
+
+INSERT INTO PLAY_QCM (id, id_qcm, id_player, score, finished) values (101, 102, 101, 20, true);
+INSERT INTO PLAY_QCM (id, id_qcm, id_player, score, finished) values (102, 102, 102, 20, true);
+INSERT INTO PLAY_QCM (id, id_qcm, id_player, score, finished) values (103, 102, 103, 20, true);

@@ -422,7 +422,7 @@ public class QCMController {
 			@RequestParam Map<String, String> requestParams)
 			throws ThemeDoesNotExistException, QCMDoesNotExistException {
 
-		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
+		Player player = (Player) getUserFromAuthentication(authentication);
 
 		List<QCM> QcmList = new ArrayList<QCM>();
 		String theme = requestParams.get("theme");
@@ -431,11 +431,11 @@ public class QCMController {
 
 		if ((theme == null || theme.equals(""))  && (subTheme == null || subTheme.equals("")) ) {
 
-			QcmList = qcmService.getSupplierQCM(supplier.getIdPlayer());
+			QcmList = qcmService.getSupplierQCM(player.getIdPlayer());
 		} else if (theme != null && subTheme == null || subTheme.equals("") ){
-			QcmList = qcmService.searchSupplierQCMByTheme(theme, supplier.getIdPlayer());
+			QcmList = qcmService.searchSupplierQCMByTheme(theme, player.getIdPlayer());
 		}else if (subTheme != null){
-			QcmList = qcmService.searchSupplierQCMBySubTheme(subTheme, supplier.getIdPlayer());
+			QcmList = qcmService.searchSupplierQCMBySubTheme(subTheme, player.getIdPlayer());
 		}
 		List<QCMDto> result = new ArrayList<>();
 		for (QCM qcm : QcmList) {
