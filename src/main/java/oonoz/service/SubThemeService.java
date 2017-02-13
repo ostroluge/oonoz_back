@@ -1,5 +1,7 @@
 package oonoz.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,22 @@ public class SubThemeService {
 	public SubTheme findOne(long idSubTheme) {
 		return subThemeManager.findOne(idSubTheme);
 	}
+	
+	/**
+	 * Find all subthemes from a theme
+	 * @param idTheme
+	 * @return
+	 */
+	public List<SubTheme> getAllSubThemesFromTheme(long idTheme){
+		return subThemeManager.findByIdTheme(idTheme);
+	}
+	
+	/**
+	 */
+	public List<SubTheme> getSubThemesByLabel(String label) throws ThemeDoesNotExistException{
+		return subThemeManager.findByLabelIgnoreCaseStartingWith(label);
+	}
+	
 	
 	/**
 	 * Post sub theme.

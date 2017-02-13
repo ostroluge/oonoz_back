@@ -17,7 +17,6 @@ import oonoz.util.MailService;
 
 /**
  * The Class SupplierService.
- * 
  * Description :
  */
 @Service
@@ -139,8 +138,7 @@ public class SupplierService {
 	 * @return the supplier request
 	 */
 	public List<Supplier> getSupplierRequest(){
-		List<Supplier> supplierList = supplierManager.findNotValidSupplier();
-		return supplierList;
+		return supplierManager.findNotValidSupplier();
 	}
 	
 	/**
@@ -159,7 +157,6 @@ public class SupplierService {
 	 */
 	public void acceptSupplierRequest(long idPlayer) {
 		supplierManager.acceptSupplierRequest(idPlayer);
-		
 	}
 
 	/**
@@ -186,5 +183,14 @@ public class SupplierService {
 			supplier.setCompanyAddress(null);
 			supplier.setCompanyName(null);
 		}
+	}
+	
+	/**
+	 * Gets the suppliers.
+	 *
+	 * @return the suppliers
+	 */
+	public List<Supplier> getSuppliers() {
+		return supplierManager.getSuppliers();
 	}
 }

@@ -1,12 +1,16 @@
 package oonoz.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -42,6 +46,29 @@ public class SubTheme {
 	@Column(unique = false, nullable = false, name="IS_VALID")
 	private boolean isValidated;
 	
+	/** The list of qcm. */
+	@OneToMany(fetch=FetchType.LAZY)
+    @JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_SUB_THEME"),inverseJoinColumns = @JoinColumn(name = "ID_QCM"))
+	private List<QCM> listQCMs;
+	
+	/**
+	 * Gets the list of qcm.
+	 *
+	 * @return the list of qcm
+	 */
+	public List<QCM> getListQCMs() {
+		return listQCMs;
+	}
+
+	/**
+	 * Sets list of qcm.
+	 *
+	 * @param qCMs the new list of qcm
+	 */
+	public void setListQCMs(List<QCM> qCMs) {
+		listQCMs = qCMs;
+	}
+
 	/**
 	 * Gets the id.
 	 *
@@ -150,9 +177,20 @@ public class SubTheme {
 		this.isValidated = isValidated;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "SubTheme [id=" + id + ", idTheme=" + idTheme + ", label=" + label + ", description=" + description
 				+ ", iconUrl=" + iconUrl + "]";
 	}
+	
+	@Override
+    public boolean equals(Object object)
+    {
+        Long idSubTheme= (Long)object;
+
+       return idSubTheme==this.getId();
+    }
 }

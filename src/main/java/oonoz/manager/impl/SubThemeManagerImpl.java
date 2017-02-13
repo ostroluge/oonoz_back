@@ -1,5 +1,7 @@
 package oonoz.manager.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -27,6 +29,16 @@ public class SubThemeManagerImpl implements SubThemeManager {
 	 */
 	public SubTheme findOne(long id) {
 		return subThemeRepository.findOne(id);
+	}
+	
+	
+	public List<SubTheme> findByIdTheme(long idTheme){
+		return subThemeRepository.findByIdTheme(idTheme);
+	}
+	
+	
+	public List<SubTheme> findByLabelIgnoreCaseStartingWith(String label){
+		return subThemeRepository.findByLabelIgnoreCaseStartingWith(label);
 	}
 	 
 	/**

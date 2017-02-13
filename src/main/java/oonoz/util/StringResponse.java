@@ -12,7 +12,7 @@ public class StringResponse {
 	 * Instantiates a new string response.
 	 */
 	public StringResponse() {
-
+		//Nested comment for SonarQube
 	}
 
 	/**

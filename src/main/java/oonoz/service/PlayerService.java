@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
 import oonoz.domain.Player;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -57,7 +56,6 @@ public class PlayerService {
 	 * @throws MessagingException the messaging exception
 	 */
 	public void signUp(Player player) throws WrongInformationException, PlayerAlreadyExistException, MessagingException {
-
 		checkUserInformation.checkUsername(player.getUsername());
 		checkUserInformation.checkPassword(player.getPassword());
 		checkUserInformation.checkMail(player.getMail());
@@ -149,15 +147,15 @@ public class PlayerService {
 		checkUserInformation.checkLastName(player.getLastName());
 		checkUserInformation.checkFirstName(player.getFirstName());
 		checkUserInformation.checkBirthDate(player.getBirthDate());
-		Player player_=playerManager.findByMail(player.getMail());
-		player_.setUsername(player.getUsername());
-		player_.setLastName(player.getLastName());
-		player_.setFirstName(player.getFirstName());
-		player_.setMail(player.getMail());
-		player_.setBirthDate(player.getBirthDate());
-		player_.setIsActive(player.getIsActive());
-		player_.setIsSupplier(false);
-		playerManager.update(player_);
+		Player playerToUpdate=playerManager.findByMail(player.getMail());
+		playerToUpdate.setUsername(player.getUsername());
+		playerToUpdate.setLastName(player.getLastName());
+		playerToUpdate.setFirstName(player.getFirstName());
+		playerToUpdate.setMail(player.getMail());
+		playerToUpdate.setBirthDate(player.getBirthDate());
+		playerToUpdate.setIsActive(player.getIsActive());
+		playerToUpdate.setIsSupplier(false);
+		playerManager.update(playerToUpdate);
 	}
 	
 	/**
@@ -167,11 +165,11 @@ public class PlayerService {
 	 * @throws PlayerNotExistException the player not exist exception
 	 */
 	public void deletePlayer(Long idPlayer) throws PlayerNotExistException{
-		Player player_=playerManager.getPlayer(idPlayer);
-		if(player_==null){
+		Player playerToDelete=playerManager.getPlayer(idPlayer);
+		if(playerToDelete==null){
 			throw new PlayerNotExistException("The player does not exist !");
 		}
-		playerManager.deletePlayer(player_.getIdPlayer());
+		playerManager.deletePlayer(playerToDelete.getIdPlayer());
 		
 	}
 
@@ -245,12 +243,17 @@ public class PlayerService {
 		return playerManager.getPlayer(idPlayer);
 	}
 	
+
 	/**
 	 * Change status user.
 	 *
 	 * @param idPlayer the id player
 	 * @throws PlayerNotExistException the player not exist exception
 	 */
+	public Player getPlayerByUsername(String username) throws PlayerNotExistException{
+		return playerManager.getPlayerByUsername(username);
+	}
+
 	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
 		playerManager.changeStatusUser(idPlayer);
 	}

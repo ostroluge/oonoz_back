@@ -110,8 +110,4 @@ public class PlayerDto {
 	public void setIsSupplier(Boolean isSupplier) {
 		this.isSupplier = isSupplier;
 	}
-
-	
-	
-
 }

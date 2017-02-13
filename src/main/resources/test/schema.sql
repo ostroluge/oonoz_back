@@ -1,11 +1,3 @@
-DROP TABLE IF EXISTS SUPPLIER;
-DROP TABLE IF EXISTS ADMIN;
-DROP TABLE IF EXISTS AUTHORITIES;
-DROP TABLE IF EXISTS SUB_THEME;
-DROP TABLE IF EXISTS PLAYER_THEME;
-DROP TABLE IF EXISTS PLAYER;
-DROP TABLE IF EXISTS THEME;
-DROP TABLE IF EXISTS ADMIN;
 
 
 CREATE TABLE PLAYER (
@@ -66,4 +58,39 @@ id_theme SERIAL references theme(id) ON DELETE CASCADE
 );
 
 
+CREATE TABLE QCM (
+id BIGSERIAL PRIMARY KEY,
+id_theme SERIAL references theme(id) ON DELETE CASCADE,
+id_supplier BIGSERIAL references player(id) ON DELETE CASCADE,
+name VARCHAR(40) not null,
+description VARCHAR(150) not null,
+is_validated boolean not null,
+is_free boolean not null,
+price float(2),
+icon TEXT,
+prize_name VARCHAR(50),
+prize_description VARCHAR(150),
+is_complete boolean not null,
+minimal_score integer,
+category VARCHAR(10) not null
+);
+
+CREATE TABLE QUESTION (
+id BIGSERIAL PRIMARY KEY, 
+id_qcm BIGSERIAL references QCM(id) ON DELETE CASCADE,
+question_number integer not null,
+title VARCHAR(200) not null,
+media_type VARCHAR(10),
+media TEXT,
+answer VARCHAR(50) not null,
+proposition1 VARCHAR(50) not null,
+proposition2 VARCHAR(50) not null,
+proposition3 VARCHAR(50) not null,
+time integer
+);
+
+CREATE TABLE SUB_THEME_QCM (
+id_sub_theme SERIAL references sub_theme(id) ON DELETE CASCADE,
+id_qcm BIGSERIAL references qcm(id) ON DELETE CASCADE
+);
 

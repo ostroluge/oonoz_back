@@ -1,5 +1,8 @@
 package oonoz.manager.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -28,21 +31,54 @@ public class ThemeManagerImpl implements ThemeManager {
 	public Iterable<Theme> findAll() {
 		return themeRepository.findAll();
 	}
-
+	
+	/**
+	 * Find only validated themes
+	 * @return
+	 */
+	public List<Theme> findValidated(){
+		return themeRepository.findByIsValidatedTrue();
+	}
+	
+	
 	/**
 	 * Find one theme.
 	 *
 	 * @param id the id
 	 * @return the theme
+	 * @throws ThemeDoesNotExistException 
 	 */
-	public Theme findOne(long id) {
-		return themeRepository.findOne(id);
+	public Theme findOne(long id) throws ThemeDoesNotExistException {
+		Theme theme=themeRepository.findOne(id);
+		if(theme==null){
+			throw new ThemeDoesNotExistException("The theme does not exist !");
+		}
+		return theme;		
 	}
+	
+	/**
+	 * Find by label.
+	 *
+	 * @param label the label
+	 * @return the theme
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
+	 */
+	public List<Theme> findByLabel(String label) throws ThemeDoesNotExistException{
+		
+		List<Theme> theme= themeRepository.findByLabelIgnoreCaseStartingWith(label);
+		if(theme==null){
+			throw new ThemeDoesNotExistException("The theme does not exist !");
+		}
+		return theme;
+	}
+	
 	
 	/**
 	 * Creates the theme.
 	 *
 	 * @param theme the theme
+	 * @return the theme
+	 * @throws ThemeAlreadyExistException the theme already exist exception
 	 */
 	public Theme create(Theme theme) throws ThemeAlreadyExistException {
 		
@@ -58,7 +94,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	/**
 	 * Removes the theme.
 	 *
-	 * @param id the id
+	 * @param theme the theme
 	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
 	 */
 	public void remove(Theme theme) throws ThemeDoesNotExistException {
@@ -74,6 +110,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	/**
 	 * Update theme.
 	 *
+	 * @param id the id
 	 * @param theme the theme
 	 * @return the theme
 	 * @throws ThemeDoesNotExistException the theme doesnt exist exception
