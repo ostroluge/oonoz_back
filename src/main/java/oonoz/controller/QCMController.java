@@ -93,6 +93,7 @@ public class QCMController {
 	@RequestMapping(value = "/qcms", method = RequestMethod.POST)
 	public ResponseEntity<QCM> postQCM(Authentication authentication, @RequestBody QCMDto qcmDto) {
 
+		
 		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
 		qcmDto.setIdSupplier(supplier.getIdPlayer());
 
@@ -215,6 +216,28 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
+	
+	/**
+	 * Gets the qcm.
+	 *
+	 * @param id
+	 *            the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException
+	 *             the QCM does not exist exception
+	 */
+	@RequestMapping(value = "/qcms/validated/{id}", method = RequestMethod.GET)
+	public ResponseEntity<QCMDto> getValidatedQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
+		QCM qcm = qcmService.getValidatedQCM(id);
+		// TODO only supplier can get the QCM
+		if (qcm != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(qcm));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+	
+	
 
 	/**
 	 * Delete question.

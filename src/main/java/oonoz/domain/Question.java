@@ -58,8 +58,8 @@ public class Question {
 	private int questionNumber;
 	
 	/** The proposition 3. */
-	@Column(unique = false, nullable = true,name="DURATION")
-	private Integer time;
+	//@Column(unique = false, nullable = true,name="DURATION")
+	//private Integer time;
 
 	/**
 	 * Gets the id.
@@ -228,18 +228,18 @@ public class Question {
 	 *
 	 * @return the time
 	 */
-	public Integer getTime() {
+	/*public Integer getTime() {
 		return time;
-	}
+	}*/
 
 	/**
 	 * Sets the time.
 	 *
 	 * @param time the new time
 	 */
-	public void setTime(Integer time) {
+	/*public void setTime(Integer time) {
 		this.time = time;
-	}
+	}*/
 
 	/**
 	 * Gets the question number.

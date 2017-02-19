@@ -48,7 +48,13 @@ public interface QCMRepository extends CrudRepository<QCM, Long>, JpaSpecificati
 	 * @return the list
 	 */
 	List<QCM> findByIsValidatedTrueAndIsCompleteTrue();
-
+	
+	/**
+	 * Find by id and validated true and is complete true.
+	 *
+	 * @return the qcm
+	 */
+	QCM findByIdAndIsValidatedTrueAndIsCompleteTrue(long id); 
 	/**
 	 * Find by is validated false and is complete true.
 	 *
