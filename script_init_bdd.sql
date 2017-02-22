@@ -207,6 +207,18 @@ INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (102, 101);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (104, 102);
 INSERT INTO SUB_THEME_QCM (id_sub_theme, id_qcm) values (105, 103);
 
-INSERT INTO PLAY_QCM (id, id_qcm, id_player, score, finished) values (101, 102, 101, 20, true);
-INSERT INTO PLAY_QCM (id, id_qcm, id_player, score, finished) values (102, 102, 102, 20, true);
-INSERT INTO PLAY_QCM (id, id_qcm, id_player, score, finished) values (103, 102, 103, 20, true);
+INSERT INTO PLAY_QCM (id, id_qcm, id_player, question1, question2, question3, question4,
+question5, question6, question7, question8, question9, question10, question11, question12,
+question13, question14, question15, question16, question17, question18, question19, question20,
+score, finished) values (101, 102, 101, true, true, true, true, true, true, true, true, 
+ true, true, true, true, true, true, true, true, true, true, true, true, 20, true);
+INSERT INTO PLAY_QCM (id, id_qcm, id_player, question1, question2, question3, question4,
+question5, question6, question7, question8, question9, question10, question11, question12,
+question13, question14, question15, question16, question17, question18, question19, question20,
+score, finished) values (102, 102, 102, true, true, true, true, true, true, true, true, 
+ true, true, true, true, true, true, true, true, true, true, true, true, 20, true);
+INSERT INTO PLAY_QCM (id, id_qcm, id_player, question1, question2, question3, question4,
+question5, question6, question7, question8, question9, question10, question11, question12,
+question13, question14, question15, question16, question17, question18, question19, question20,
+score, finished) values (103, 102, 103, true, true, true, true, true, true, true, true, 
+ true, true, true, true, true, true, true, true, true, true, true, true, 20, true);

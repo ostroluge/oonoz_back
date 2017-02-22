@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,12 +23,17 @@ public class QCMPlay {
 	private long id;
 	
 	/** The id qcm. */
-	@Column(nullable = false, name="ID_QCM")
+	@Column(unique = true, nullable = false, name="ID_QCM")
 	private long idQcm;
 
 	/** The id player. */
-	@Column(nullable = false, name="ID_PLAYER")
+	@Column(unique = true, nullable = false, name="ID_PLAYER")
 	private long idPlayer;
+	
+	/** The player. */
+	@OneToOne
+	@JoinColumn(name="ID_PLAYER",insertable = false,updatable = false)
+	private Player player;
 	
 	/** The question 1. */
 	@Column(name="QUESTION1")
@@ -586,5 +593,23 @@ public class QCMPlay {
 	 */
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * Sets the player.
+	 *
+	 * @param player the new player
+	 */
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }
