@@ -80,6 +80,9 @@ public class QCMPlayDto {
 	/** The comment. */
 	private String comment;
 	
+	/** The rating. */
+	private Double rating;
+	
 	/** The finished. */
 	private boolean finished;
 
@@ -549,5 +552,23 @@ public class QCMPlayDto {
 	 */
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	/**
+	 * Gets the rating.
+	 *
+	 * @return the rating
+	 */
+	public Double getRating() {
+		return rating;
+	}
+
+	/**
+	 * Sets the rating.
+	 *
+	 * @param rating the new rating
+	 */
+	public void setRating(Double rating) {
+		this.rating = rating;
 	}
 }

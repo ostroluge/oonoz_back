@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import oonoz.domain.QCMPlay;
+import oonoz.dto.converter.QCMPlayDtoConverter;
 import oonoz.dto.model.PlayerDto;
+import oonoz.dto.model.QCMPlayDto;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMPlayDoesNotExistException;
 import oonoz.service.QCMPlayService;
 
 /**
@@ -25,6 +30,10 @@ public class QCMPlayController {
 	@Autowired
 	QCMPlayService qcmPlayService;
 
+	/** The qcm play dto converter. */
+	@Autowired
+	QCMPlayDtoConverter qcmPlayDtoConverter;
+	
 	/**
 	 * Gets the winners.
 	 *
@@ -42,5 +51,28 @@ public class QCMPlayController {
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
+	/**
+	 * Update QCM play.
+	 *
+	 * @param idQcm the id qcm
+	 * @param qcmPlay the qcm play
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/qcms/{idQcm}/plays", method = RequestMethod.PUT) 
+	public ResponseEntity<QCMPlay> updateQCMPlay(@PathVariable("idQcm") long idQcm, @RequestBody QCMPlayDto qcmPlay) {
+		QCMPlay qcmPlayToUpdate = qcmPlayDtoConverter.convertToEntity(qcmPlay);
+		
+		if (qcmPlayToUpdate != null) {
+			try {
+				QCMPlay result = qcmPlayService.updateQCMPlay(qcmPlayToUpdate);
+				return ResponseEntity.status(HttpStatus.OK).body(result);
+			} catch (QCMPlayDoesNotExistException e) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+		}
 	}
 }
