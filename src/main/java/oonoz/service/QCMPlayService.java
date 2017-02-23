@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import oonoz.domain.Feedback;
 import oonoz.domain.QCM;
 import oonoz.domain.QCMPlay;
 import oonoz.dto.model.PlayerDto;
@@ -59,6 +60,22 @@ public class QCMPlayService {
 		} else {
 			throw new QCMPlayDoesNotExistException("The QCMPlay with id " + qcmPlay.getId() +
 					" does not exist");
+		}
+	}
+
+	/**
+	 * Gets the QCM feedback.
+	 *
+	 * @param idQcm the id qcm
+	 * @return the QCM feedback
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
+	public Feedback getQCMFeedback(long idQcm) throws QCMDoesNotExistException {
+		QCM qcm = qcmManager.findOne(idQcm);
+		if (qcm != null) {
+			return qcmPlayManager.getQCMFeedback(idQcm);
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQcm + " does not exist");
 		}
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import oonoz.domain.Feedback;
 import oonoz.domain.QCMPlay;
 import oonoz.dto.converter.QCMPlayDtoConverter;
 import oonoz.dto.model.PlayerDto;
@@ -73,6 +74,22 @@ public class QCMPlayController {
 			}
 		} else {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+		}
+	}
+
+	/**
+	 * Gets the feedback.
+	 *
+	 * @param idQcm the id qcm
+	 * @return the feedback
+	 */
+	@RequestMapping(value = "/qcms/{idQcm}/feedback", method = RequestMethod.GET)
+	public ResponseEntity<Feedback> getFeedback(@PathVariable("idQcm") long idQcm) {
+		try {
+			Feedback result = qcmPlayService.getQCMFeedback(idQcm);
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		} catch (QCMDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
 }

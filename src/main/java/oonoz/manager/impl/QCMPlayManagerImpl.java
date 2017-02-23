@@ -1,12 +1,15 @@
 package oonoz.manager.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import oonoz.domain.Feedback;
 import oonoz.domain.Player;
 import oonoz.domain.QCMPlay;
 import oonoz.dto.model.PlayerDto;
@@ -52,10 +55,23 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		return result;
 	}
 	
+	/**
+	 * Find one.
+	 *
+	 * @param id the id
+	 * @return the QCM play
+	 */
 	public QCMPlay findOne(long id) {
 		return qcmPlayRepositoty.findOne(id);
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param existingOne the existing one
+	 * @param updatedOne the updated one
+	 * @return the QCM play
+	 */
 	public QCMPlay update(QCMPlay existingOne, QCMPlay updatedOne) {
 		
 		updatedOne.setIdQcm(existingOne.getIdQcm());
@@ -86,5 +102,53 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		updatedOne.setQuestion20(existingOne.isQuestion20());
 		
 		return qcmPlayRepositoty.save(updatedOne);
+	}
+
+	/**
+	 * Gets the QCM feedback.
+	 *
+	 * @param idQcm the id qcm
+	 * @return the QCM feedback
+	 */
+	public Feedback getQCMFeedback(long idQcm) {
+		List<QCMPlay> allPlays = qcmPlayRepositoty.findByIdQcm(idQcm);
+		
+		Map<String, String> comments = new HashMap<>();
+		List<Double> ratings = new ArrayList<>();
+		
+		for (QCMPlay play : allPlays) {
+			if (play.getRating() != null && play.getComment() != null 
+					&& !play.getComment().equals("")) {
+				comments.put(play.getPlayer().getUsername(), play.getComment());
+				ratings.add(play.getRating());
+			}
+		}
+		
+		Feedback feedback = new Feedback();
+		if (!comments.isEmpty()) {
+			feedback.setComments(comments);
+		}
+		if (!ratings.isEmpty()) {
+			feedback.setAverageRating(calculateAverageRating(ratings));
+		}
+	
+		return feedback;
+	}
+
+	/**
+	 * Calculate average rating.
+	 *
+	 * @param ratings the ratings
+	 * @return the double
+	 */
+	private double calculateAverageRating(List<Double> ratings) {
+		double result = 0.0;
+		double sum = 0.0;
+		for (Double rating : ratings) {
+			sum += rating;
+		}
+		result = sum / ratings.size();
+		
+		return Math.round(result * 2) / 2.0;
 	}
 }
