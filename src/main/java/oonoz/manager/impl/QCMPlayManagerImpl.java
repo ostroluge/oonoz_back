@@ -1,14 +1,13 @@
 package oonoz.manager.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import oonoz.domain.Comment;
 import oonoz.domain.Feedback;
 import oonoz.domain.Player;
 import oonoz.domain.QCMPlay;
@@ -113,13 +112,14 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	public Feedback getQCMFeedback(long idQcm) {
 		List<QCMPlay> allPlays = qcmPlayRepositoty.findByIdQcm(idQcm);
 		
-		Map<String, String> comments = new HashMap<>();
+		List<Comment> comments = new ArrayList<>();
 		List<Double> ratings = new ArrayList<>();
 		
 		for (QCMPlay play : allPlays) {
 			if (play.getRating() != null && play.getComment() != null 
 					&& !play.getComment().equals("")) {
-				comments.put(play.getPlayer().getUsername(), play.getComment());
+				Comment comment = new Comment(play.getComment(), play.getPlayer().getUsername());
+				comments.add(comment);
 				ratings.add(play.getRating());
 			}
 		}

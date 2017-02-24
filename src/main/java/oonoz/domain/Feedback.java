@@ -1,6 +1,6 @@
 package oonoz.domain;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * The Class Feedback.
@@ -8,7 +8,7 @@ import java.util.Map;
 public class Feedback {
 
 	/** The comments. */
-	private Map<String, String> comments;
+	private List<Comment> comments;
 	
 	/** The average rating. */
 	private double averageRating;
@@ -18,7 +18,7 @@ public class Feedback {
 	 *
 	 * @return the comments
 	 */
-	public Map<String, String> getComments() {
+	public List<Comment> getComments() {
 		return comments;
 	}
 
@@ -27,7 +27,7 @@ public class Feedback {
 	 *
 	 * @param comments the new comments
 	 */
-	public void setComments(Map<String, String> comments) {
+	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
 
