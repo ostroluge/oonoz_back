@@ -13,6 +13,12 @@ public class Feedback {
 	/** The average rating. */
 	private double averageRating;
 
+	/** The total comments. */
+	private int totalComments;
+	
+	/** The total ratings. */
+	private int totalRatings;
+	
 	/**
 	 * Gets the comments.
 	 *
@@ -47,5 +53,41 @@ public class Feedback {
 	 */
 	public void setAverageRating(double averageRating) {
 		this.averageRating = averageRating;
+	}
+
+	/**
+	 * Gets the total comments.
+	 *
+	 * @return the total comments
+	 */
+	public int getTotalComments() {
+		return totalComments;
+	}
+
+	/**
+	 * Sets the total comments.
+	 *
+	 * @param totalComments the new total comments
+	 */
+	public void setTotalComments(int totalComments) {
+		this.totalComments = totalComments;
+	}
+
+	/**
+	 * Gets the total ratings.
+	 *
+	 * @return the total ratings
+	 */
+	public int getTotalRatings() {
+		return totalRatings;
+	}
+
+	/**
+	 * Sets the total ratings.
+	 *
+	 * @param totalRatings the new total ratings
+	 */
+	public void setTotalRatings(int totalRatings) {
+		this.totalRatings = totalRatings;
 	}
 }

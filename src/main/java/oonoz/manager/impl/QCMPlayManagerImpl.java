@@ -132,6 +132,9 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 			feedback.setAverageRating(calculateAverageRating(ratings));
 		}
 	
+		feedback.setTotalComments(comments.size());
+		feedback.setTotalRatings(ratings.size());
+		
 		return feedback;
 	}
 
