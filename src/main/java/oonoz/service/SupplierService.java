@@ -115,6 +115,10 @@ public class SupplierService {
 			newSupplier.setIsPrivateIndividual(supplier.getIsPrivateIndividual());
 			newSupplier.setIsValid(supplier.getIsValid());
 			newSupplier.setIsSupplier(supplier.getIsSupplier());
+			if (supplier.getPassword() != null && supplier.getPassword() != ""){
+				String hashPassword=checkUserInformation.hashPassword(supplier.getPassword());
+				newSupplier.setPassword(hashPassword);
+			}
 
 			if (newSupplier.getIsPrivateIndividual() != null && !newSupplier.getIsPrivateIndividual()) {
 				checkUserInformation.checkSiretNumber(supplier.getSiretNumber());

@@ -33,6 +33,7 @@ public class PlayerDtoConverter {
 		player.setBirthDate(playerDto.getBirthDate());
 		player.setIsActive(playerDto.getIsActive());
 		player.setIsSupplier(playerDto.getIsSupplier());
+		player.setCredit(playerDto.getCredit());
 		
 		return player;
 	}
@@ -54,6 +55,7 @@ public class PlayerDtoConverter {
 		playerDto.setBirthDate(player.getBirthDate());
 		playerDto.setIsActive(player.getIsActive());
 		playerDto.setIsSupplier(player.getIsSupplier());
+		playerDto.setCredit(player.getCredit());
 		return playerDto;
 	}
 }

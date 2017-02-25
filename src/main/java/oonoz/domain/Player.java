@@ -72,6 +72,11 @@ public class Player {
 	@Column(unique = false, nullable = false, name="IS_SUPPLIER")
 	protected Boolean isSupplier;
 	
+	/**
+	 * Credit
+	 */
+	protected float credit;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	protected Authorities authorities;
@@ -231,6 +236,16 @@ public class Player {
 	public void setAuthorities(Authorities authorities) {
 		this.authorities = authorities;
 	}
+
+	public float getCredit() {
+		return credit;
+	}
+
+	public void setCredit(float credit) {
+		this.credit = credit;
+	}
+	
+	
 	
 	
 }

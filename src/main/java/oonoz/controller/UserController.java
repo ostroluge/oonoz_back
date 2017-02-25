@@ -260,4 +260,32 @@ public class UserController {
 		}
 
 	}
+	
+	@RequestMapping(value = "/profil", method = RequestMethod.GET)
+	public ResponseEntity<Player> getProfil(Authentication authentication) {
+		//PlayerDto  p = playerDtoConverter.convertToDto(getUserFromAuthentication(authentication));
+		Player p =getUserFromAuthentication(authentication);
+		if (p != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(p);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+	
+	
+	@RequestMapping(value = "/requestSupplierStatus", method = RequestMethod.GET)
+    public ResponseEntity<String> requestSupplierStatus(@RequestParam(value = "idPlayer", defaultValue = "") Long idPlayer) throws PlayerNotExistException{
+    	try{
+    		if(idPlayer!=null)
+    			playerService.requestSupplierStatus(idPlayer);
+    	}
+    	catch(PlayerNotExistException e){
+    		logger.error("The user does not exist !",e);
+    		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
+    	}
+    	
+    	return new ResponseEntity<>("", HttpStatus.OK);
+    }
+	
+	
 }
