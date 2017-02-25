@@ -24,7 +24,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	/** The qcm play repositoty. */
 	@Resource
 	private QCMPlayRepository qcmPlayRepositoty;
-	
+
 	/**
 	 * Gets the QCM winners.
 	 *
@@ -35,7 +35,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	public List<PlayerDto> getQCMWinners(long idQcm, int minimumScore) {
 		List<QCMPlay> allPlays = qcmPlayRepositoty.findByIdQcm(idQcm);
 		List<PlayerDto> result = new ArrayList<>();
-		
+
 		for (QCMPlay play : allPlays) {
 			if (play.isFinished()) {
 				Integer score = play.getScore();
@@ -50,10 +50,10 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Find one.
 	 *
@@ -63,7 +63,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	public QCMPlay findOne(long id) {
 		return qcmPlayRepositoty.findOne(id);
 	}
-	
+
 	/**
 	 * Update.
 	 *
@@ -72,13 +72,13 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	 * @return the QCM play
 	 */
 	public QCMPlay update(QCMPlay existingOne, QCMPlay updatedOne) {
-		
+
 		updatedOne.setIdQcm(existingOne.getIdQcm());
 		updatedOne.setIdPlayer(existingOne.getIdPlayer());
 		updatedOne.setPlayer(existingOne.getPlayer());
 		updatedOne.setFinished(existingOne.isFinished());
 		updatedOne.setScore(existingOne.getScore());
-		
+
 		updatedOne.setQuestion1(existingOne.isQuestion1());
 		updatedOne.setQuestion2(existingOne.isQuestion2());
 		updatedOne.setQuestion3(existingOne.isQuestion3());
@@ -99,7 +99,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		updatedOne.setQuestion18(existingOne.isQuestion18());
 		updatedOne.setQuestion19(existingOne.isQuestion19());
 		updatedOne.setQuestion20(existingOne.isQuestion20());
-		
+
 		return qcmPlayRepositoty.save(updatedOne);
 	}
 
@@ -111,19 +111,21 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	 */
 	public Feedback getQCMFeedback(long idQcm) {
 		List<QCMPlay> allPlays = qcmPlayRepositoty.findByIdQcm(idQcm);
-		
+
 		List<Comment> comments = new ArrayList<>();
 		List<Double> ratings = new ArrayList<>();
-		
+
 		for (QCMPlay play : allPlays) {
 			if (play.getRating() != null && play.getComment() != null 
 					&& !play.getComment().equals("")) {
-				Comment comment = new Comment(play.getComment(), play.getPlayer().getUsername());
+				Comment comment = new Comment(play.getComment(),
+						play.getPlayer().getUsername(),
+						play.getRating());
 				comments.add(comment);
 				ratings.add(play.getRating());
 			}
 		}
-		
+
 		Feedback feedback = new Feedback();
 		if (!comments.isEmpty()) {
 			feedback.setComments(comments);
@@ -131,10 +133,10 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		if (!ratings.isEmpty()) {
 			feedback.setAverageRating(calculateAverageRating(ratings));
 		}
-	
+
 		feedback.setTotalComments(comments.size());
 		feedback.setTotalRatings(ratings.size());
-		
+
 		return feedback;
 	}
 
@@ -151,7 +153,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 			sum += rating;
 		}
 		result = sum / ratings.size();
-		
+
 		return Math.round(result * 2) / 2.0;
 	}
 }

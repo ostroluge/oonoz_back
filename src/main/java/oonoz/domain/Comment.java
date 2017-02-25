@@ -11,15 +11,20 @@ public class Comment {
 	/** The author. */
 	private String author;
 
+	/** The rating. */
+	private Double rating;
+	
 	/**
 	 * Instantiates a new comment.
 	 *
 	 * @param value the value
 	 * @param author the author
+	 * @param rating the rating
 	 */
-	public Comment(String value, String author) {
+	public Comment(String value, String author, Double rating) {
 		this.value = value;
 		this.author = author;
+		this.rating = rating;
 	}
 	
 	/**
@@ -56,5 +61,23 @@ public class Comment {
 	 */
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	/**
+	 * Gets the rating.
+	 *
+	 * @return the rating
+	 */
+	public Double getRating() {
+		return rating;
+	}
+
+	/**
+	 * Sets the rating.
+	 *
+	 * @param rating the new rating
+	 */
+	public void setRating(Double rating) {
+		this.rating = rating;
 	}
 }
