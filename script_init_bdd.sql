@@ -197,6 +197,60 @@ INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, pro
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (104, 102,
  'De quelle ville les 2 personnages sont ils originaires ?', 'Macon',
   'Paris', 'Marseille', 'Lyon', 2);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (107, 102,
+ 'En quelle année est sortie le film ?', '2016',
+  '2017', '200 av JC', 'Pas encore sorti', 3);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (108, 102,
+ 'Quelle acteur incarne le personnage de Léon ?', 'Gregoire Ludig',
+  'David Marsais', 'Mickael Jackson', 'Bourvil', 4);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (109, 102,
+ 'De quelle association de pays est née le film ?', 'Franco-Belge',
+  'Franco-Americaine', 'Franco-Allemande', 'RFA-RDA', 5); 
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (110, 102,
+ 'Quelle est cette acteur ?', 'Christophe Lambert',
+  'Thierry Lhermitte', 'Tom Cruise', 'Jesus Christ', 6);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (111, 102,
+ 'Qui a réalisé le film ?', 'Jonathan Barre',
+  'Steven Spielberg', 'Guillaume Canet', 'Orson Wales', 7);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (112, 102,
+ 'Combien de temps dure le film ?', '98 minutes',
+  '55 minutes', '120 minutes', 'Beaucoup trop', 8);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (113, 102,
+ 'Quelles sont les ennemis de Max et Léon dans le film ?', 'Les nazis',
+  'Les américains', 'Les Républicains', 'Les témoins de Jéhova', 9);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (114, 102,
+ 'Quelle est la boisson favorite de Max et Léon ?', 'Le vin',
+  'L''irish coffee', 'La manzanna', 'La bière', 10);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (115, 102,
+ 'Quelle est l''uniforme que Max et Leon portent ?', 'L''uniforme SS',
+  'L''uniforme des gendarmes', 'Le smoking', 'L''uniforme des gilles', 11);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (116, 102,
+ 'Dans quel genre s''inscrit le film ?', 'Comedie',
+  'Drame', 'X', 'Thriller', 12);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (117, 102,
+ 'Quelle est le budget du film ?', '11 520 000',
+  '20 750 000','1000', '1 000 000 000', 13);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (118, 102,
+ 'En combien de temps le film a été tourné ?', '45 jours',
+  '60 jours','100 jours', '10 ans', 14);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (119, 102,
+ 'En quelle année début le film ?', '1939',
+  '1945','2000', '1789', 15);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (120, 102,
+ 'Quelle le nom de la formation qui a fait connaître les deux acteurs ?', 'Palmashow',
+  'Norman fait des vidéos','Les 2be3', 'Stone et Charden', 16);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (121, 102,
+ 'Dans quelle pays d''Orient Max et Léon sont ils envoyés ?', 'Syrie',
+  'Irak','Pakistan', 'Norvège', 17);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (122, 102,
+ 'Dans quelle pays d''Orient Max et Léon sont ils envoyés ?', 'Syrie',
+  'Irak','Pakistan', 'Norvège', 18); 
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (123, 102,
+ 'Dans quelle pays d''Orient Max et Léon sont ils envoyés ?', 'Syrie',
+  'Irak','Pakistan', 'Norvège', 19);
+INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (124, 102,
+ 'Dans quelle pays d''Orient Max et Léon sont ils envoyés ?', 'Syrie',
+  'Irak','Pakistan', 'Norvège', 20);     
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (105, 103,
  'Quel département est cité lors de son célèbre slogan ?', '92', '93', '94', '62', 1);
 INSERT INTO QUESTION (id, id_qcm, title, answer, proposition1, proposition2, proposition3, question_number) values (106, 103,
