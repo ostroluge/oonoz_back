@@ -288,4 +288,56 @@ public class UserController {
     }
 	
 	
+	/**
+     * Update supplier.
+     *
+     * @param supplierDto the supplier dto
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/updateSupplier", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateSupplier(@RequestBody SupplierDto supplierDto){
+
+		Supplier supplier=supplierDtoConverter.convertToEntity(supplierDto);
+		supplier.setIdPlayer(supplierDto.getIdPlayer());
+		try{
+			supplierService.updateSupplier(supplier);
+		}
+		catch(PlayerNotExistException e){
+			logger.error("The supplier does not exist !",e);
+			return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
+		}
+		catch(WrongInformationException e){
+			logger.error("Information about supplier are not valid !",e);
+			return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+
+	/**
+	 * Update user.
+	 *
+	 * @param playerDto the player dto
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/updatePlayer", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateUser(@RequestBody PlayerDto playerDto){
+
+		Player player=playerDtoConverter.convertToEntity(playerDto);
+		try{
+			playerService.updatePlayer(player);
+		}
+		catch(PlayerNotExistException e){
+			logger.error("The player does not exist !",e);
+			return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
+		}
+		catch(WrongInformationException e){
+			logger.error("Information about player are not valid !",e);
+			return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>("", HttpStatus.OK);
+	}
+
+	
+	
 }
