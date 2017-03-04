@@ -140,7 +140,6 @@ public class PlayerService {
 	 */
 
 	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
-		
 		checkUserInformation.checkUsername(player.getUsername());
 		//checkUserInformation.checkPassword(player.getPassword());
 		checkUserInformation.checkMail(player.getMail());
@@ -154,9 +153,18 @@ public class PlayerService {
 		playerToUpdate.setMail(player.getMail());
 		playerToUpdate.setBirthDate(player.getBirthDate());
 		playerToUpdate.setIsActive(player.getIsActive());
+		playerToUpdate.setCredit(player.getCredit());
 		playerToUpdate.setIsSupplier(false);
+		if (player.getPassword() != null){
+			String hashPassword=checkUserInformation.hashPassword(player.getPassword());
+			playerToUpdate.setPassword(hashPassword);
+		}
 		playerManager.update(playerToUpdate);
 	}
+	
+	
+	
+
 	
 	/**
 	 * Delete player.
@@ -256,6 +264,10 @@ public class PlayerService {
 
 	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
 		playerManager.changeStatusUser(idPlayer);
+	}
+	
+	public void requestSupplierStatus(long idPlayer) throws PlayerNotExistException{
+		playerManager.requestSupplierStatus(idPlayer);
 	}
 	
 	
