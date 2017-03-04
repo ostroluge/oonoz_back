@@ -29,7 +29,7 @@ public class QuestionDtoConverter {
 		question.setProposition1(questionDto.getProposition1());
 		question.setProposition2(questionDto.getProposition2());
 		question.setProposition3(questionDto.getProposition3());
-		//question.setTime(questionDto.getTime());
+		question.setTime(questionDto.getTime());
 		question.setQuestionNumber(questionDto.getQuestionNumber());
 		
 		return question;
