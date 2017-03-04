@@ -82,6 +82,9 @@ public class QCMPlayDto {
 	
 	/** The finished. */
 	private boolean finished;
+	
+	/** The note. */
+	private Integer note;
 
 	/**
 	 * Gets the id.
@@ -550,4 +553,14 @@ public class QCMPlayDto {
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
+
+	public Integer getNote() {
+		return note;
+	}
+
+	public void setNote(Integer note) {
+		this.note = note;
+	}
+	
+	
 }

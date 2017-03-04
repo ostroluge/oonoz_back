@@ -21,7 +21,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 
 	/** The qcm play repositoty. */
 	@Resource
-	private QCMPlayRepository qcmPlayRepositoty;
+	private QCMPlayRepository qcmPlayRepository;
 	
 	/**
 	 * Gets the QCM winners.
@@ -31,7 +31,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	 * @return the QCM play
 	 */
 	public List<PlayerDto> getQCMWinners(long idQcm, int minimumScore) {
-		List<QCMPlay> allPlays = qcmPlayRepositoty.findByIdQcm(idQcm);
+		List<QCMPlay> allPlays = qcmPlayRepository.findByIdQcm(idQcm);
 		List<PlayerDto> result = new ArrayList<>();
 		
 		for (QCMPlay play : allPlays) {
@@ -50,5 +50,9 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		}
 		
 		return result;
+	}
+	
+	public void createPlayQCM(QCMPlay qcmPlay){
+		qcmPlayRepository.save(qcmPlay);
 	}
 }

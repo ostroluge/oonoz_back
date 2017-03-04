@@ -20,6 +20,7 @@ import oonoz.domain.Player;
 import oonoz.domain.QCM;
 import oonoz.domain.Supplier;
 import oonoz.dto.converter.QCMEncryptDtoConverter;
+import oonoz.dto.converter.QCMPlayDtoConverter;
 import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QCMEncryptDto;
@@ -55,6 +56,9 @@ public class QCMPlayController {
 	
 	@Autowired
 	QCMEncryptDtoConverter qcmEncryptConverter;
+	
+	@Autowired
+	QCMPlayDtoConverter qcmPlayConverter;
 	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(QCMPlayController.class);
@@ -113,8 +117,8 @@ public class QCMPlayController {
 		
 		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
 		qcmPlayDto.setIdPlayer(supplier.getIdPlayer());
-
 		
+		qcmPlayService.createQCMPlay(qcmPlayConverter.convertToEntity(qcmPlayDto));
 		
 		return ResponseEntity.status(HttpStatus.OK).body("");
 	}

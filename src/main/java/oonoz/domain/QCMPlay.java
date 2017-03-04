@@ -126,7 +126,11 @@ public class QCMPlay {
 	/** The finished. */
 	@Column(nullable = false, name="FINISHED")
 	private boolean finished;
-
+	
+	
+	/** The finished. */
+	@Column(nullable = false, name="NOTE")
+	private Integer note;
 	/**
 	 * Gets the id.
 	 *
@@ -612,4 +616,14 @@ public class QCMPlay {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
+	public Integer getNote() {
+		return note;
+	}
+
+	public void setNote(Integer note) {
+		this.note = note;
+	}
+	
+	
 }

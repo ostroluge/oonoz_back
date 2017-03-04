@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import oonoz.domain.QCM;
+import oonoz.domain.QCMPlay;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.manager.impl.QCMManagerImpl;
@@ -40,5 +41,10 @@ public class QCMPlayService {
 		} else {
 			throw new QCMDoesNotExistException("The QCM with id " + idQcm + " does not exist");
 		}
+	}
+	
+	public void createQCMPlay(QCMPlay qcmPlay){
+		//TODO verificiation des champs
+		qcmPlayManager.createPlayQCM(qcmPlay);
 	}
 }
