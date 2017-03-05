@@ -1,6 +1,7 @@
 package oonoz.dto.converter;
 
 import org.springframework.stereotype.Component;
+
 import oonoz.domain.QCMPlay;
 import oonoz.dto.model.QCMPlayDto;
 
@@ -44,8 +45,8 @@ public class QCMPlayDtoConverter {
 		qcmPlay.setQuestion20(qcmPlayDto.isQuestion20());
 		qcmPlay.setScore(qcmPlayDto.getScore());
 		qcmPlay.setComment(qcmPlayDto.getComment());
+		qcmPlay.setRating(qcmPlayDto.getRating());
 		qcmPlay.setFinished(qcmPlayDto.isFinished());
-		qcmPlay.setNote(qcmPlayDto.getNote());
 		
 		return qcmPlay;
 	}
@@ -84,8 +85,8 @@ public class QCMPlayDtoConverter {
 		qcmPlayDto.setQuestion20(qcmPlay.isQuestion20());
 		qcmPlayDto.setScore(qcmPlay.getScore());
 		qcmPlayDto.setComment(qcmPlay.getComment());
+		qcmPlayDto.setRating(qcmPlay.getRating());
 		qcmPlayDto.setFinished(qcmPlay.isFinished());
-		qcmPlayDto.setNote(qcmPlay.getNote());
 		return qcmPlayDto;
 	}
 }

@@ -123,14 +123,14 @@ public class QCMPlay {
 	@Column(name="COMMENT")
 	private String comment;
 	
+	/** The rating. */
+	@Column(name="NOTE")
+	private Double rating;
+	
 	/** The finished. */
 	@Column(nullable = false, name="FINISHED")
 	private boolean finished;
 	
-	
-	/** The finished. */
-	@Column(nullable = false, name="NOTE")
-	private Integer note;
 	/**
 	 * Gets the id.
 	 *
@@ -617,13 +617,21 @@ public class QCMPlay {
 		this.player = player;
 	}
 
-	public Integer getNote() {
-		return note;
+	/**
+	 * Gets the rating.
+	 *
+	 * @return the rating
+	 */
+	public Double getRating() {
+		return rating;
 	}
 
-	public void setNote(Integer note) {
-		this.note = note;
+	/**
+	 * Sets the rating.
+	 *
+	 * @param rating the new rating
+	 */
+	public void setRating(Double rating) {
+		this.rating = rating;
 	}
-	
-	
 }

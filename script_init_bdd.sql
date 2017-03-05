@@ -1,4 +1,4 @@
-﻿DROP TABLE PLAY_QCM;
+DROP TABLE PLAY_QCM;
 DROP TABLE SUB_THEME_QCM;
 DROP TABLE QUESTION;
 DROP TABLE QCM;
@@ -139,7 +139,7 @@ question18 boolean,
 question19 boolean,
 question20 boolean,
 score integer,
-note integer,
+note numeric,
 comment VARCHAR(100),
 finished boolean not null
 );
@@ -270,7 +270,7 @@ score, finished) values (101, 102, 101, true, true, true, true, true, true, true
 INSERT INTO PLAY_QCM (id, id_qcm, id_player, question1, question2, question3, question4,
 question5, question6, question7, question8, question9, question10, question11, question12,
 question13, question14, question15, question16, question17, question18, question19, question20,
-score, finished) values (102, 102, 102, true, true, true, true, true, true, true, true, 
+score, finished) values (102, 102, 102, true, true, true, true, true, true, true, true,
  true, true, true, true, true, true, true, true, true, true, true, true, 20, true);
 INSERT INTO PLAY_QCM (id, id_qcm, id_player, question1, question2, question3, question4,
 question5, question6, question7, question8, question9, question10, question11, question12,

@@ -80,12 +80,12 @@ public class QCMPlayDto {
 	/** The comment. */
 	private String comment;
 	
+	/** The rating. */
+	private Double rating;
+	
 	/** The finished. */
 	private boolean finished;
 	
-	/** The note. */
-	private Integer note;
-
 	/**
 	 * Gets the id.
 	 *
@@ -554,13 +554,21 @@ public class QCMPlayDto {
 		this.finished = finished;
 	}
 
-	public Integer getNote() {
-		return note;
+	/**
+	 * Gets the rating.
+	 *
+	 * @return the rating
+	 */
+	public Double getRating() {
+		return rating;
 	}
 
-	public void setNote(Integer note) {
-		this.note = note;
+	/**
+	 * Sets the rating.
+	 *
+	 * @param rating the new rating
+	 */
+	public void setRating(Double rating) {
+		this.rating = rating;
 	}
-	
-	
 }

@@ -16,20 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import oonoz.domain.Feedback;
 import oonoz.domain.Player;
 import oonoz.domain.QCM;
+import oonoz.domain.QCMPlay;
 import oonoz.domain.Supplier;
 import oonoz.dto.converter.QCMEncryptDtoConverter;
 import oonoz.dto.converter.QCMPlayDtoConverter;
 import oonoz.dto.model.PlayerDto;
-import oonoz.dto.model.QCMDto;
 import oonoz.dto.model.QCMEncryptDto;
 import oonoz.dto.model.QCMPlayDto;
 import oonoz.exception.PlayerNotExistException;
-import oonoz.exception.QCMAlreadyExistException;
-import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
-import oonoz.exception.ThemeDoesNotExistException;
+import oonoz.exception.QCMPlayDoesNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
 import oonoz.service.QCMPlayService;
@@ -40,8 +39,8 @@ import oonoz.service.QCMService;
  */
 @RestController
 public class QCMPlayController {
-	
-	
+
+
 	/** The qcm service. */
 	@Autowired
 	QCMService qcmService;
@@ -49,19 +48,23 @@ public class QCMPlayController {
 	/** The qcm play service. */
 	@Autowired
 	QCMPlayService qcmPlayService;
-	
+
 	/** The player service. */
 	@Autowired
 	PlayerService playerService;
-	
+
 	@Autowired
 	QCMEncryptDtoConverter qcmEncryptConverter;
-	
+
 	@Autowired
 	QCMPlayDtoConverter qcmPlayConverter;
-	
+
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(QCMPlayController.class);
+
+	/** The qcm play dto converter. */
+	@Autowired
+	QCMPlayDtoConverter qcmPlayDtoConverter;
 
 	/**
 	 * Gets the winners.
@@ -81,7 +84,7 @@ public class QCMPlayController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
-	
+
 	/**
 	 * Gets the qcm.
 	 *
@@ -101,28 +104,28 @@ public class QCMPlayController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
-	
+
 	/**
 	 * Post QCM.
 	 *
 	 * @param qcmDto
 	 *            the qcm dto
-	 * @return the response entity <<<<<<< HEAD =======
+	 * @return the response entity 
 	 * @throws WrongInformationException
-	 *             the wrong information exception >>>>>>> feature/QCMManagement
+	 *             the wrong information exception
 	 */
 	@RequestMapping(value = "/qcms/finishQCM", method = RequestMethod.POST)
 	public ResponseEntity<String> postFinishQCM(Authentication authentication, @RequestBody QCMPlayDto qcmPlayDto) {
 
-		
+
 		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
 		qcmPlayDto.setIdPlayer(supplier.getIdPlayer());
-		
+
 		qcmPlayService.createQCMPlay(qcmPlayConverter.convertToEntity(qcmPlayDto));
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body("");
 	}
-	
+
 	/**
 	 * Get player from Authentication
 	 * 
@@ -137,6 +140,43 @@ public class QCMPlayController {
 			logger.error("Player does not exist !", e);
 			return null;
 		}
+	}
 
+	/** Update QCM play.
+	 *
+	 * @param idQcm the id qcm
+	 * @param qcmPlay the qcm play
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/qcms/{idQcm}/plays", method = RequestMethod.PUT) 
+	public ResponseEntity<QCMPlay> updateQCMPlay(@PathVariable("idQcm") long idQcm, @RequestBody QCMPlayDto qcmPlay) {
+		QCMPlay qcmPlayToUpdate = qcmPlayDtoConverter.convertToEntity(qcmPlay);
+
+		if (qcmPlayToUpdate != null) {
+			try {
+				QCMPlay result = qcmPlayService.updateQCMPlay(qcmPlayToUpdate);
+				return ResponseEntity.status(HttpStatus.OK).body(result);
+			} catch (QCMPlayDoesNotExistException e) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+		}
+	}
+
+	/**
+	 * Gets the feedback.
+	 *
+	 * @param idQcm the id qcm
+	 * @return the feedback
+	 */
+	@RequestMapping(value = "/qcms/{idQcm}/feedback", method = RequestMethod.GET)
+	public ResponseEntity<Feedback> getFeedback(@PathVariable("idQcm") long idQcm) {
+		try {
+			Feedback result = qcmPlayService.getQCMFeedback(idQcm);
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		} catch (QCMDoesNotExistException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
 	}
 }
