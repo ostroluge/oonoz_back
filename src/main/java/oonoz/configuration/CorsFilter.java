@@ -1,6 +1,7 @@
 package oonoz.configuration;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,9 @@ import java.io.IOException;
 public class CorsFilter implements Filter {
 
   
+	/** The driver class name. */
+	@Value("${oonoz.front.origin}")
+	private String allowedOrigin;
     /* (non-Javadoc)
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
      */
@@ -46,7 +50,7 @@ public class CorsFilter implements Filter {
         HttpServletResponse response=(HttpServletResponse) resp;
         HttpServletRequest request=(HttpServletRequest) req;
         String accessControlAllowHeaders = "Access-Control-Allow-Headers";
-        response.setHeader("Access-Control-Allow-Origin", "http://5.135.165.108");
+        response.setHeader("Access-Control-Allow-Origin", allowedOrigin);
         response.setHeader("Access-Control-Allow-Credentials","true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");

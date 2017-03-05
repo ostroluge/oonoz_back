@@ -16,3 +16,5 @@ oonoz:
     sender: oonozpepit@gmail.com
     tls_enable: true
     auth: true
+  front:
+    origin: "@oonoz.front.origin@"

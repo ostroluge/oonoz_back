@@ -29,6 +29,7 @@ import oonoz.repository.SupplierRepository;
 import oonoz.repository.ThemeRepository;
 import oonoz.util.QCMFilteredSearch;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class QCMManagerImpl.
  */
@@ -61,7 +62,7 @@ public class QCMManagerImpl implements QCMManager {
 	 *
 	 * @param id the id
 	 * @return the qcm
-	 * @throws QCMDoesNotExistException 
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public QCM findOne(long id) throws QCMDoesNotExistException {
 		QCM qcm=qcmRepository.findOne(id);
@@ -76,20 +77,18 @@ public class QCMManagerImpl implements QCMManager {
 	 *
 	 * @param qcm the qcm
 	 * @return the qcm
-	 * @throws QCMCreationException 
-	 * @throws QCMValidationException 
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	public QCM postQCM(QCM qcm) throws QCMCreationException {
 
 		qcmExist(qcm.getName());
 		if(themeRepository.exists(qcm.getIdTheme()) && supplierRepository.exists(qcm.getIdSupplier())){
 			checkThemeSubThemeAssociation(qcm.getTheme(),qcm.getSubThemes());
-			qcm=qcmRepository.save(qcm);
-			if(qcm==null){
-	
+			QCM updatedQCM=qcmRepository.save(qcm);
+			if(updatedQCM==null){
 				throw new QCMCreationException("Error during QCM creation !");
 			}
-			return qcm;
+			return updatedQCM;
 		}
 		throw new QCMCreationException("The QCM theme or supplier does not exist !");
 	}
@@ -120,8 +119,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
-	 * @throws QCMCreationException 
-	 * @throws QCMValidationException 
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	public QCM update(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException {
 		
@@ -167,18 +165,28 @@ public class QCMManagerImpl implements QCMManager {
 	
 	
 	
+	/**
+	 * Find by id theme and id supplier.
+	 *
+	 * @param idSupplier the id supplier
+	 * @param idTheme the id theme
+	 * @return the list
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
 	public List<QCM> findByIdThemeAndIdSupplier(long idSupplier,long idTheme) throws QCMDoesNotExistException{
-		List<QCM> QCMlist=qcmRepository.findByIdSupplierAndIdTheme(idTheme,idSupplier);
-		if(QCMlist==null){
+		List<QCM> qcmList=qcmRepository.findByIdSupplierAndIdTheme(idTheme,idSupplier);
+		if(qcmList==null){
 			throw new QCMDoesNotExistException("They are no QCM associated with this supplier or theme !");
 		}
-		return QCMlist;
+		return qcmList;
 	}
 	
 	/**
 	 * Find QCM by id and validated true and is complete true.
 	 *
+	 * @param idQCM the id QCM
 	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public QCM findByIdAndIsValidatedTrueAndIsCompleteTrue(long idQCM) throws QCMDoesNotExistException{
 		QCM qcm=qcmRepository.findByIdAndIsValidatedTrueAndIsCompleteTrue(idQCM);
@@ -212,8 +220,8 @@ public class QCMManagerImpl implements QCMManager {
 	 * Validate QCM.
 	 *
 	 * @param id the id
-	 * @throws QCMDoesNotExistException 
-	 * @throws QCMValidationException 
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMValidationException the QCM validation exception
 	 */
 	public void validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
 		if(qcmRepository.exists(id)){
@@ -232,9 +240,9 @@ public class QCMManagerImpl implements QCMManager {
 	
 	/**
 	 * Check if QCM name already exist.
-	 * @param qcmName
-	 * @return
-	 * 		true, if exist
+	 *
+	 * @param qcmName the qcm name
+	 * @return 		true, if exist
 	 * 		false, if not
 	 */
 	public boolean qcmExist(String qcmName){
@@ -246,6 +254,12 @@ public class QCMManagerImpl implements QCMManager {
 		return false;
 	}
 	
+	/**
+	 * Finds with filter.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the list
+	 */
 	public List<QCM> findsWithFilter(QCMFilteredSearch filteredSearch){
 		
 		Specification<QCM> spec = null;
@@ -280,10 +294,10 @@ public class QCMManagerImpl implements QCMManager {
 	
 	/**
 	 * Check if sub-themes are own by the theme.
-	 * @param theme
-	 * @param subthemes
-	 * @return
-	 * @throws QCMValidationException 
+	 *
+	 * @param theme the theme
+	 * @param subthemes the subthemes
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	private void checkThemeSubThemeAssociation(Theme theme,List<SubTheme> subthemes) throws QCMCreationException{
 		boolean isContained=false;

@@ -1,6 +1,7 @@
 package oonoz.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,19 +26,19 @@ public class SubTheme {
 	@Column(name = "ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	
+
 	/** The id theme. */
 	@Column(name = "ID_THEME")
 	private long idTheme;
-	
+
 	/** The label. */
 	@Column(unique = true, nullable = false, name = "LABEL")
 	private String label;
-	
+
 	/** The description. */
 	@Column(unique = false, nullable = false, name = "DESCRIPTION")
 	private String description;
-	
+
 	/** The icon url. */
 	@Column(unique = false, nullable = true, name = "ICON")
 	private String iconUrl;
@@ -45,12 +46,12 @@ public class SubTheme {
 	/** The is validated. */
 	@Column(unique = false, nullable = false, name="IS_VALID")
 	private boolean isValidated;
-	
+
 	/** The list of qcm. */
 	@OneToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_SUB_THEME"),inverseJoinColumns = @JoinColumn(name = "ID_QCM"))
+	@JoinTable(name="SUB_THEME_QCM",joinColumns = @JoinColumn(name="ID_SUB_THEME"),inverseJoinColumns = @JoinColumn(name = "ID_QCM"))
 	private List<QCM> listQCMs;
-	
+
 	/**
 	 * Gets the list of qcm.
 	 *
@@ -176,7 +177,7 @@ public class SubTheme {
 	public void setValidated(boolean isValidated) {
 		this.isValidated = isValidated;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -185,12 +186,21 @@ public class SubTheme {
 		return "SubTheme [id=" + id + ", idTheme=" + idTheme + ", label=" + label + ", description=" + description
 				+ ", iconUrl=" + iconUrl + "]";
 	}
-	
-	@Override
-    public boolean equals(Object object)
-    {
-        Long idSubTheme= (Long)object;
 
-       return idSubTheme==this.getId();
-    }
+	@Override
+	public boolean equals(Object object)
+	{
+		if (object == null){
+			return false;
+		}
+
+		Long idSubTheme= (Long)object;
+
+		return idSubTheme==this.getId();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 }

@@ -87,6 +87,7 @@ public class ThemeController {
 		try {
 			theme = themeService.findOne(id);
 		} catch (ThemeDoesNotExistException e) {
+			logger.error("Theme does not exist", e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
