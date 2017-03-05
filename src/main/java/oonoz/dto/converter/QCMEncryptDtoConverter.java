@@ -39,6 +39,7 @@ public class QCMEncryptDtoConverter {
 		qcmDto.setMinimalScore(qcm.getMinimalScore());
 		qcmDto.setCategory(qcm.getCategory());
 		
+		
 		List<QuestionEncryptDto> questions= new ArrayList<QuestionEncryptDto>();
 		for(Question question: qcm.getQuestions()){
 			questions.add(questionConvert.convertToDto(question));

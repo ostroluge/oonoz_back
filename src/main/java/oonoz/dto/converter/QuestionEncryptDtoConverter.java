@@ -22,6 +22,7 @@ public class QuestionEncryptDtoConverter {
 		qpd.setProposition2(question.getProposition2());
 		qpd.setProposition3(question.getProposition3());
 		qpd.setProposition4(question.getAnswer());
+		qpd.setTime(question.getTime());
 		
 		return qpd;
 		
