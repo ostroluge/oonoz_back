@@ -193,7 +193,10 @@ public class SubTheme {
 		if (object == null){
 			return false;
 		}
-
+		if(object.getClass() != Long.class){
+			return false;
+		}
+		
 		Long idSubTheme= (Long)object;
 
 		return idSubTheme==this.getId();
