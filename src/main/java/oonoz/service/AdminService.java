@@ -10,7 +10,6 @@ import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QCMValidationException;
 import oonoz.manager.impl.QCMManagerImpl;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AdminService.
  * 

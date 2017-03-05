@@ -29,7 +29,6 @@ import oonoz.repository.SupplierRepository;
 import oonoz.repository.ThemeRepository;
 import oonoz.util.QCMFilteredSearch;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class QCMManagerImpl.
  */

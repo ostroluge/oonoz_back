@@ -135,7 +135,5 @@ public class SupplierDto extends PlayerDto {
 	public void setSiretNumber(String siretNumber) {
 		this.siretNumber = siretNumber;
 	}
-	
-	
 
 }

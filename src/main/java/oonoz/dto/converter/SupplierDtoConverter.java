@@ -7,9 +7,20 @@ import oonoz.domain.Supplier;
 import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.SupplierDto;
 
+/**
+ * The Class SupplierDtoConverter.
+ * 
+ * Description :
+ */
 @Component
 public class SupplierDtoConverter extends PlayerDtoConverter {
 
+	/**
+	 * Convert to entity.
+	 *
+	 * @param supplierDto the supplier dto
+	 * @return the supplier
+	 */
 	public Supplier convertToEntity(SupplierDto supplierDto){
 		
 		
@@ -26,6 +37,12 @@ public class SupplierDtoConverter extends PlayerDtoConverter {
 	
 	
 	
+	/**
+	 * Convert to dto.
+	 *
+	 * @param supplier the supplier
+	 * @return the supplier dto
+	 */
 	public SupplierDto convertToDto(Supplier supplier){
 		
 		PlayerDto playerDto=super.convertToDto(supplier);

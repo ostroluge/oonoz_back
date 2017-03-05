@@ -3,7 +3,6 @@ package oonoz.util;
 import org.springframework.stereotype.Component;
 import oonoz.exception.WrongInformationException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CheckQCMInformation.
  */

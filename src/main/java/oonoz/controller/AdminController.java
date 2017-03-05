@@ -38,7 +38,6 @@ import oonoz.service.SupplierService;
 import oonoz.util.FilteredSearch;
 import oonoz.util.StringResponse;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AdminController.
  */
