@@ -13,6 +13,7 @@ import oonoz.domain.Theme;
 import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMInvalidationException;
 import oonoz.exception.QCMValidationException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
@@ -74,8 +75,8 @@ public class QCMService {
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws QCMCreationException the QCM creation exception
-	 * @throws QCMAlreadyExistException 
-	 * @throws ThemeDoesNotExistException 
+	 * @throws QCMAlreadyExistException the QCM already exist exception
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 */
 	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException, ThemeDoesNotExistException {
 		
@@ -282,9 +283,8 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
-	 * @throws QCMValidationException 
-	 * @throws QCMCreationException 
-	 * @throws WrongInformationException 
+	 * @throws QCMCreationException the QCM creation exception
+	 * @throws WrongInformationException the wrong information exception
 	 */
 
 	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException, WrongInformationException {
@@ -333,7 +333,8 @@ public class QCMService {
 	/**
 	 * Search supplier QCM.
 	 *
-	 * @param theme the theme
+	 * @param subTheme the sub theme
+	 * @param idSupplier the id supplier
 	 * @return the list
 	 */
 	public List<QCM> searchSupplierQCMBySubTheme(String subTheme, long idSupplier) {
@@ -357,7 +358,6 @@ public class QCMService {
 	 * Search supplier QCM.
 	 *
 	 * @param themeLabel the theme label
-	 * @param subThemeLabel the sub theme label
 	 * @param idSupplier the id supplier
 	 * @return the list
 	 * @throws ThemeDoesNotExistException the theme does not exist exception
@@ -378,6 +378,12 @@ public class QCMService {
 		
 	}
 	
+	/**
+	 * Filtered search.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the list
+	 */
 	public List<QCM>filteredSearch(QCMFilteredSearch filteredSearch){
 		//TODO check QCMFilteredSearch
 		return qcmManager.findsWithFilter(filteredSearch);
@@ -387,9 +393,10 @@ public class QCMService {
 	
 	/**
 	 * Check if qcm name is not already used.
-	 * @param qcmName
-	 * @return
-	 * @throws QCMCreationException 
+	 *
+	 * @param qcmName the qcm name
+	 * @return the boolean
+	 * @throws QCMAlreadyExistException the QCM already exist exception
 	 */
 	private Boolean qcmExist(String qcmName) throws QCMAlreadyExistException{
 		if(qcmManager.qcmExist(qcmName)){
@@ -398,4 +405,39 @@ public class QCMService {
 		return false;
 	}
 	
+	/**
+	 * Validate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return true, if successful
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMValidationException the QCM validation exception
+	 */
+	public boolean validateQCM(long idQCM) throws QCMDoesNotExistException, QCMValidationException {
+		QCM qcm = qcmManager.findOne(idQCM);
+		if (qcm != null) {
+			QCM updatedQCM = qcmManager.validateQCM(idQCM);
+			return updatedQCM.isValidated();
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
+
+	/**
+	 * Invalidate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return true, if successful
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMInvalidationException the QCM invalidation exception
+	 */
+	public boolean invalidateQCM(long idQCM) throws QCMDoesNotExistException, QCMInvalidationException {
+		QCM qcm = qcmManager.findOne(idQCM);
+		if (qcm != null) {
+			QCM updatedQCM = qcmManager.invalidateQCM(idQCM);
+			return !updatedQCM.isValidated();
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
 }

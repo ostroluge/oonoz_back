@@ -84,16 +84,14 @@ public class QCMController {
 	/**
 	 * Post QCM.
 	 *
-	 * @param qcmDto
-	 *            the qcm dto
-	 * @return the response entity <<<<<<< HEAD =======
-	 * @throws WrongInformationException
-	 *             the wrong information exception >>>>>>> feature/QCMManagement
+	 * @param authentication the authentication
+	 * @param qcmDto            the qcm dto
+	 * @return the response entity
 	 */
 	@RequestMapping(value = "/qcms", method = RequestMethod.POST)
 	public ResponseEntity<QCM> postQCM(Authentication authentication, @RequestBody QCMDto qcmDto) {
 
-		
+
 		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
 		qcmDto.setIdSupplier(supplier.getIdPlayer());
 
@@ -185,7 +183,7 @@ public class QCMController {
 	@RequestMapping(value = "/qcms/{idQCM}/questions/{idQuestion}", method = RequestMethod.GET)
 	public ResponseEntity<Question> getQuestion(@PathVariable("idQCM") long idQCM,
 			@PathVariable("idQuestion") long idQuestion)
-			throws QCMDoesNotExistException, QuestionDoesNotExistException {
+					throws QCMDoesNotExistException, QuestionDoesNotExistException {
 
 		Question question = qcmService.getQuestion(idQCM, idQuestion);
 
@@ -216,10 +214,6 @@ public class QCMController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
-	
-	
-	
-	
 
 	/**
 	 * Delete question.
@@ -300,12 +294,11 @@ public class QCMController {
 	/**
 	 * Edits the QCM.
 	 *
-	 * @param id
-	 *            the id
-	 * @param qcm
-	 *            the qcm
+	 * @param authentication the authentication
+	 * @param id            the id
+	 * @param qcm            the qcm
 	 * @return the response entity
-	 * @throws WrongInformationException
+	 * @throws WrongInformationException the wrong information exception
 	 */
 	@RequestMapping(value = "/qcms/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<QCMDto> editQCM(Authentication authentication, @PathVariable("id") long id,
@@ -358,13 +351,9 @@ public class QCMController {
 	/**
 	 * Gets the question by number.
 	 *
-	 * @param idQCM
-	 *            the id QCM
-	 * @param questionNumber
-	 *            the question number
+	 * @param idQCM            the id QCM
+	 * @param questionNumber            the question number
 	 * @return the qcm
-	 * @throws QCMDoesNotExistException
-	 *             the QCM does not exist exception
 	 */
 	@RequestMapping(value = "/qcms/{idQCM}/questions/questionNumber/{questionNumber}", method = RequestMethod.GET)
 	public ResponseEntity<QuestionDto> getQuestionByNumber(@PathVariable("idQCM") long idQCM,
@@ -402,7 +391,7 @@ public class QCMController {
 	@RequestMapping(value = "/searchSupplierQCM", method = RequestMethod.GET)
 	public ResponseEntity<List<QCMDto>> searchSupplierQCM(Authentication authentication,
 			@RequestParam Map<String, String> requestParams)
-			throws ThemeDoesNotExistException, QCMDoesNotExistException {
+					throws ThemeDoesNotExistException, QCMDoesNotExistException {
 
 		Player player = (Player) getUserFromAuthentication(authentication);
 
@@ -447,11 +436,10 @@ public class QCMController {
 	}
 
 	/**
-	 * Get player from Authentication
-	 * 
-	 * @param authentication
-	 * @return
-	 * @throws PlayerNotExistException
+	 * Get player from Authentication.
+	 *
+	 * @param authentication the authentication
+	 * @return the user from authentication
 	 */
 	public Player getUserFromAuthentication(Authentication authentication) {
 		try {
@@ -463,4 +451,49 @@ public class QCMController {
 
 	}
 
+	/**
+	 * Validate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/qcms/{idQCM}/validate", method = RequestMethod.POST)
+	public ResponseEntity<StringResponse> validateQCM(@PathVariable("idQCM") long idQCM) {
+		StringResponse response = new StringResponse();
+		try {
+			boolean result = qcmService.validateQCM(idQCM);
+			if (result) {
+				response.setResponse("Validation successful");
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			} else {
+				response.setResponse("Validation failed");
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+
+	/**
+	 * Invalidate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/qcms/{idQCM}/invalidate", method = RequestMethod.POST)
+	public ResponseEntity<StringResponse> invalidateQCM(@PathVariable("idQCM") long idQCM) {
+		StringResponse response = new StringResponse();
+		try {
+			boolean result = qcmService.invalidateQCM(idQCM);
+			if (result) {
+				response.setResponse("Invalidation successful");
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+			} else {
+				response.setResponse("Invalidation failed");
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
 }

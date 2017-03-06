@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
 import oonoz.domain.Player;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -269,6 +270,4 @@ public class PlayerService {
 	public void requestSupplierStatus(long idPlayer) throws PlayerNotExistException{
 		playerManager.requestSupplierStatus(idPlayer);
 	}
-	
-	
 }

@@ -1,14 +1,14 @@
 package oonoz.manager.impl;
 
+import static oonoz.repository.QCMSpecifications.hasGift;
 import static oonoz.repository.QCMSpecifications.isFree;
 import static oonoz.repository.QCMSpecifications.isValidated;
 import static oonoz.repository.QCMSpecifications.labelStartWith;
 import static oonoz.repository.QCMSpecifications.withCategory;
-import static oonoz.repository.QCMSpecifications.withTheme;
-import static oonoz.repository.QCMSpecifications.withSubTheme;
 import static oonoz.repository.QCMSpecifications.withPriceLessOrEqualTo;
+import static oonoz.repository.QCMSpecifications.withSubTheme;
+import static oonoz.repository.QCMSpecifications.withTheme;
 import static org.springframework.data.jpa.domain.Specifications.where;
-import static oonoz.repository.QCMSpecifications.hasGift;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMInvalidationException;
 import oonoz.exception.QCMValidationException;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
@@ -61,7 +62,7 @@ public class QCMManagerImpl implements QCMManager {
 	 *
 	 * @param id the id
 	 * @return the qcm
-	 * @throws QCMDoesNotExistException 
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public QCM findOne(long id) throws QCMDoesNotExistException {
 		QCM qcm=qcmRepository.findOne(id);
@@ -76,8 +77,7 @@ public class QCMManagerImpl implements QCMManager {
 	 *
 	 * @param qcm the qcm
 	 * @return the qcm
-	 * @throws QCMCreationException 
-	 * @throws QCMValidationException 
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	public QCM postQCM(QCM qcm) throws QCMCreationException {
 
@@ -120,8 +120,7 @@ public class QCMManagerImpl implements QCMManager {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
-	 * @throws QCMCreationException 
-	 * @throws QCMValidationException 
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	public QCM update(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException {
 		
@@ -167,6 +166,14 @@ public class QCMManagerImpl implements QCMManager {
 	
 	
 	
+	/**
+	 * Find by id theme and id supplier.
+	 *
+	 * @param idSupplier the id supplier
+	 * @param idTheme the id theme
+	 * @return the list
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 */
 	public List<QCM> findByIdThemeAndIdSupplier(long idSupplier,long idTheme) throws QCMDoesNotExistException{
 		List<QCM> QCMlist=qcmRepository.findByIdSupplierAndIdTheme(idTheme,idSupplier);
 		if(QCMlist==null){
@@ -178,7 +185,9 @@ public class QCMManagerImpl implements QCMManager {
 	/**
 	 * Find QCM by id and validated true and is complete true.
 	 *
+	 * @param idQCM the id QCM
 	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
 	public QCM findByIdAndIsValidatedTrueAndIsCompleteTrue(long idQCM) throws QCMDoesNotExistException{
 		QCM qcm=qcmRepository.findByIdAndIsValidatedTrueAndIsCompleteTrue(idQCM);
@@ -212,10 +221,11 @@ public class QCMManagerImpl implements QCMManager {
 	 * Validate QCM.
 	 *
 	 * @param id the id
-	 * @throws QCMDoesNotExistException 
-	 * @throws QCMValidationException 
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMValidationException the QCM validation exception
 	 */
-	public void validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
+	public QCM validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
 		if(qcmRepository.exists(id)){
 			QCM qcmToValidate = qcmRepository.findOne(id);
 			
@@ -223,7 +233,30 @@ public class QCMManagerImpl implements QCMManager {
 				throw new QCMValidationException("The qcm is already validated");
 			} else {
 				qcmToValidate.setValidated(Boolean.TRUE);
-				qcmRepository.save(qcmToValidate);
+				return qcmRepository.save(qcmToValidate);
+			}
+		} else {
+			throw new QCMDoesNotExistException("The qcm does not exist");
+		}
+	}
+	
+	/**
+	 * Invalidate QCM.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMInvalidationException the QCM invalidation exception
+	 */
+	public QCM invalidateQCM(long id) throws QCMDoesNotExistException, QCMInvalidationException {
+		if(qcmRepository.exists(id)){
+			QCM qcmToInvalidate = qcmRepository.findOne(id);
+			
+			if(!qcmToInvalidate.isValidated()){
+				throw new QCMInvalidationException("The qcm is already invalidated");
+			} else {
+				qcmToInvalidate.setValidated(Boolean.FALSE);
+				return qcmRepository.save(qcmToInvalidate);
 			}
 		} else {
 			throw new QCMDoesNotExistException("The qcm does not exist");
@@ -232,9 +265,9 @@ public class QCMManagerImpl implements QCMManager {
 	
 	/**
 	 * Check if QCM name already exist.
-	 * @param qcmName
-	 * @return
-	 * 		true, if exist
+	 *
+	 * @param qcmName the qcm name
+	 * @return 		true, if exist
 	 * 		false, if not
 	 */
 	public boolean qcmExist(String qcmName){
@@ -246,6 +279,12 @@ public class QCMManagerImpl implements QCMManager {
 		return false;
 	}
 	
+	/**
+	 * Finds with filter.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the list
+	 */
 	public List<QCM> findsWithFilter(QCMFilteredSearch filteredSearch){
 		
 		Specification<QCM> spec = null;
@@ -280,10 +319,10 @@ public class QCMManagerImpl implements QCMManager {
 	
 	/**
 	 * Check if sub-themes are own by the theme.
-	 * @param theme
-	 * @param subthemes
-	 * @return
-	 * @throws QCMValidationException 
+	 *
+	 * @param theme the theme
+	 * @param subthemes the subthemes
+	 * @throws QCMCreationException the QCM creation exception
 	 */
 	private void checkThemeSubThemeAssociation(Theme theme,List<SubTheme> subthemes) throws QCMCreationException{
 		boolean isContained=false;
