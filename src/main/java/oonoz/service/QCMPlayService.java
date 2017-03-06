@@ -39,6 +39,10 @@ public class QCMPlayService {
 	public List<PlayerDto> findWinners(long idQcm, int minimumScore) throws QCMDoesNotExistException {
 		QCM qcm = qcmManager.findOne(idQcm);
 		if (qcm != null) {
+			int qcmMinimalScore = qcm.getMinimalScore();
+			if (qcmMinimalScore != 0) {
+				minimumScore = qcmMinimalScore;
+			}
 			return qcmPlayManager.getQCMWinners(idQcm, minimumScore);
 		} else {
 			throw new QCMDoesNotExistException("The QCM with id " + idQcm + " does not exist");
