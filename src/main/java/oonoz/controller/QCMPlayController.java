@@ -21,9 +21,9 @@ import oonoz.domain.Player;
 import oonoz.domain.QCM;
 import oonoz.domain.QCMPlay;
 import oonoz.domain.Supplier;
+import oonoz.domain.Winner;
 import oonoz.dto.converter.QCMEncryptDtoConverter;
 import oonoz.dto.converter.QCMPlayDtoConverter;
-import oonoz.dto.model.PlayerDto;
 import oonoz.dto.model.QCMEncryptDto;
 import oonoz.dto.model.QCMPlayDto;
 import oonoz.exception.PlayerNotExistException;
@@ -73,8 +73,8 @@ public class QCMPlayController {
 	 * @return the winners
 	 */
 	@RequestMapping(value = "/qcms/{idQcm}/winners", method = RequestMethod.GET)
-	public ResponseEntity<List<PlayerDto>> getWinners(@PathVariable("idQcm") long idQcm) {
-		List<PlayerDto> result = new ArrayList<>();
+	public ResponseEntity<List<Winner>> getWinners(@PathVariable("idQcm") long idQcm) {
+		List<Winner> result = new ArrayList<>();
 
 		try {
 			result = qcmPlayService.findWinners(idQcm, 10);

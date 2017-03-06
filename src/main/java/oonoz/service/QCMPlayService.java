@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import oonoz.domain.Feedback;
 import oonoz.domain.QCM;
 import oonoz.domain.QCMPlay;
-import oonoz.dto.model.PlayerDto;
+import oonoz.domain.Winner;
 import oonoz.exception.QCMDoesNotExistException;
 import oonoz.exception.QCMPlayDoesNotExistException;
 import oonoz.manager.impl.QCMManagerImpl;
@@ -36,7 +36,7 @@ public class QCMPlayService {
 	 * @return the list
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 */
-	public List<PlayerDto> findWinners(long idQcm, int minimumScore) throws QCMDoesNotExistException {
+	public List<Winner> findWinners(long idQcm, int minimumScore) throws QCMDoesNotExistException {
 		QCM qcm = qcmManager.findOne(idQcm);
 		if (qcm != null) {
 			int qcmMinimalScore = qcm.getMinimalScore();

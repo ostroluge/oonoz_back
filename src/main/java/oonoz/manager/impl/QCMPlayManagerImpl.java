@@ -11,7 +11,7 @@ import oonoz.domain.Comment;
 import oonoz.domain.Feedback;
 import oonoz.domain.Player;
 import oonoz.domain.QCMPlay;
-import oonoz.dto.model.PlayerDto;
+import oonoz.domain.Winner;
 import oonoz.manager.QCMPlayManager;
 import oonoz.repository.QCMPlayRepository;
 
@@ -32,20 +32,20 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 	 * @param minimumScore the minimum score
 	 * @return the QCM play
 	 */
-	public List<PlayerDto> getQCMWinners(long idQcm, int minimumScore) {
+	public List<Winner> getQCMWinners(long idQcm, int minimumScore) {
 		List<QCMPlay> allPlays = qcmPlayRepository.findByIdQcm(idQcm);
-		List<PlayerDto> result = new ArrayList<>();
+		List<Winner> result = new ArrayList<>();
 
 		for (QCMPlay play : allPlays) {
 			if (play.isFinished()) {
 				Integer score = play.getScore();
 				if (score != null && score >= minimumScore) {
 					Player player = play.getPlayer();
-					PlayerDto winner = new PlayerDto();
+					Winner winner = new Winner();
 					winner.setLastName(player.getLastName());
 					winner.setFirstName(player.getFirstName());
-					winner.setMail(player.getMail());
-					winner.setUsername(player.getUsername());
+					winner.setEmail(player.getMail());
+					winner.setUserName(player.getUsername());
 					result.add(winner);
 				}
 			}
