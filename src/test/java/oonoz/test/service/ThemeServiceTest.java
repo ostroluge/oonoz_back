@@ -107,22 +107,4 @@ public class ThemeServiceTest {
 		final ArgumentCaptor<Theme> argument = ArgumentCaptor.forClass(Theme.class);
 		Mockito.verify(this.themeManager, Mockito.times(1)).create(argument.capture());
 	}
-	
-//	@Test(expected = ThemeAlreadyExistException.class)
-//	public void postThemeThatAlreadyExists() throws ThemeAlreadyExistException, WrongInformationException {
-		//[-- INITIALISATION --]
-//		Theme theme1 = new Theme();
-//		theme1.setLabel("Theme");
-//		theme1.setDescription("theme 1 description");
-		
-//		Theme theme2 = new Theme();
-//		theme2.setLabel("Theme");
-//		theme2.setDescription("theme 2 description");
-		
-		//[-- APPEL DU SERVICE --]
-//		themeService.postTheme(theme2);
-		
-		//[-- VERIFICATION --]
-		//Must throw ThemeAlreadyExistException
-//	}
 }

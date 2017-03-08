@@ -142,7 +142,6 @@ public class PlayerService {
 	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
 		
 		checkUserInformation.checkUsername(player.getUsername());
-		//checkUserInformation.checkPassword(player.getPassword());
 		checkUserInformation.checkMail(player.getMail());
 		checkUserInformation.checkLastName(player.getLastName());
 		checkUserInformation.checkFirstName(player.getFirstName());
@@ -167,7 +166,7 @@ public class PlayerService {
 	public void deletePlayer(Long idPlayer) throws PlayerNotExistException{
 		Player playerToDelete=playerManager.getPlayer(idPlayer);
 		if(playerToDelete==null){
-			throw new PlayerNotExistException("The player does not exist !");
+			throw new PlayerNotExistException();
 		}
 		playerManager.deletePlayer(playerToDelete.getIdPlayer());
 		
@@ -247,13 +246,20 @@ public class PlayerService {
 	/**
 	 * Change status user.
 	 *
-	 * @param idPlayer the id player
+	 * @param username the username
+	 * @return the player by username
 	 * @throws PlayerNotExistException the player not exist exception
 	 */
 	public Player getPlayerByUsername(String username) throws PlayerNotExistException{
 		return playerManager.getPlayerByUsername(username);
 	}
 
+	/**
+	 * Change status user.
+	 *
+	 * @param idPlayer the id player
+	 * @throws PlayerNotExistException the player not exist exception
+	 */
 	public void changeStatusUser(long idPlayer) throws PlayerNotExistException{
 		playerManager.changeStatusUser(idPlayer);
 	}

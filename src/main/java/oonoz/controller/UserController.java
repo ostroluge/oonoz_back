@@ -107,15 +107,15 @@ public class UserController {
 		try {
 			this.playerService.signUp(player);
 		} catch (WrongInformationException e) {
-			logger.error("Wrong information", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("The information of sign-up are not valid !");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (PlayerAlreadyExistException e) {
-			logger.error("This player already exist", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("The player already exists !");
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 		} catch (MessagingException e) {
-			logger.error("Impossible to send validation mail", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("A error occurs when sending validation mail !");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
@@ -138,14 +138,14 @@ public class UserController {
 		try {
 			this.supplierService.signUp(supplier);
 		} catch (WrongInformationException e) {
-			logger.error("Wrong information", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("The information of sign-up are not valid ! " + e.getMessage(),
 					HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
-			logger.error("Supplier already exist", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("The player already exist !", HttpStatus.CONFLICT);
 		} catch (MessagingException e) {
-			logger.error("Impossible to send validation mail", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("A error occurs when sending validation mail !",
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -169,10 +169,10 @@ public class UserController {
 		try {
 			playerService.validationMail(mail, hash);
 		} catch (PlayerNotExistException e) {
-			logger.error("This player doesn't exist", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("The player with this mail does not exist !", HttpStatus.BAD_REQUEST);
 		} catch (WrongInformationException e) {
-			logger.error("Wrong information", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
@@ -181,13 +181,6 @@ public class UserController {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Rest service receiving a email and a token.
-	 * If the token is right I will activate the account of the user matching the mail.
-=======
-	 * Rest service receiving a email and a token. If the token is right I will
-	 * activate the account of the user matching the mail.
->>>>>>> feature/QCMManagement
 	 *
 	 * @param playerDto the player dto
 	 * @return A response containing a string with the answer.
@@ -198,16 +191,16 @@ public class UserController {
 		try {
 			playerService.generatePassword(playerDto.getMail());
 		} catch (PlayerNotExistException e) {
-			logger.error("Player doesn't exist", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("", HttpStatus.OK);
 		} catch (WrongInformationException e) {
-			logger.error("Wrong Information exception", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("", HttpStatus.OK);
 		} catch (MessagingException e) {
-			logger.error("Impossible to send mail", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("A internal error occurs !", HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (PlayerNotActiveException e) {
-			logger.error("This player is not active", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("", HttpStatus.OK);
 		}
 
@@ -255,7 +248,7 @@ public class UserController {
 		try {
 			return playerService.getPlayerByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
 		} catch (PlayerNotExistException e) {
-			logger.error("Player does not exist !", e);
+			logger.error(e.getMessage(), e);
 			return null;
 		}
 

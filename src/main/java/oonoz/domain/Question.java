@@ -56,10 +56,6 @@ public class Question {
 	/** The question number. */
 	@Column(unique = false, nullable = false, name="QUESTION_NUMBER")
 	private int questionNumber;
-	
-	/** The proposition 3. */
-	//@Column(unique = false, nullable = true,name="DURATION")
-	//private Integer time;
 
 	/**
 	 * Gets the id.
@@ -222,24 +218,6 @@ public class Question {
 	public void setProposition3(String proposition3) {
 		this.proposition3 = proposition3;
 	}
-
-	/**
-	 * Gets the time.
-	 *
-	 * @return the time
-	 */
-	/*public Integer getTime() {
-		return time;
-	}*/
-
-	/**
-	 * Sets the time.
-	 *
-	 * @param time the new time
-	 */
-	/*public void setTime(Integer time) {
-		this.time = time;
-	}*/
 
 	/**
 	 * Gets the question number.

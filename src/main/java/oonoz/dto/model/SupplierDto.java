@@ -7,13 +7,6 @@ package oonoz.dto.model;
  */
 public class SupplierDto extends PlayerDto {
 	
-	/**
-	 * Instantiates a new supplier dto.
-	 */
-	public SupplierDto(){
-		//Nested comment for SonarQube
-	}
-	
 	/** The is valid. */
 	private Boolean isValid;
 	
@@ -29,6 +22,13 @@ public class SupplierDto extends PlayerDto {
 	/** The siret number. */
 	private String siretNumber;
 
+	/**
+	 * Instantiates a new supplier dto.
+	 */
+	public SupplierDto(){
+		//Nested comment for SonarQube
+	}
+	
 	/**
 	 * Instantiates a new supplier dto.
 	 *

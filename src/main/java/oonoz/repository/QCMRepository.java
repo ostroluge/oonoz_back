@@ -52,6 +52,7 @@ public interface QCMRepository extends CrudRepository<QCM, Long>, JpaSpecificati
 	/**
 	 * Find by id and validated true and is complete true.
 	 *
+	 * @param id the id
 	 * @return the qcm
 	 */
 	QCM findByIdAndIsValidatedTrueAndIsCompleteTrue(long id); 
@@ -62,6 +63,12 @@ public interface QCMRepository extends CrudRepository<QCM, Long>, JpaSpecificati
 	 */
 	List<QCM> findByIsValidatedFalseAndIsCompleteTrue();
 
+	/**
+	 * Find by name.
+	 *
+	 * @param name the name
+	 * @return the qcm
+	 */
 	QCM findByName(String name);
 
 }

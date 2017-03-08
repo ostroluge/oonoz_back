@@ -87,7 +87,7 @@ public class ThemeController {
 		try {
 			theme = themeService.findOne(id);
 		} catch (ThemeDoesNotExistException e) {
-			logger.error("Theme does not exist", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
@@ -134,7 +134,7 @@ public class ThemeController {
 		try {
 			themeService.removeTheme(id);
 		} catch (ThemeDoesNotExistException e) {
-			logger.error("Le thème n'existe pas", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("The theme does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
 		}
@@ -159,7 +159,7 @@ public class ThemeController {
 				Theme result = themeService.updateTheme(id, themeToUpdate);
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} catch (ThemeDoesNotExistException e) {
-				logger.error("Le thème n'existe pas", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 			}
 		} else {
@@ -204,7 +204,7 @@ public class ThemeController {
 				SubTheme result = subThemeService.postSubTheme(idTheme, subThemeToPost);
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} catch (ThemeDoesNotExistException e) {
-				logger.error("Le thème n'existe pas", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -254,7 +254,7 @@ public class ThemeController {
 				SubTheme result = subThemeService.updateSubTheme(idSubTheme, subThemeToUpdate);
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} catch (SubThemeDoesNotExistException e) {
-				logger.error("Le sous-thème n'existe pas", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 						.body(null);
 			}
@@ -280,7 +280,7 @@ public class ThemeController {
 		try {
 			subThemeService.removeSubTheme(idSubTheme);
 		} catch (SubThemeDoesNotExistException e) {
-			logger.error("Le sous-thème n'existe pas", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("The subtheme does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
 		}
@@ -302,7 +302,7 @@ public class ThemeController {
 			Theme result = themeService.validateTheme(idTheme);
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (ThemeDoesNotExistException e) {
-			logger.error("Le thème n'existe pas", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}
@@ -324,7 +324,7 @@ public class ThemeController {
 			SubTheme result = subThemeService.validateSubTheme(idSubTheme);
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (SubThemeDoesNotExistException e) {
-			logger.error("Le sous-thème n'existe pas", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(null);
 		}

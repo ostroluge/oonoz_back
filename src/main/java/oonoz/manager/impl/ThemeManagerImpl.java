@@ -1,6 +1,5 @@
 package oonoz.manager.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,8 +32,9 @@ public class ThemeManagerImpl implements ThemeManager {
 	}
 	
 	/**
-	 * Find only validated themes
-	 * @return
+	 * Find only validated themes.
+	 *
+	 * @return the list
 	 */
 	public List<Theme> findValidated(){
 		return themeRepository.findByIsValidatedTrue();
@@ -46,7 +46,7 @@ public class ThemeManagerImpl implements ThemeManager {
 	 *
 	 * @param id the id
 	 * @return the theme
-	 * @throws ThemeDoesNotExistException 
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 */
 	public Theme findOne(long id) throws ThemeDoesNotExistException {
 		Theme theme=themeRepository.findOne(id);

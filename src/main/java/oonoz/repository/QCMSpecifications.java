@@ -1,12 +1,8 @@
 package oonoz.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -14,12 +10,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import oonoz.domain.QCM;
-import oonoz.domain.SubTheme;
 
 
+/**
+ * The Class QCMSpecifications.
+ * 
+ * Description :
+ */
 @Component
 public class QCMSpecifications {
 	
+	/**
+	 * Instantiates a new QCM specifications.
+	 */
 	public QCMSpecifications(){
 		
 	}
@@ -46,7 +49,7 @@ public class QCMSpecifications {
 	/**
 	 * QCM with category.
 	 *
-	 * @param searchString the search string
+	 * @param category the category
 	 * @return the specification
 	 */
 	public static Specification<QCM> withCategory(String category) {
@@ -65,7 +68,7 @@ public class QCMSpecifications {
 	/**
 	 * QCM label start with.
 	 *
-	 * @param searchString the search string
+	 * @param idTheme the id theme
 	 * @return the specification
 	 */
 	public static Specification<QCM> withTheme(Long idTheme) {
@@ -84,7 +87,7 @@ public class QCMSpecifications {
 	/**
 	 * QCM label start with.
 	 *
-	 * @param searchString the search string
+	 * @param idSubTheme the id sub theme
 	 * @return the specification
 	 */
 	public static Specification<QCM> withSubTheme(Long idSubTheme) {

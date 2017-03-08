@@ -1,6 +1,7 @@
 package oonoz.exception;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class PlayerNotExistException.
  * 
@@ -20,6 +21,13 @@ public class PlayerNotExistException extends Exception {
 	 */
 	public PlayerNotExistException(String message){
 		super(message);
+	}
+	
+	/**
+	 * Instantiates a new player not exist exception.
+	 */
+	public PlayerNotExistException(){
+		super("The player does not exist !");
 	}
 
 }

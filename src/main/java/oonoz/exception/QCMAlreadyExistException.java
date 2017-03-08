@@ -1,5 +1,10 @@
 package oonoz.exception;
 
+/**
+ * The Class QCMAlreadyExistException.
+ * 
+ * Description :
+ */
 public class QCMAlreadyExistException extends Exception {
 	
 	/** The Constant serialVersionUID. */

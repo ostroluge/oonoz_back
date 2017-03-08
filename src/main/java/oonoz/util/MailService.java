@@ -133,7 +133,7 @@ public class MailService {
 	 */
 	private Session getSession(){
 		
-		Session session = Session.getInstance(this.props, new Authenticator() {
+		return Session.getInstance(this.props, new Authenticator() {
 			protected PasswordAuthentication pa = new PasswordAuthentication(username, password);
 
 			@Override
@@ -142,7 +142,6 @@ public class MailService {
 			}
 		});
 		
-		return session;
 	}
 
 	/**
@@ -155,7 +154,7 @@ public class MailService {
 	private String subscriptionMailContentFor(Player player) {
 		return "Bonjour,\n" + "\n" + "Vous recevez cet email car vous vous êtes inscrit à Oonoz.\n"
 				+ "S'il s'agit de vous, cliquez juste sur le lien ci dessous ou copiez/collez le dans votre navigateur.\n"
-				+ "\n" + "http://" + this.host + ":63342"+"/oonoz_front/app/index.html#mailValidation/"+player.getMail().toString()+"/"+player.getMail().hashCode()+"\n" + "\n"
+				+ "\n" + "http://" + this.host + ":63342"+"/oonoz_front/app/index.html#mailValidation/"+player.getMail()+"/"+player.getMail().hashCode()+"\n" + "\n"
 				+ "Si vous n'avez pas demandé cette inscription, veuillez ignorer cet email..\n" + "Merci,\n"
 				+ "L'équipe Oonoz.";
 	}

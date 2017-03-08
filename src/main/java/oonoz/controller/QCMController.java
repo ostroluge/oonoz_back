@@ -84,11 +84,9 @@ public class QCMController {
 	/**
 	 * Post QCM.
 	 *
-	 * @param qcmDto
-	 *            the qcm dto
+	 * @param authentication the authentication
+	 * @param qcmDto            the qcm dto
 	 * @return the response entity <<<<<<< HEAD =======
-	 * @throws WrongInformationException
-	 *             the wrong information exception >>>>>>> feature/QCMManagement
 	 */
 	@RequestMapping(value = "/qcms", method = RequestMethod.POST)
 	public ResponseEntity<QCM> postQCM(Authentication authentication, @RequestBody QCMDto qcmDto) {
@@ -102,13 +100,13 @@ public class QCMController {
 		try {
 			result = qcmService.postQCM(qcmToPost);
 		} catch (WrongInformationException e) {
-			logger.error("Wrong information", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 		} catch (QCMCreationException | ThemeDoesNotExistException e) {
-			logger.error("Error creation", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		} catch (QCMAlreadyExistException e) {
-			logger.error("Error creation", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(null);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -133,13 +131,13 @@ public class QCMController {
 				Question result = qcmService.postQuestion(idQCM, questionToPost);
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} catch (QCMDoesNotExistException e) {
-				logger.error("The QCM does not exist !", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 			} catch (TooManyQuestionsException e) {
-				logger.error("They are too many questions in QCM!", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 			} catch (WrongInformationException e) {
-				logger.error("The QCM does not exist !", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 			}
 		} else {
@@ -161,7 +159,7 @@ public class QCMController {
 		try {
 			qcmService.deleteQCM(id);
 		} catch (QCMDoesNotExistException e) {
-			logger.error("The QCM does not exist",e);
+			logger.error(e.getMessage(),e);
 			response.setResponse("The QCM does not exist");
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
 		}
@@ -210,7 +208,6 @@ public class QCMController {
 	@RequestMapping(value = "/qcms/{id}", method = RequestMethod.GET)
 	public ResponseEntity<QCMDto> getQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getQCM(id);
-		// TODO only supplier can get the QCM
 		if (qcm != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(qcm));
 		} else {
@@ -230,7 +227,6 @@ public class QCMController {
 	@RequestMapping(value = "/qcms/validated/{id}", method = RequestMethod.GET)
 	public ResponseEntity<QCMDto> getValidatedQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getValidatedQCM(id);
-		// TODO only supplier can get the QCM
 		if (qcm != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(qcm));
 		} else {
@@ -258,11 +254,11 @@ public class QCMController {
 			response.setResponse("Deletion successful");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (QCMDoesNotExistException e) {
-			logger.error("The QCM does not exist",e);
+			logger.error(e.getMessage(),e);
 			response.setResponse("The QCM does not exist");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		} catch (QuestionDoesNotExistException e) {
-			logger.error("The question does not exist",e);
+			logger.error(e.getMessage(),e);
 			response.setResponse("The question does not exist");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
@@ -284,13 +280,13 @@ public class QCMController {
 			QCM result = qcmService.addSubTheme(idQCM, idSubTheme);
 			return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(result));
 		} catch (QCMDoesNotExistException e) {
-			logger.error("QCM does not exist", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		} catch (SubThemeDoesNotExistException e) {
-			logger.error("SubTheme does not exist", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		} catch (SubThemeAlreadyAddedException e) {
-			logger.error("SubTheme already exist", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 		}
 	}
@@ -314,10 +310,10 @@ public class QCMController {
 			response.setResponse("Deletion successful");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (QCMDoesNotExistException e) {
-			logger.error("QCM does not exist", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		} catch (SubThemeDoesNotExistException e) {
-			logger.error("SubTheme does not exist", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
@@ -326,12 +322,11 @@ public class QCMController {
 	/**
 	 * Edits the QCM.
 	 *
-	 * @param id
-	 *            the id
-	 * @param qcm
-	 *            the qcm
+	 * @param authentication the authentication
+	 * @param id            the id
+	 * @param qcm            the qcm
 	 * @return the response entity
-	 * @throws WrongInformationException
+	 * @throws WrongInformationException the wrong information exception
 	 */
 	@RequestMapping(value = "/qcms/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<QCMDto> editQCM(Authentication authentication, @PathVariable("id") long id,
@@ -345,7 +340,7 @@ public class QCMController {
 				QCM result = qcmService.updateQCM(id, qcmToUpdate);
 				return ResponseEntity.status(HttpStatus.OK).body(qcmDtoConverter.convertToDto(result));
 			} catch (QCMDoesNotExistException | QCMCreationException e) {
-				logger.error("Error in QCM update", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 			}
 		} else {
@@ -374,7 +369,7 @@ public class QCMController {
 				Question result = qcmService.updateQuestion(idQuestion, questionToUpdate);
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} catch (QuestionDoesNotExistException e) {
-				logger.error("Question does not exist", e);
+				logger.error(e.getMessage(), e);
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 			}
 		} else {
@@ -385,13 +380,9 @@ public class QCMController {
 	/**
 	 * Gets the question by number.
 	 *
-	 * @param idQCM
-	 *            the id QCM
-	 * @param questionNumber
-	 *            the question number
+	 * @param idQCM            the id QCM
+	 * @param questionNumber            the question number
 	 * @return the qcm
-	 * @throws QCMDoesNotExistException
-	 *             the QCM does not exist exception
 	 */
 	@RequestMapping(value = "/qcms/{idQCM}/questions/questionNumber/{questionNumber}", method = RequestMethod.GET)
 	public ResponseEntity<QuestionDto> getQuestionByNumber(@PathVariable("idQCM") long idQCM,
@@ -400,7 +391,7 @@ public class QCMController {
 		try {
 			question = qcmService.getQuestionByNumber(idQCM, questionNumber);
 		} catch (QCMDoesNotExistException e) {
-			logger.error("The QCM does not exist !", e);
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
@@ -433,7 +424,7 @@ public class QCMController {
 
 		Player player = (Player) getUserFromAuthentication(authentication);
 
-		List<QCM> qcmList = new ArrayList<>();
+		List<QCM> qcmList;
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
 
@@ -474,17 +465,16 @@ public class QCMController {
 	}
 
 	/**
-	 * Get player from Authentication
-	 * 
-	 * @param authentication
-	 * @return
-	 * @throws PlayerNotExistException
+	 * Get player from Authentication.
+	 *
+	 * @param authentication the authentication
+	 * @return the user from authentication
 	 */
 	public Player getUserFromAuthentication(Authentication authentication) {
 		try {
 			return playerService.getPlayerByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
 		} catch (PlayerNotExistException e) {
-			logger.error("Player does not exist !", e);
+			logger.error(e.getMessage(), e);
 			return null;
 		}
 

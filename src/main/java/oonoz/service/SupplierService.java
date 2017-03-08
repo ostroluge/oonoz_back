@@ -97,7 +97,6 @@ public class SupplierService {
 	public void updateSupplier(Supplier supplier) throws WrongInformationException, PlayerNotExistException {
 
 		checkUserInformation.checkUsername(supplier.getUsername());
-		// checkUserInformation.checkPassword(supplier.getPassword());
 		checkUserInformation.checkMail(supplier.getMail());
 		checkUserInformation.checkLastName(supplier.getLastName());
 		checkUserInformation.checkFirstName(supplier.getFirstName());
@@ -128,7 +127,7 @@ public class SupplierService {
 
 			supplierManager.update(newSupplier);
 		} else {
-			throw new PlayerNotExistException("The player does not exist !");
+			throw new PlayerNotExistException();
 		}
 	}
 	

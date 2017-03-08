@@ -39,6 +39,13 @@ public class QuestionManagerImpl implements QuestionManager {
 		return questionRepository.findOne(idQuestion);
 	}
 	
+	/**
+	 * Find by question number.
+	 *
+	 * @param idQCM the id QCM
+	 * @param questionNumber the question number
+	 * @return the question
+	 */
 	public Question findByQuestionNumber(long idQCM,int questionNumber){
 		return questionRepository.findByQuestionNumber(idQCM, questionNumber);
 	}

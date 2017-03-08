@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -85,7 +84,7 @@ public class AdminController {
 			return new ResponseEntity<>(playerService.filteredSearch(filteredSearch), HttpStatus.OK);
 		}
 		catch(WrongInformationException e){
-			logger.error("The page number must be greater or equal than zero !",e);
+			logger.error(e.getMessage(),e);
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 
@@ -105,11 +104,11 @@ public class AdminController {
 			playerService.updatePlayer(player);
 		}
 		catch(PlayerNotExistException e){
-			logger.error("The player does not exist !",e);
+			logger.error(e.getMessage(),e);
 			return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
 		}
 		catch(WrongInformationException e){
-			logger.error("Information about player are not valid !",e);
+			logger.error(e.getMessage(),e);
 			return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("", HttpStatus.OK);
@@ -130,11 +129,11 @@ public class AdminController {
 			supplierService.updateSupplier(supplier);
 		}
 		catch(PlayerNotExistException e){
-			logger.error("The supplier does not exist !",e);
+			logger.error(e.getMessage(),e);
 			return new ResponseEntity<>("The supplier does not exist !", HttpStatus.BAD_REQUEST);
 		}
 		catch(WrongInformationException e){
-			logger.error("Information about supplier are not valid !",e);
+			logger.error(e.getMessage(),e);
 			return new ResponseEntity<>("Information about supplier are not valid !", HttpStatus.BAD_REQUEST);
 		}
 
@@ -155,7 +154,7 @@ public class AdminController {
     		playerService.deletePlayer(idPlayer);
     	}
     	catch(PlayerNotExistException e){
-    		logger.error("The user does not exist !",e);
+    		logger.error(e.getMessage(),e);
     		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
     	}
     	
@@ -178,7 +177,7 @@ public class AdminController {
     			playerService.changeStatusUser(idPlayer);
     	}
     	catch(PlayerNotExistException e){
-    		logger.error("The user does not exist !",e);
+    		logger.error(e.getMessage(),e);
     		return new ResponseEntity<>("The user does not exist !", HttpStatus.BAD_REQUEST);
     	}
     	
@@ -243,15 +242,15 @@ public class AdminController {
 		try {
 			this.playerService.signUpByAdmin(player);
 		} catch (WrongInformationException e) {
-			logger.error("Mauvaise information", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("The information of sign-up are not valid !");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (PlayerAlreadyExistException e) {
-			logger.error("Ce joueur existe déjà", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("The player already exists !");
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 		} catch (MessagingException e) {
-			logger.error("Impossible d'envoyer le message", e);
+			logger.error(e.getMessage(), e);
 			response.setResponse("A error occurs when sending validation mail !");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
@@ -274,13 +273,13 @@ public class AdminController {
 		try {
 			this.supplierService.signUpByAdmin(supplier);
 		} catch (WrongInformationException e) {
-			logger.error("Mauvaise information", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("The information of sign-up are not valid ! "+e.getMessage() , HttpStatus.BAD_REQUEST);
 		} catch (PlayerAlreadyExistException e) {
-			logger.error("Le joueur existe déjà", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("The player already exist !", HttpStatus.CONFLICT);
 		} catch (MessagingException e) {
-			logger.error("Impossible d'envoyer le mail", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("A error occurs when sending validation mail !", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("", HttpStatus.OK);
@@ -321,7 +320,7 @@ public class AdminController {
 	/**
 	 * Validate QCM.
 	 *
-	 * @param idQCM the id QCM
+	 * @param requestParams the request params
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/validateQCM", method = RequestMethod.PUT)
@@ -331,7 +330,7 @@ public class AdminController {
 		try {
 			adminService.validateQCM(Long.parseLong(idQCM));
 		} catch (QCMDoesNotExistException | QCMValidationException e) {
-			logger.error("Impossible to validate this QCM", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -341,7 +340,7 @@ public class AdminController {
 	/**
 	 * Delete QCM.
 	 *
-	 * @param idQCM the id QCM
+	 * @param requestParams the request params
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/deleteQCM", method = RequestMethod.DELETE)
@@ -350,7 +349,7 @@ public class AdminController {
 		try{
 			qcmService.deleteQCM(Long.parseLong(idQCM));
 		} catch (QCMDoesNotExistException e) {
-			logger.error("Impossible to delete this QCM", e);
+			logger.error(e.getMessage(), e);
 			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 		}
 		

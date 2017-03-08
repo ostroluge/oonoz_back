@@ -133,7 +133,7 @@ public class PlayerManagerImpl implements PlayerManager {
 		if(player!=null)
 			return player;
 		
-		throw new PlayerNotExistException("The player does not exist !");
+		throw new PlayerNotExistException();
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class PlayerManagerImpl implements PlayerManager {
 	public Player getPlayerByUsername(String username) throws PlayerNotExistException {
 		Player player = playerRepository.findByUsername(username);
 		if (player == null) {
-			throw new PlayerNotExistException("The player does not exist !");
+			throw new PlayerNotExistException();
 		}
 
 		return playerRepository.findByUsername(username);
@@ -262,7 +262,7 @@ public class PlayerManagerImpl implements PlayerManager {
 			playerRepository.save(player);
 
 		} else {
-			throw new PlayerNotExistException("The player does not exist !");
+			throw new PlayerNotExistException();
 		}
 	}
 

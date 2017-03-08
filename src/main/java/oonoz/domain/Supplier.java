@@ -21,14 +21,6 @@ import org.hibernate.validator.constraints.Length;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Supplier extends Player{
 	
-	
-	/**
-	 * Instantiates a new supplier.
-	 */
-	public Supplier(){
-		//Nested comment for SonarQube
-	}
-	
 	/** True if the supplier has validated his sign-up. */
 	@Column(unique = false, nullable = false,name="IS_VALID")
 	private Boolean isValid;
@@ -53,6 +45,14 @@ public class Supplier extends Player{
 	@Length(max = 14, message = "The field must be less than 14 characters")
 	private String siretNumber;
 
+	
+	/**
+	 * Instantiates a new supplier.
+	 */
+	public Supplier(){
+		//Nested comment for SonarQube
+	}
+	
 	/**
 	 * Instantiates a new supplier.
 	 *

@@ -50,7 +50,6 @@ public class PlayerDtoConverter {
 		playerDto.setFirstName(player.getFirstName());
 		playerDto.setMail(player.getMail());
 		playerDto.setUsername(player.getUsername());
-		//playerDto.setPassword(player.getPassword());
 		playerDto.setBirthDate(player.getBirthDate());
 		playerDto.setIsActive(player.getIsActive());
 		playerDto.setIsSupplier(player.getIsSupplier());

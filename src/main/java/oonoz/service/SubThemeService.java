@@ -37,15 +37,21 @@ public class SubThemeService {
 	}
 	
 	/**
-	 * Find all subthemes from a theme
-	 * @param idTheme
-	 * @return
+	 * Find all subthemes from a theme.
+	 *
+	 * @param idTheme the id theme
+	 * @return the all sub themes from theme
 	 */
 	public List<SubTheme> getAllSubThemesFromTheme(long idTheme){
 		return subThemeManager.findByIdTheme(idTheme);
 	}
 	
 	/**
+	 * Gets the sub themes by label.
+	 *
+	 * @param label the label
+	 * @return the sub themes by label
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 */
 	public List<SubTheme> getSubThemesByLabel(String label) throws ThemeDoesNotExistException{
 		return subThemeManager.findByLabelIgnoreCaseStartingWith(label);

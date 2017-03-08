@@ -80,8 +80,7 @@ public class SupplierManagerImpl implements SupplierManager {
 	 * @return the list
 	 */
 	public List<Supplier> findNotValidSupplier(){
-		List<Supplier> suppliers = supplierRepository.findByIsValidFalse();
-		return suppliers;
+		return supplierRepository.findByIsValidFalse();
 	}
 	
 	

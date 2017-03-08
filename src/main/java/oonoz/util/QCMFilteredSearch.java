@@ -1,7 +1,5 @@
 package oonoz.util;
 
-import java.util.List;
-
 /**
  * The Class QCMFilteredSearch.
  * 
