@@ -16,4 +16,13 @@ public class SubThemeDoesNotExistException extends Exception {
 	public SubThemeDoesNotExistException(String message) {
 		super(message);
 	}
+	
+	/**
+	 * Instantiates a new sub theme does not exist exception.
+	 *
+	 * @param id the id
+	 */
+	public SubThemeDoesNotExistException(long id){
+		super("The subtheme with id " + id + " does not exist");
+	}
 }

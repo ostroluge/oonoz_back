@@ -13,7 +13,6 @@ import oonoz.domain.Theme;
 import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
-import oonoz.exception.QCMValidationException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
@@ -74,8 +73,8 @@ public class QCMService {
 	 * @return the qcm
 	 * @throws WrongInformationException the wrong information exception
 	 * @throws QCMCreationException the QCM creation exception
-	 * @throws QCMAlreadyExistException 
-	 * @throws ThemeDoesNotExistException 
+	 * @throws QCMAlreadyExistException the QCM already exist exception
+	 * @throws ThemeDoesNotExistException the theme does not exist exception
 	 */
 	public QCM postQCM(QCM qcm) throws WrongInformationException, QCMCreationException, QCMAlreadyExistException, ThemeDoesNotExistException {
 		
@@ -91,7 +90,6 @@ public class QCMService {
 			checkQCMInformation.checkPrizeName(qcm.getPrizeName());
 			checkQCMInformation.checkPrizeDescription(qcm.getPrizeDescription());
 		} 
-		//themeManager.findOne(qcm.getIdTheme());
 		qcm.setValidated(false);
 		qcm.setIsComplete(false);
 		return qcmManager.postQCM(qcm);
@@ -126,7 +124,7 @@ public class QCMService {
 				throw new TooManyQuestionsException("Too many questions for QCM with id " + idQCM);
 			}
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+			throw new QCMDoesNotExistException(idQCM);
 		}
 	}
 
@@ -141,7 +139,7 @@ public class QCMService {
 		if (qcm != null) {
 			qcmManager.delete(id);
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
+			throw new QCMDoesNotExistException(id);
 		}
 	}
 
@@ -161,10 +159,10 @@ public class QCMService {
 			if (question != null) {
 				questionManager.deleteQuestion(question.getId());
 			} else {
-				throw new QuestionDoesNotExistException("The question with id " + idQuestion + " does not exist");
+				throw new QuestionDoesNotExistException(idQuestion);
 			}
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+			throw new QCMDoesNotExistException(idQCM);
 		}
 	}
 
@@ -185,10 +183,10 @@ public class QCMService {
 			if (question != null) {
 				return question;
 			} else {
-				throw new QuestionDoesNotExistException("The question with id " + idQuestion + " does not exist");
+				throw new QuestionDoesNotExistException(idQuestion);
 			}
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+			throw new QCMDoesNotExistException(idQCM);
 		}
 	}
 
@@ -204,7 +202,7 @@ public class QCMService {
 		if (qcm != null) {
 			return qcm;
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + id + " does not exist");
+			throw new QCMDoesNotExistException(id);
 		}
 	}
 	
@@ -242,10 +240,10 @@ public class QCMService {
 					throw new SubThemeAlreadyAddedException("The subtheme is already linked to the qcm");
 				}
 			} else {
-				throw new SubThemeDoesNotExistException("The subtheme with id " + idSubTheme + " does not exist");
+				throw new SubThemeDoesNotExistException(idSubTheme);
 			}
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+			throw new QCMDoesNotExistException(idQCM);
 		}
 	}
 
@@ -268,10 +266,10 @@ public class QCMService {
 					qcmManager.save(qcm);
 				}
 			} else {
-				throw new SubThemeDoesNotExistException("The subtheme with id " + idSubTheme + " does not exist");
+				throw new SubThemeDoesNotExistException(idSubTheme);
 			}
 		} else {
-			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+			throw new QCMDoesNotExistException(idQCM);
 		}
 	}
 	
@@ -282,9 +280,8 @@ public class QCMService {
 	 * @param qcm the qcm
 	 * @return the qcm
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
-	 * @throws QCMValidationException 
-	 * @throws QCMCreationException 
-	 * @throws WrongInformationException 
+	 * @throws QCMCreationException the QCM creation exception
+	 * @throws WrongInformationException the wrong information exception
 	 */
 
 	public QCM updateQCM(long id, QCM qcm) throws QCMDoesNotExistException, QCMCreationException, WrongInformationException {
@@ -333,14 +330,15 @@ public class QCMService {
 	/**
 	 * Search supplier QCM.
 	 *
-	 * @param theme the theme
+	 * @param subTheme the sub theme
+	 * @param idSupplier the id supplier
 	 * @return the list
 	 */
 	public List<QCM> searchSupplierQCMBySubTheme(String subTheme, long idSupplier) {
 		
 		List<SubTheme> subThemes = subThemeManager.findByLabelIgnoreCaseStartingWith(subTheme);
 		List<QCM> qcmList = getSupplierQCM(idSupplier);
-		List<QCM> result = new ArrayList<QCM>();
+		List<QCM> result = new ArrayList<>();
 		
 		for (QCM q : qcmList){
 			for (SubTheme sb : subThemes){
@@ -357,7 +355,6 @@ public class QCMService {
 	 * Search supplier QCM.
 	 *
 	 * @param themeLabel the theme label
-	 * @param subThemeLabel the sub theme label
 	 * @param idSupplier the id supplier
 	 * @return the list
 	 * @throws ThemeDoesNotExistException the theme does not exist exception
@@ -366,7 +363,7 @@ public class QCMService {
 	public List<QCM>searchSupplierQCMByTheme(String themeLabel,long idSupplier) throws ThemeDoesNotExistException, QCMDoesNotExistException{
 		
 		List<Theme>  themes = themeManager.findByLabel(themeLabel);
-		List<QCM> listQCM = new ArrayList<QCM>();
+		List<QCM> listQCM = new ArrayList<>();
 		
 		if (themes.size() != 0){
 			for (Theme t : themes ){
@@ -378,24 +375,14 @@ public class QCMService {
 		
 	}
 	
-	public List<QCM>filteredSearch(QCMFilteredSearch filteredSearch){
-		//TODO check QCMFilteredSearch
-		return qcmManager.findsWithFilter(filteredSearch);
-	}
-	
-	
-	
 	/**
-	 * Check if qcm name is not already used.
-	 * @param qcmName
-	 * @return
-	 * @throws QCMCreationException 
+	 * Filtered search.
+	 *
+	 * @param filteredSearch the filtered search
+	 * @return the list
 	 */
-	private Boolean qcmExist(String qcmName) throws QCMAlreadyExistException{
-		if(qcmManager.qcmExist(qcmName)){
-			throw new QCMAlreadyExistException("The QCM name already exist !");
-		}
-		return false;
+	public List<QCM>filteredSearch(QCMFilteredSearch filteredSearch){
+		return qcmManager.findsWithFilter(filteredSearch);
 	}
 	
 }

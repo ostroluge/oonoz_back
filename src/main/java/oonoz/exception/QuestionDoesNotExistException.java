@@ -16,4 +16,13 @@ public class QuestionDoesNotExistException extends Exception {
 	public QuestionDoesNotExistException(String message) {
 		super(message);
 	}
+	
+	/**
+	 * Instantiates a new question does not exist exception.
+	 *
+	 * @param id the id
+	 */
+	public QuestionDoesNotExistException(long id){
+		super("The question with id " + id + " does not exist");
+	}
 }

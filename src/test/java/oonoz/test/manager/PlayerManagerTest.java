@@ -92,13 +92,13 @@ public class PlayerManagerTest {
 	public void updatePlayer() throws PlayerNotExistException{
 		// [-- INITIALISATION --]
 		Player player= playerManager.getPlayerByUsername("Jilief");
-		player.setLastName("Melanchon");
+		player.setLastName("Melenchon");
 		// [-- APPEL DU SERVICE --]
 		playerManager.update(player);
 		
 		// [-- VERIFICATION --]
 		player= playerManager.getPlayerByUsername("Jilief");
-		assertTrue(player.getLastName().equals("Melanchon"));
+		assertTrue(player.getLastName().equals("Melenchon"));
 	}
 	
 	/**

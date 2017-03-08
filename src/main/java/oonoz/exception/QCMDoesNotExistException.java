@@ -16,4 +16,13 @@ public class QCMDoesNotExistException extends Exception {
 	public QCMDoesNotExistException(String message) {
 		super(message);
 	}
+	
+	/**
+	 * Instantiates a new QCM does not exist exception.
+	 *
+	 * @param id the id
+	 */
+	public QCMDoesNotExistException(long id){
+		super("The QCM with id " + id + " does not exist");
+	}
 }

@@ -81,7 +81,7 @@ public class OonozApplication extends SpringBootServletInitializer {
      * @throws Exception the exception
      */
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(OonozApplication.class, args);
+        SpringApplication.run(OonozApplication.class, args);//NOSONAR
     }
 	
 }

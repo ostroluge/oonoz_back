@@ -433,15 +433,15 @@ public class QCMController {
 
 		Player player = (Player) getUserFromAuthentication(authentication);
 
-		List<QCM> qcmList = new ArrayList<QCM>();
+		List<QCM> qcmList = new ArrayList<>();
 		String theme = requestParams.get("theme");
 		String subTheme = requestParams.get("subTheme");
 
 
-		if ((theme == null || theme.equals(""))  && (subTheme == null || subTheme.equals("")) ) {
+		if ((theme == null || "".equals(theme))  && (subTheme == null || "".equals(subTheme)) ) {
 
 			qcmList = qcmService.getSupplierQCM(player.getIdPlayer());
-		} else if (theme != null && subTheme == null || subTheme.equals("") ){
+		} else if (theme != null && subTheme == null || "".equals(subTheme) ){
 			qcmList = qcmService.searchSupplierQCMByTheme(theme, player.getIdPlayer());
 		}else {
 			qcmList = qcmService.searchSupplierQCMBySubTheme(subTheme, player.getIdPlayer());
