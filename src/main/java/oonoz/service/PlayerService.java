@@ -276,4 +276,9 @@ public class PlayerService {
 	public void requestSupplierStatus(long idPlayer) throws PlayerNotExistException{
 		playerManager.requestSupplierStatus(idPlayer);
 	}
+	
+	/**
+	 * 
+	 */
+	
 }

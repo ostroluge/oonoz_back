@@ -92,4 +92,21 @@ public class QCMPlayService {
 			throw new QCMDoesNotExistException("The QCM with id " + idQcm + " does not exist");
 		}
 	}
+
+	public Long getQcmPlayed(long idPlayer) {
+		return qcmPlayManager.getQcmPlayed(idPlayer);
+		
+	}
+
+	public Long getQcmWon(long idPlayer) {
+		 return qcmPlayManager.getQcmWon(idPlayer);
+	}
+
+	public Long getMean(long idPlayer) {
+		return qcmPlayManager.getMean(idPlayer);
+	}
+
+	public float qcmComment(long idPlayer) {
+		return qcmPlayManager.qcmComment(idPlayer);
+	}
 }

@@ -165,4 +165,42 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 
 		return Math.round(result * 2) / 2.0;
 	}
+
+	public Long getQcmPlayed(long idPlayer) {
+		return qcmPlayRepository.countByIdPlayer(idPlayer);
+	}
+
+	public Long getQcmWon(long idPlayer) {
+		 List<QCMPlay> qcms = qcmPlayRepository.findByIdPlayer(idPlayer);
+		 int result = 0;
+		 for (QCMPlay c : qcms){
+			 if (c.getScore() >= 10){
+				 result++;
+			 }
+		 }
+		 return (long) result;
+		 
+	}
+
+	public Long getMean(long idPlayer) {
+		 List<QCMPlay> qcms = qcmPlayRepository.findByIdPlayer(idPlayer);
+		 int result = 0;
+		 for (QCMPlay c : qcms){
+			 result += c.getScore();
+		 }
+		 return (long) result/(qcms.size());
+		 
+	}
+	
+
+	public Long qcmComment(long idPlayer) {
+		 List<QCMPlay> qcms = qcmPlayRepository.findByIdPlayer(idPlayer);
+		 int result = 0;
+		 for (QCMPlay c : qcms){
+			 if ((!c.getComment().equals("") || c.getComment()!=null)){
+				 result++;
+			 }
+		 }
+		 return (long) result;
+	}
 }

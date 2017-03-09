@@ -93,4 +93,5 @@ public interface PlayerRepository extends CrudRepository<Player, Long>,JpaSpecif
 	@Modifying
 	@Query(value="INSERT INTO supplier (id_player,is_valid,is_private_individual) VALUES (?1,false,true)",nativeQuery = true)
 	int createSupplierRow(long idPlayer);
+	
 }
