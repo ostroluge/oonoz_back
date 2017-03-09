@@ -265,5 +265,31 @@ public class PlayerManagerImpl implements PlayerManager {
 			throw new PlayerNotExistException();
 		}
 	}
+	
+	
+	/**
+	 * Change status user.
+	 *
+	 * @param idPlayer
+	 *            the id player
+	 * @throws PlayerNotExistException
+	 *             the player not exist exception
+	 */
+	@Transactional
+	public void requestSupplierStatus(long idPlayer) throws PlayerNotExistException {
+		Player player = playerRepository.findOne(idPlayer);
+		if (player != null) {
+			if (!player.getIsSupplier() && !(player instanceof Supplier)) {
+				playerRepository.updatePlayerToSupplier(idPlayer);
+				playerRepository.createSupplierRow(idPlayer);
+				player.setIsSupplier(true);
+			} 
+			playerRepository.save(player);
+
+		} else {
+			throw new PlayerNotExistException("The player does not exist !");
+		}
+	}
+	
 
 }

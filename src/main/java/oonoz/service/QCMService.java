@@ -13,6 +13,8 @@ import oonoz.domain.Theme;
 import oonoz.exception.QCMAlreadyExistException;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMInvalidationException;
+import oonoz.exception.QCMValidationException;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.exception.SubThemeAlreadyAddedException;
 import oonoz.exception.SubThemeDoesNotExistException;
@@ -119,7 +121,18 @@ public class QCMService {
 				checkQuestionInformation.checkProposition2(question.getProposition2());
 				checkQuestionInformation.checkProposition3(question.getProposition3());
 				
-				return questionManager.postQuestion(question);
+				Question postedQuestion = questionManager.postQuestion(question, qcm);
+				int questionNumber = qcm.getQuestions().size();
+				
+				if (questionNumber == 19) {
+					qcm.setIsComplete(Boolean.TRUE);
+				} else {
+					qcm.setIsComplete(Boolean.FALSE);
+				}
+				
+				qcmManager.save(qcm);
+				
+				return postedQuestion;
 			} else {
 				throw new TooManyQuestionsException("Too many questions for QCM with id " + idQCM);
 			}
@@ -158,6 +171,11 @@ public class QCMService {
 			Question question = questionManager.getQuestion(idQuestion);
 			if (question != null) {
 				questionManager.deleteQuestion(question.getId());
+				int questionNumber = qcm.getQuestions().size();
+				if (questionNumber < 20) {
+					qcm.setIsComplete(Boolean.FALSE);
+					qcmManager.save(qcm);
+				}
 			} else {
 				throw new QuestionDoesNotExistException(idQuestion);
 			}
@@ -375,6 +393,8 @@ public class QCMService {
 		
 	}
 	
+
+
 	/**
 	 * Filtered search.
 	 *
@@ -382,7 +402,45 @@ public class QCMService {
 	 * @return the list
 	 */
 	public List<QCM>filteredSearch(QCMFilteredSearch filteredSearch){
+		//TODO check QCMFilteredSearch
 		return qcmManager.findsWithFilter(filteredSearch);
 	}
 	
+	
+	
+	/**
+	 * Validate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return true, if successful
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMValidationException the QCM validation exception
+	 */
+	public boolean validateQCM(long idQCM) throws QCMDoesNotExistException, QCMValidationException {
+		QCM qcm = qcmManager.findOne(idQCM);
+		if (qcm != null) {
+			QCM updatedQCM = qcmManager.validateQCM(idQCM);
+			return updatedQCM.isValidated();
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
+
+	/**
+	 * Invalidate QCM.
+	 *
+	 * @param idQCM the id QCM
+	 * @return true, if successful
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMInvalidationException the QCM invalidation exception
+	 */
+	public boolean invalidateQCM(long idQCM) throws QCMDoesNotExistException, QCMInvalidationException {
+		QCM qcm = qcmManager.findOne(idQCM);
+		if (qcm != null) {
+			QCM updatedQCM = qcmManager.invalidateQCM(idQCM);
+			return !updatedQCM.isValidated();
+		} else {
+			throw new QCMDoesNotExistException("The QCM with id " + idQCM + " does not exist");
+		}
+	}
 }

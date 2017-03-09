@@ -1,14 +1,14 @@
 package oonoz.manager.impl;
 
+import static oonoz.repository.QCMSpecifications.hasGift;
 import static oonoz.repository.QCMSpecifications.isFree;
 import static oonoz.repository.QCMSpecifications.isValidated;
 import static oonoz.repository.QCMSpecifications.labelStartWith;
 import static oonoz.repository.QCMSpecifications.withCategory;
-import static oonoz.repository.QCMSpecifications.withTheme;
-import static oonoz.repository.QCMSpecifications.withSubTheme;
 import static oonoz.repository.QCMSpecifications.withPriceLessOrEqualTo;
+import static oonoz.repository.QCMSpecifications.withSubTheme;
+import static oonoz.repository.QCMSpecifications.withTheme;
 import static org.springframework.data.jpa.domain.Specifications.where;
-import static oonoz.repository.QCMSpecifications.hasGift;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import oonoz.domain.SubTheme;
 import oonoz.domain.Theme;
 import oonoz.exception.QCMCreationException;
 import oonoz.exception.QCMDoesNotExistException;
+import oonoz.exception.QCMInvalidationException;
 import oonoz.exception.QCMValidationException;
 import oonoz.manager.QCMManager;
 import oonoz.repository.QCMRepository;
@@ -219,10 +220,14 @@ public class QCMManagerImpl implements QCMManager {
 	 * Validate QCM.
 	 *
 	 * @param id the id
+<<<<<<< HEAD
+=======
+	 * @return the qcm
+>>>>>>> develop
 	 * @throws QCMDoesNotExistException the QCM does not exist exception
 	 * @throws QCMValidationException the QCM validation exception
 	 */
-	public void validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
+	public QCM validateQCM(long id) throws QCMDoesNotExistException, QCMValidationException{
 		if(qcmRepository.exists(id)){
 			QCM qcmToValidate = qcmRepository.findOne(id);
 			
@@ -230,7 +235,30 @@ public class QCMManagerImpl implements QCMManager {
 				throw new QCMValidationException("The qcm is already validated");
 			} else {
 				qcmToValidate.setValidated(Boolean.TRUE);
-				qcmRepository.save(qcmToValidate);
+				return qcmRepository.save(qcmToValidate);
+			}
+		} else {
+			throw new QCMDoesNotExistException("The qcm does not exist");
+		}
+	}
+	
+	/**
+	 * Invalidate QCM.
+	 *
+	 * @param id the id
+	 * @return the qcm
+	 * @throws QCMDoesNotExistException the QCM does not exist exception
+	 * @throws QCMInvalidationException the QCM invalidation exception
+	 */
+	public QCM invalidateQCM(long id) throws QCMDoesNotExistException, QCMInvalidationException {
+		if(qcmRepository.exists(id)){
+			QCM qcmToInvalidate = qcmRepository.findOne(id);
+			
+			if(!qcmToInvalidate.isValidated()){
+				throw new QCMInvalidationException("The qcm is already invalidated");
+			} else {
+				qcmToInvalidate.setValidated(Boolean.FALSE);
+				return qcmRepository.save(qcmToInvalidate);
 			}
 		} else {
 			throw new QCMDoesNotExistException("The qcm does not exist");

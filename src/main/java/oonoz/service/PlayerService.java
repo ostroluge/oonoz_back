@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
 import oonoz.domain.Player;
 import oonoz.dto.model.PlayerDto;
 import oonoz.exception.PlayerAlreadyExistException;
@@ -140,7 +141,6 @@ public class PlayerService {
 	 */
 
 	public void updatePlayer(Player player) throws WrongInformationException, PlayerNotExistException{
-		
 		checkUserInformation.checkUsername(player.getUsername());
 		checkUserInformation.checkMail(player.getMail());
 		checkUserInformation.checkLastName(player.getLastName());
@@ -153,9 +153,18 @@ public class PlayerService {
 		playerToUpdate.setMail(player.getMail());
 		playerToUpdate.setBirthDate(player.getBirthDate());
 		playerToUpdate.setIsActive(player.getIsActive());
+		playerToUpdate.setCredit(player.getCredit());
 		playerToUpdate.setIsSupplier(false);
+		if (player.getPassword() != null){
+			String hashPassword=checkUserInformation.hashPassword(player.getPassword());
+			playerToUpdate.setPassword(hashPassword);
+		}
 		playerManager.update(playerToUpdate);
 	}
+	
+	
+	
+
 	
 	/**
 	 * Delete player.
@@ -264,5 +273,7 @@ public class PlayerService {
 		playerManager.changeStatusUser(idPlayer);
 	}
 	
-	
+	public void requestSupplierStatus(long idPlayer) throws PlayerNotExistException{
+		playerManager.requestSupplierStatus(idPlayer);
+	}
 }

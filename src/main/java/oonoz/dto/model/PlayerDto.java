@@ -38,6 +38,8 @@ public class PlayerDto {
 	protected Boolean isActive;
 	
 	protected Boolean isSupplier;
+	
+	protected float credit;
 
 	public long getIdPlayer() {
 		return idPlayer;
@@ -110,4 +112,13 @@ public class PlayerDto {
 	public void setIsSupplier(Boolean isSupplier) {
 		this.isSupplier = isSupplier;
 	}
+
+	public float getCredit() {
+		return credit;
+	}
+
+	public void setCredit(float credit) {
+		this.credit = credit;
+	}
+	
 }

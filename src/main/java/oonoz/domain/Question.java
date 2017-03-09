@@ -57,6 +57,12 @@ public class Question {
 	@Column(unique = false, nullable = false, name="QUESTION_NUMBER")
 	private int questionNumber;
 
+	
+	/** The proposition 3. */
+	@Column(unique = false, nullable = true,name="DURATION")
+	private Integer time;
+
+
 	/**
 	 * Gets the id.
 	 *
@@ -236,4 +242,14 @@ public class Question {
 	public void setQuestionNumber(int questionNumber) {
 		this.questionNumber = questionNumber;
 	}
+
+	public Integer getTime() {
+		return time;
+	}
+
+	public void setTime(Integer time) {
+		this.time = time;
+	}
+	
+	
 }

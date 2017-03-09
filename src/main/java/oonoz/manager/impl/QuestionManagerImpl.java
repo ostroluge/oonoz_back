@@ -4,9 +4,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import oonoz.domain.QCM;
 import oonoz.domain.Question;
 import oonoz.exception.QuestionDoesNotExistException;
 import oonoz.manager.QuestionManager;
+import oonoz.repository.QCMRepository;
 import oonoz.repository.QuestionRepository;
 
 /**
@@ -18,14 +20,19 @@ public class QuestionManagerImpl implements QuestionManager {
 	/** The question repository. */
 	@Resource
 	private QuestionRepository questionRepository;
+
+	/** The qcm repository. */
+	@Resource
+	private QCMRepository qcmRepository;
 	
 	/**
 	 * Post question.
 	 *
 	 * @param question the question
+	 * @param qcm the qcm
 	 * @return the question
 	 */
-	public Question postQuestion(Question question) {
+	public Question postQuestion(Question question, QCM qcm) {
 		return questionRepository.save(question);
 	}
 
@@ -38,7 +45,7 @@ public class QuestionManagerImpl implements QuestionManager {
 	public Question getQuestion(long idQuestion) {
 		return questionRepository.findOne(idQuestion);
 	}
-	
+
 	/**
 	 * Find by question number.
 	 *
@@ -49,7 +56,7 @@ public class QuestionManagerImpl implements QuestionManager {
 	public Question findByQuestionNumber(long idQCM,int questionNumber){
 		return questionRepository.findByQuestionNumber(idQCM, questionNumber);
 	}
-	
+
 	/**
 	 * Delete question.
 	 *
@@ -58,7 +65,7 @@ public class QuestionManagerImpl implements QuestionManager {
 	public void deleteQuestion(long idQuestion) {
 		questionRepository.delete(idQuestion);
 	}
-	
+
 	/**
 	 * Update the question.
 	 *
