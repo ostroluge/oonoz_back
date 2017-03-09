@@ -1,5 +1,6 @@
 package oonoz.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -32,6 +33,7 @@ import oonoz.exception.PlayerNotActiveException;
 import oonoz.exception.PlayerNotExistException;
 import oonoz.exception.WrongInformationException;
 import oonoz.service.PlayerService;
+import oonoz.service.QCMPlayService;
 import oonoz.service.QCMService;
 import oonoz.service.SupplierService;
 import oonoz.util.StringResponse;
@@ -60,6 +62,10 @@ public class UserController {
 	/** The qcm service. */
 	@Autowired
 	private QCMService qcmService;
+	
+	/** The qcm service. */
+	@Autowired
+	private QCMPlayService qcmPlayService;
 
 
 	/** The player dto converter. */
@@ -180,15 +186,9 @@ public class UserController {
 
 	}
 
-	/**
-<<<<<<< HEAD
-	 * Rest service receiving a email and a token.
-	 * If the token is right I will activate the account of the user matching the mail.
-=======
+	/*
 	 * Rest service receiving a email and a token. If the token is right I will
 	 * activate the account of the user matching the mail.
->>>>>>> feature/QCMManagement
-	 *
 	 * @param playerDto the player dto
 	 * @return A response containing a string with the answer.
 	 */
@@ -337,6 +337,34 @@ public class UserController {
 		}
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
+	
+	/**
+	 * 
+	 * @param authentication : player credential
+	 * @return
+	 * @throws PlayerNotExistException
+	 */
+	@RequestMapping(value = "/stat", method = RequestMethod.GET)
+    public ResponseEntity<List<Long>> getStat(Authentication authentication) {
+    	
+		Player p = getUserFromAuthentication(authentication);
+		
+		Long qcmTotal  = qcmPlayService.getQcmPlayed(p.getIdPlayer());
+		Long qcmLost = qcmPlayService.getQcmWon(p.getIdPlayer());
+		Long qcmMean = qcmPlayService.getMean(p.getIdPlayer());
+		Long qcmComment = (long) qcmPlayService.qcmComment(p.getIdPlayer());
+		
+		List<Long> allStat = new ArrayList<Long>();
+    	
+		allStat.add(qcmTotal);
+		allStat.add(qcmLost);
+		allStat.add(qcmMean);
+		allStat.add(qcmComment);
+		return ResponseEntity.status(HttpStatus.OK).body(allStat);
+    	
+		//return new ResponseEntity<>("", HttpStatus.OK);
+    }
+	
 
 	
 	

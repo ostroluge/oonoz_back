@@ -36,6 +36,7 @@ import oonoz.exception.PlayerNotExistException;
 import oonoz.manager.PlayerManager;
 import oonoz.repository.AuthoritiesRepository;
 import oonoz.repository.PlayerRepository;
+import oonoz.repository.QCMPlayRepository;
 import oonoz.util.FilteredSearch;
 
 /**
@@ -49,6 +50,11 @@ public class PlayerManagerImpl implements PlayerManager {
 	/** The player repository. */
 	@Resource
 	private PlayerRepository playerRepository;
+	
+	
+	/** The qcm played repository. */
+	@Resource
+	private QCMPlayRepository playQCMRepository;
 
 	/** The authorities repository. */
 	@Resource
