@@ -228,7 +228,7 @@ public class QCMController {
 	 * @throws QCMDoesNotExistException
 	 *             the QCM does not exist exception
 	 */
-	@RequestMapping(value = "/qcms/validated/{id}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/qcms/validated/{id}", method = RequestMethod.GET)
 	public ResponseEntity<QCMDto> getValidatedQCM(@PathVariable("id") long id) throws QCMDoesNotExistException {
 		QCM qcm = qcmService.getValidatedQCM(id);
 		if (qcm != null) {
@@ -236,7 +236,7 @@ public class QCMController {
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-	}
+	}*/
 	
 
 
