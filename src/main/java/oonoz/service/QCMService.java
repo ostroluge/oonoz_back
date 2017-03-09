@@ -122,7 +122,18 @@ public class QCMService {
 				checkQuestionInformation.checkProposition2(question.getProposition2());
 				checkQuestionInformation.checkProposition3(question.getProposition3());
 				
-				return questionManager.postQuestion(question);
+				Question postedQuestion = questionManager.postQuestion(question, qcm);
+				int questionNumber = qcm.getQuestions().size();
+				
+				if (questionNumber == 19) {
+					qcm.setIsComplete(Boolean.TRUE);
+				} else {
+					qcm.setIsComplete(Boolean.FALSE);
+				}
+				
+				qcmManager.save(qcm);
+				
+				return postedQuestion;
 			} else {
 				throw new TooManyQuestionsException("Too many questions for QCM with id " + idQCM);
 			}
@@ -161,6 +172,11 @@ public class QCMService {
 			Question question = questionManager.getQuestion(idQuestion);
 			if (question != null) {
 				questionManager.deleteQuestion(question.getId());
+				int questionNumber = qcm.getQuestions().size();
+				if (questionNumber < 20) {
+					qcm.setIsComplete(Boolean.FALSE);
+					qcmManager.save(qcm);
+				}
 			} else {
 				throw new QuestionDoesNotExistException("The question with id " + idQuestion + " does not exist");
 			}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,20 @@ public class UserController {
 
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+
+        /* Getting session and then invalidating it */
+
+        HttpSession session = request.getSession(false);
+
+        if (request.isRequestedSessionIdValid() && session != null) {
+            session.invalidate();
+            return new ResponseEntity<>("", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+    }
 
 	/**
 	 * Signup player.
