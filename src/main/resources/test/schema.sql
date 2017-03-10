@@ -10,7 +10,8 @@ username varchar(20) NOT NULL unique,
 birthdate date NOT NULL,
 is_active boolean NOT NULL,
 is_supplier boolean NOT NULL,
-type_user varchar(20)NOT NULL
+type_user varchar(20)NOT NULL,
+credit float(2) default 0
 );
 
 CREATE TABLE SUPPLIER (
