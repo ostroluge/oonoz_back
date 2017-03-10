@@ -118,7 +118,7 @@ public class QCMPlayController {
 	public ResponseEntity<String> postFinishQCM(Authentication authentication, @RequestBody QCMPlayDto qcmPlayDto) {
 
 
-		Supplier supplier = (Supplier) getUserFromAuthentication(authentication);
+		Player supplier = (Player) getUserFromAuthentication(authentication);
 		qcmPlayDto.setIdPlayer(supplier.getIdPlayer());
 
 		qcmPlayService.createQCMPlay(qcmPlayConverter.convertToEntity(qcmPlayDto));

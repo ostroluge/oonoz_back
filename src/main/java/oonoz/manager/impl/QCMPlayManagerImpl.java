@@ -188,6 +188,9 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		 for (QCMPlay c : qcms){
 			 result += c.getScore();
 		 }
+		 if(qcms.size()==0){
+			 return 0L;
+		 }
 		 return (long) result/(qcms.size());
 		 
 	}
@@ -197,7 +200,7 @@ public class QCMPlayManagerImpl implements QCMPlayManager {
 		 List<QCMPlay> qcms = qcmPlayRepository.findByIdPlayer(idPlayer);
 		 int result = 0;
 		 for (QCMPlay c : qcms){
-			 if ((!c.getComment().equals("") || c.getComment()!=null)){
+			 if (  c.getComment()!=null && !c.getComment().equals("")){
 				 result++;
 			 }
 		 }
