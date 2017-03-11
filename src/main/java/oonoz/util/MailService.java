@@ -24,6 +24,14 @@ import oonoz.domain.Player;
  */
 @Component
 public class MailService {
+	
+	/** The smtp host. */
+	@Value("${oonoz.mail.host}")
+	private String smtpHost;
+	
+	/** The smtp port. */
+	@Value("${oonoz.mail.port}")
+	private String smtpPort;
 
 	/** The username. */
 	@Value("${oonoz.mail.username}")
@@ -36,6 +44,10 @@ public class MailService {
 	/** The sender. */
 	@Value("${oonoz.mail.sender}")
 	private String sender;
+	
+	/** The port. */
+	@Value("${oonoz.mail.auth}")
+	private String authEnable;
 
 	/** The host. */
 	@Value("${server.host}")
@@ -44,6 +56,8 @@ public class MailService {
 	/** The port. */
 	@Value("${server.port}")
 	private int port;
+	
+	
 
 	/** The props. */
 	private Properties props;
@@ -64,11 +78,7 @@ public class MailService {
 	 */
 	public MailService(@Value("${oonoz.mail.host}") String hostMail, @Value("${oonoz.mail.port}") int portMail,@Value("${oonoz.mail.tls_enable}") boolean tlsEnable, @Value("${oonoz.mail.auth}") String authEnable) {
 
-		this.props = new Properties();
-		this.props.put("mail.smtp.host", hostMail);
-		this.props.put("mail.smtp.port", portMail);
-		this.props.put("mail.smtp.starttls.enable", tlsEnable);
-		this.props.setProperty("mail.smtp.auth",authEnable);
+		
 	}
 
 	/**
@@ -78,6 +88,15 @@ public class MailService {
 	 * @throws MessagingException             raised if there is a problem.
 	 */
 	public void sendValidationMail(Player player) throws MessagingException {
+		
+		if(props==null){
+			
+			this.props = new Properties();
+			this.props.put("mail.smtp.host", smtpHost);
+			this.props.put("mail.smtp.port", smtpPort);
+			this.props.put("mail.smtp.starttls.enable", true);
+			this.props.setProperty("mail.smtp.auth",authEnable);
+		}
 
 		String title = "Oonoz - Validation du compte";
 
@@ -95,6 +114,15 @@ public class MailService {
 	 * @throws MessagingException the messaging exception
 	 */
 	public void sendNewGeneratePasswordMail(Player player) throws MessagingException{
+		
+		if(props==null){
+			
+			this.props = new Properties();
+			this.props.put("mail.smtp.host", smtpHost);
+			this.props.put("mail.smtp.port", smtpPort);
+			this.props.put("mail.smtp.starttls.enable", true);
+			this.props.setProperty("mail.smtp.auth",authEnable);
+		}
 		String title = "Oonoz - Mot de passe oublié";
 		Session session =  this.getSession();
 
